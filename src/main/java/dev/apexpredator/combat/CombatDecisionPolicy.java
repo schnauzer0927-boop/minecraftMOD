@@ -61,6 +61,7 @@ public final class CombatDecisionPolicy {
         if (!c.lineOfSight() && attack != AttackType.TELEPORT) return 0;
         return switch (attack) {
             case MELEE -> distance <= 4.3 ? 28 + (c.meleePressure() ? 8 : 0) : 0;
+            case BLADE_COMBO -> distance <= 4.3 ? 18 + (c.meleePressure() ? 14 : 0) : 0;
             case CHARGE -> distance >= 5 && distance <= 28
                     ? 18 + (c.rangedPressure() ? 20 : 0) : 0;
             case JUMP -> distance >= 4 && distance <= 20
@@ -76,7 +77,7 @@ public final class CombatDecisionPolicy {
                     ? 12 + (c.stationary() ? 10 : 0) : 0;
             case PULL -> distance >= 7 && distance <= 20 ? 18 : 0;
             case MIRAGE -> distance <= 32 ? 10 + (c.rapidFire() ? 18 : 0) : 0;
-            case SPECIAL -> distance >= 5 && distance <= 24 ? 10 : 0;
+            case SPECIAL -> distance >= 4 && distance <= 15 ? 10 : 0;
         };
     }
 }

@@ -16,11 +16,11 @@ public final class ApexRegistries {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ApexPredator.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ApexPredator.MOD_ID);
     public static final RegistryObject<EntityType<ApexEntity>> APEX = ENTITIES.register("apex", () -> EntityType.Builder.of(ApexEntity::new, MobCategory.MONSTER)
-            .sized(1.4F, 3.8F).clientTrackingRange(96).updateInterval(1).fireImmune().build("apexpredator:apex"));
+            .sized(1.25F, 2.7F).clientTrackingRange(96).updateInterval(1).fireImmune().build("apexpredator:apex"));
     public static final RegistryObject<EntityType<ApexBoltEntity>> APEX_BOLT = ENTITIES.register("apex_bolt", () -> EntityType.Builder.<ApexBoltEntity>of(ApexBoltEntity::new, MobCategory.MISC)
             .sized(.35F, .35F).clientTrackingRange(64).updateInterval(1).build("apexpredator:apex_bolt"));
     public static final RegistryObject<Item> APEX_CORE = ITEMS.register("apex_core", () -> new Item(new Item.Properties().fireResistant()));
-    public static final RegistryObject<Item> APEX_SPAWN_EGG = ITEMS.register("apex_spawn_egg", () -> new ForgeSpawnEggItem(APEX, 0x181825, 0xDC3448, new Item.Properties()));
+    public static final RegistryObject<Item> APEX_SPAWN_EGG = ITEMS.register("apex_spawn_egg", () -> new ForgeSpawnEggItem(APEX, 0x171B21, 0xFF781F, new Item.Properties()));
     private ApexRegistries() { }
     public static void attributes(EntityAttributeCreationEvent event) { event.put(APEX.get(), ApexEntity.createAttributes().build()); }
 }

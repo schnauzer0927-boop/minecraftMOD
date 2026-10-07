@@ -27,6 +27,7 @@ public final class CombatController {
     private LivingEntity actionTarget;
     private int attackElapsed;
     private int recoveryRemaining;
+    private int recoveryVisualDelay;
     private int dodgeElapsed;
     private long dodgeUntil;
     private long dodgeReadyAt;
@@ -37,6 +38,7 @@ public final class CombatController {
     private boolean pendingEvasion;
     private int requestedEvasionTicks;
     private int strafeDirection = 1;
+    private long phasePauseUntil;
 
     public CombatController(ApexEntity entity) {
         this.entity = java.util.Objects.requireNonNull(entity, "entity");
@@ -48,6 +50,13 @@ public final class CombatController {
         if (entity.level().isClientSide || !entity.isAlive()) return;
         long now = entity.level().getGameTime();
         entity.damageTracker().tick(now);
+        if (now < phasePauseUntil) {
+            entity.getNavigation().stop();
+            Vec3 motion = entity.getDeltaMovement();
+            entity.setDeltaMovement(0, motion.y, 0);
+            setState(CombatState.PHASE_CHANGE);
+            return;
+        }
         LivingEntity target = entity.getTarget();
         if (!validTarget(target)) {
             if (target != null) entity.setTarget(null);
@@ -58,7 +67,7 @@ public final class CombatController {
         entity.behaviorTracker().observePosition(target.getUUID(), now,
                 target.getX(), target.getY(), target.getZ(), entity.getY());
         PlayerBehaviorTracker.BehaviorSnapshot behavior = entity.behaviorTracker().snapshot(target.getUUID(), now);
-        entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
+        if (activeAttack != AttackType.SPECIAL) entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
         if (pendingReposition) {
             pendingReposition = false;
@@ -116,6 +125,9 @@ public final class CombatController {
         if (recoveryRemaining > 0) {
             recoveryRemaining--;
             entity.getNavigation().stop();
+            if (recoveryVisualDelay > 0 && --recoveryVisualDelay == 0) {
+                entity.playVisual("recovery", recoveryRemaining + 1);
+            }
             if (recoveryRemaining == 0) nextDecision = now;
             return;
         }
@@ -178,15 +190,32 @@ public final class CombatController {
         requestedEvasionTicks = Math.max(requestedEvasionTicks, reaction.evasionTicks());
     }
 
+    /** An actual phase transition interrupts a committed strike before its cinematic. */
+    public void onPhaseChange(int ticks) {
+        if (entity.level().isClientSide || ticks <= 0) return;
+        cancelAttack();
+        recoveryRemaining = 0;
+        movementUntil = 0;
+        phasePauseUntil = entity.level().getGameTime() + ticks;
+        dodgeUntil = 0;
+        nextDecision = phasePauseUntil;
+        setState(CombatState.PHASE_CHANGE);
+        entity.playVisual("phase_change", ticks);
+    }
+
+    public int getPhasePauseRemaining() {
+        return (int) Math.max(0, phasePauseUntil - entity.level().getGameTime());
+    }
+
     public CombatState getState() { return state; }
     public AttackType getLastAttack() { return lastAttack; }
     public int getAttackElapsed() { return attackElapsed; }
 
     public String debugSummary() {
         LivingEntity target = entity.getTarget();
-        return String.format(Locale.ROOT, "phase=%d state=%s target=%s last=%s DPS=%.2f hits=%d",
-                entity.getPhase(), state, target == null ? "none" : target.getName().getString(),
-                lastAttack == null ? "none" : lastAttack,
+        return String.format(Locale.ROOT, "phase=%d state=%s visual=%s target=%s last=%s DPS=%.2f hits=%d",
+                entity.getPhase(), state, entity.getVisualAnimation(), target == null ? "none" : target.getName().getString(),
+                lastAttack == null ? "none" : lastAttack == AttackType.SPECIAL ? "APEX_EXECUTION" : lastAttack,
                 entity.damageTracker().getDamagePerSecond(entity.level().getGameTime()),
                 entity.damageTracker().getConsecutiveHits(entity.level().getGameTime()));
     }
@@ -196,7 +225,8 @@ public final class CombatController {
         activeAttack = type;
         lastAttack = type;
         actionTarget = target;
-        attackElapsed = 0;
+        // begin() publishes elapsed zero on this server tick; the next tick advances to one.
+        attackElapsed = 1;
         cooldownUntil.put(type, now + type.cooldownTicks());
         if (recentAttacks.size() == 3) recentAttacks.removeFirst();
         recentAttacks.addLast(type);
@@ -219,10 +249,19 @@ public final class CombatController {
         entity.getNavigation().stop();
         setState(CombatState.RECOVERY);
         recoveryRemaining = ticks;
+        // Preserve the brief landing/charge end pose before the general recovery animation.
+        recoveryVisualDelay = entity.getVisualAnimation().equals("charge_end") ? 8
+                : entity.getVisualAnimation().equals("slam") ? 12
+                : entity.getVisualAnimation().equals("melee_left") || entity.getVisualAnimation().equals("melee_right")
+                    || entity.getVisualAnimation().equals("rage_attack") ? 2 : 0;
+        if (recoveryVisualDelay == 0) {
+            entity.playVisual("recovery", ticks);
+        }
     }
 
     private void chase(LivingEntity target, long now) {
         setState(CombatState.CHASE);
+        entity.maintainVisual(entity.getPhase() == 3 ? "rage_run" : "run", 10);
         if (lastNavigationTick == Long.MIN_VALUE || now - lastNavigationTick >= 6) {
             entity.getNavigation().moveTo(target, 1.15);
             lastNavigationTick = now;
@@ -236,6 +275,7 @@ public final class CombatController {
         if (toward.horizontalDistanceSqr() < 0.01) return;
         Vec3 forward = toward.normalize();
         int direction = strafeDirection * ((now / 8) % 2 == 0 ? 1 : -1);
+        entity.maintainVisual(direction > 0 ? "strafe_left" : "strafe_right", 9);
         Vec3 lateral = new Vec3(-forward.z, 0, forward.x).scale(direction);
         Vec3 step = lateral.scale(3).add(forward.scale(toward.length() > 7 ? 1.8 : -0.6));
         entity.getMoveControl().setWantedPosition(entity.getX() + step.x, entity.getY(),

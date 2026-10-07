@@ -4,5 +4,19 @@
   "item.apexpredator.apex_core": "Apex Core",
   "itemGroup.apexpredator": "Apex Predator",
   "commands.apexpredator.debug.enabled": "Apexの戦闘デバッグログを有効にしました",
-  "commands.apexpredator.debug.disabled": "Apexの戦闘デバッグログを無効にしました"
+  "commands.apexpredator.debug.disabled": "Apexの戦闘デバッグログを無効にしました",
+  "sound.apexpredator.blade_swing": "Apexの刃が空を裂く",
+  "sound.apexpredator.blade_hit": "Apexの刃が命中",
+  "sound.apexpredator.charge_start": "Apexが突進を構える",
+  "sound.apexpredator.charge_dash": "Apexが突進",
+  "sound.apexpredator.slam": "Apexが地面へ叩きつける",
+  "sound.apexpredator.shockwave": "Apexの衝撃波",
+  "sound.apexpredator.teleport": "Apexが転移",
+  "sound.apexpredator.phase_change": "Apexの装甲が展開",
+  "sound.apexpredator.rage": "Apexの咆哮",
+  "sound.apexpredator.special_charge": "APEX EXECUTIONの予兆",
+  "sound.apexpredator.special_attack": "APEX EXECUTION発動",
+  "sound.apexpredator.death": "Apexのコアが崩壊",
+  "sound.apexpredator.boss_music": "Apex戦闘曲",
+  "effect.apexpredator.execution": "APEX EXECUTION"
 }

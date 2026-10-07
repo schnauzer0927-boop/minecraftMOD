@@ -1,6 +1,7 @@
 package dev.apexpredator.entity;
 
-import net.minecraft.core.particles.ParticleTypes;
+import dev.apexpredator.effect.ApexEffects;
+import dev.apexpredator.effect.EffectKind;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -56,8 +57,8 @@ public final class ApexBoltEntity extends ThrowableItemProjectile {
                 // Four percent steering cannot turn sharply enough to negate a sidestep.
                 setDeltaMovement(getDeltaMovement().lerp(desired, 0.04).normalize().scale(0.7));
             }
-            server.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, getX(), getY(), getZ(),
-                    2, 0.06, 0.06, 0.06, 0);
+            if (tickCount % 3 == 0) ApexEffects.emit(this, EffectKind.PROJECTILE_TRAIL,
+                    position(), getDeltaMovement(), .4F, 10);
         }
         super.tick();
     }
@@ -77,8 +78,7 @@ public final class ApexBoltEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!level().isClientSide) {
-            if (level() instanceof ServerLevel server) server.sendParticles(ParticleTypes.SOUL,
-                    getX(), getY(), getZ(), 12, 0.15, 0.15, 0.15, 0.02);
+            ApexEffects.projectileImpact(this);
             discard();
         }
     }

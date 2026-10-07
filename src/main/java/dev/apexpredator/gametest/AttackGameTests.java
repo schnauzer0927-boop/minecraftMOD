@@ -49,21 +49,24 @@ public final class AttackGameTests {
     }
 
     @GameTest(template = "empty", timeoutTicks = 20)
-    public static void specialKeepsCommittedDirection(GameTestHelper helper) {
+    public static void executionAllowsEscapeFromItsCommittedWarningCircle(GameTestHelper helper) {
         ApexEntity apex = boss(helper, 3, 2, 5);
         Pig victim = helper.spawnWithNoFreeWill(EntityType.PIG, new Vec3(9, 2, 5));
         AttackManager attacks = new AttackManager(apex);
         attacks.begin(AttackType.SPECIAL, victim);
         float initialHealth = victim.getHealth();
-        for (int tick = 0; tick < 50; tick++) {
+        for (int tick = 0; tick < AttackManager.EXECUTION_WARNING_TICKS; tick++) {
             attacks.tick(AttackType.SPECIAL, victim, tick);
-            helper.assertTrue(victim.getHealth() == initialHealth, "Special damaged a target during its 50-tick telegraph");
+            helper.assertTrue(victim.getHealth() == initialHealth, "Execution damaged a target during its warning");
         }
-        // The target leaves the marked cone after Apex has committed to its direction.
-        Vec3 escape = helper.absoluteVec(new Vec3(9, 2, 9));
+        // The player escapes the warning circle after the attack has committed its origin.
+        Vec3 escape = helper.absoluteVec(new Vec3(23, 2, 9));
         victim.setPos(escape.x, escape.y, escape.z);
-        attacks.tick(AttackType.SPECIAL, victim, 50);
-        helper.assertTrue(victim.getHealth() == initialHealth, "Special tracked a target outside its committed cone");
+        for (int tick = AttackManager.EXECUTION_WARNING_TICKS;
+             tick <= AttackManager.EXECUTION_WARNING_TICKS + AttackManager.EXECUTION_END_TICK; tick++) {
+            attacks.tick(AttackType.SPECIAL, victim, tick);
+        }
+        helper.assertTrue(victim.getHealth() == initialHealth, "Execution followed a target outside its warning circle");
         helper.succeed();
     }
 
@@ -77,14 +80,14 @@ public final class AttackGameTests {
         }
         float initialHealth = victim.getHealth();
         attacks.begin(AttackType.SPECIAL, victim);
-        attacks.tick(AttackType.SPECIAL, victim, 50);
+        attacks.tick(AttackType.SPECIAL, victim, AttackManager.EXECUTION_WARNING_TICKS);
         helper.assertTrue(victim.getHealth() == initialHealth, "Special passed through solid cover");
         for (int z = 5; z <= 7; z++) {
             for (int y = 2; y <= 5; y++) helper.setBlock(6, y, z, Blocks.AIR);
         }
         attacks.begin(AttackType.SPECIAL, victim);
-        attacks.tick(AttackType.SPECIAL, victim, 50);
-        helper.assertTrue(victim.getHealth() < initialHealth, "Special failed to damage an exposed target in its cone: "
+        attacks.tick(AttackType.SPECIAL, victim, AttackManager.EXECUTION_WARNING_TICKS);
+        helper.assertTrue(victim.getHealth() < initialHealth, "Execution failed to damage an exposed target in its marked area: "
                 + diagnostics(helper, apex, victim));
         helper.succeed();
     }

@@ -4,5 +4,19 @@
   "item.apexpredator.apex_core": "Apex Core",
   "itemGroup.apexpredator": "Apex Predator",
   "commands.apexpredator.debug.enabled": "Apex combat debug logging enabled",
-  "commands.apexpredator.debug.disabled": "Apex combat debug logging disabled"
+  "commands.apexpredator.debug.disabled": "Apex combat debug logging disabled",
+  "sound.apexpredator.blade_swing": "Apex blade sweeps",
+  "sound.apexpredator.blade_hit": "Apex blade strikes",
+  "sound.apexpredator.charge_start": "Apex coils to charge",
+  "sound.apexpredator.charge_dash": "Apex rushes",
+  "sound.apexpredator.slam": "Apex slams down",
+  "sound.apexpredator.shockwave": "Apex releases a shockwave",
+  "sound.apexpredator.teleport": "Apex phases through space",
+  "sound.apexpredator.phase_change": "Apex armor unfolds",
+  "sound.apexpredator.rage": "Apex roars",
+  "sound.apexpredator.special_charge": "Apex Execution charges",
+  "sound.apexpredator.special_attack": "Apex Execution strikes",
+  "sound.apexpredator.death": "Apex core collapses",
+  "sound.apexpredator.boss_music": "Apex encounter music",
+  "effect.apexpredator.execution": "APEX EXECUTION"
 }

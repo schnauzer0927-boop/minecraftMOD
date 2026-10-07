@@ -1,65 +1,67 @@
 package dev.apexpredator.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.apexpredator.ApexPredator;
 import dev.apexpredator.entity.ApexEntity;
 import dev.apexpredator.registry.ApexRegistries;
-import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-@Mod.EventBusSubscriber(modid = ApexPredator.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD,
-        value = Dist.CLIENT)
-public final class ApexRenderer extends MobRenderer<ApexEntity, ApexModel> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ApexPredator.MOD_ID,
-            "textures/entity/apex.png");
-    private static final ResourceLocation EYES = new ResourceLocation(ApexPredator.MOD_ID,
-            "textures/entity/apex_eyes.png");
+@Mod.EventBusSubscriber(modid = ApexPredator.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public final class ApexRenderer extends GeoEntityRenderer<ApexEntity> {
+    private static final ResourceLocation GLOW = new ResourceLocation(ApexPredator.MOD_ID,
+            "textures/entity/apex_glow.png");
 
     public ApexRenderer(EntityRendererProvider.Context context) {
-        super(context, new ApexModel(context.bakeLayer(ModelLayers.ZOMBIE)), 0.9F);
-        addLayer(new Eyes(this));
+        super(context, new ApexModel());
+        shadowRadius = 0.75F;
+        addRenderLayer(new Glow(this));
+        addRenderLayer(new ApexAfterimageLayer(this));
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ApexRegistries.APEX.get(), ApexRenderer::new);
-        event.registerEntityRenderer(ApexRegistries.APEX_BOLT.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ApexRegistries.APEX_BOLT.get(), ApexBoltRenderer::new);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ApexEntity entity) {
-        return TEXTURE;
+    protected float getDeathMaxRotation(ApexEntity entity) {
+        // The death animation already performs the authored collapse.
+        return 0;
     }
 
-    @Override
-    protected void scale(ApexEntity entity, PoseStack poseStack, float partialTick) {
-        poseStack.scale(2.0F, 2.0F, 2.0F);
-    }
-
-    private static final class Eyes extends RenderLayer<ApexEntity, ApexModel> {
-        private Eyes(ApexRenderer renderer) {
-            super(renderer);
-        }
+    private static final class Glow extends GeoRenderLayer<ApexEntity> {
+        private Glow(ApexRenderer renderer) { super(renderer); }
 
         @Override
-        public void render(PoseStack stack, MultiBufferSource buffers, int packedLight,
-                           ApexEntity entity, float limbSwing, float limbSwingAmount,
-                           float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-            float green = entity.getPhase() == 2 ? 0.55F : 0.08F;
-            float blue = entity.getPhase() == 3 ? 0.9F : 0.05F;
-            getParentModel().renderToBuffer(stack, buffers.getBuffer(RenderType.eyes(EYES)),
-                    15728640, OverlayTexture.NO_OVERLAY, 1.0F, green, blue, 1.0F);
+        public void render(PoseStack stack, ApexEntity entity, BakedGeoModel model, RenderType renderType,
+                           MultiBufferSource buffers, VertexConsumer buffer, float partialTick,
+                           int packedLight, int packedOverlay) {
+            if (entity.isInvisible()) return;
+            float brightness = switch (entity.getPhase()) {
+                case 2 -> 0.84F;
+                case 3 -> 1.0F;
+                default -> 0.68F;
+            };
+            brightness *= 0.96F + Mth.sin((entity.tickCount + partialTick) * 0.16F) * 0.04F;
+            RenderType glow = RenderType.eyes(GLOW);
+            getRenderer().reRender(model, stack, buffers, entity, glow, buffers.getBuffer(glow),
+                    partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+                    brightness, brightness, brightness, 1);
         }
     }
 }

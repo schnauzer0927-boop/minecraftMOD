@@ -1,0 +1,119 @@
+{
+  "blade_swing": {
+    "subtitle": "sound.apexpredator.blade_swing",
+    "sounds": [
+      {
+        "name": "apexpredator:blade_swing",
+        "stream": false
+      }
+    ]
+  },
+  "blade_hit": {
+    "subtitle": "sound.apexpredator.blade_hit",
+    "sounds": [
+      {
+        "name": "apexpredator:blade_hit",
+        "stream": false
+      }
+    ]
+  },
+  "charge_start": {
+    "subtitle": "sound.apexpredator.charge_start",
+    "sounds": [
+      {
+        "name": "apexpredator:charge_start",
+        "stream": false
+      }
+    ]
+  },
+  "charge_dash": {
+    "subtitle": "sound.apexpredator.charge_dash",
+    "sounds": [
+      {
+        "name": "apexpredator:charge_dash",
+        "stream": false
+      }
+    ]
+  },
+  "slam": {
+    "subtitle": "sound.apexpredator.slam",
+    "sounds": [
+      {
+        "name": "apexpredator:slam",
+        "stream": false
+      }
+    ]
+  },
+  "shockwave": {
+    "subtitle": "sound.apexpredator.shockwave",
+    "sounds": [
+      {
+        "name": "apexpredator:shockwave",
+        "stream": false
+      }
+    ]
+  },
+  "teleport": {
+    "subtitle": "sound.apexpredator.teleport",
+    "sounds": [
+      {
+        "name": "apexpredator:teleport",
+        "stream": false
+      }
+    ]
+  },
+  "phase_change": {
+    "subtitle": "sound.apexpredator.phase_change",
+    "sounds": [
+      {
+        "name": "apexpredator:phase_change",
+        "stream": false
+      }
+    ]
+  },
+  "rage": {
+    "subtitle": "sound.apexpredator.rage",
+    "sounds": [
+      {
+        "name": "apexpredator:rage",
+        "stream": false
+      }
+    ]
+  },
+  "special_charge": {
+    "subtitle": "sound.apexpredator.special_charge",
+    "sounds": [
+      {
+        "name": "apexpredator:special_charge",
+        "stream": false
+      }
+    ]
+  },
+  "special_attack": {
+    "subtitle": "sound.apexpredator.special_attack",
+    "sounds": [
+      {
+        "name": "apexpredator:special_attack",
+        "stream": false
+      }
+    ]
+  },
+  "death": {
+    "subtitle": "sound.apexpredator.death",
+    "sounds": [
+      {
+        "name": "apexpredator:death",
+        "stream": false
+      }
+    ]
+  },
+  "boss_music": {
+    "subtitle": "sound.apexpredator.boss_music",
+    "sounds": [
+      {
+        "name": "apexpredator:boss_music",
+        "stream": true
+      }
+    ]
+  }
+}

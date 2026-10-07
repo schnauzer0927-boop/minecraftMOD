@@ -43,7 +43,8 @@ public final class ApexGameTests {
         near(helper, apex.getAttributeValue(Attributes.FOLLOW_RANGE), 64, "Follow range");
         near(helper, apex.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), .8, "Knockback resistance");
         near(helper, apex.getAttributeValue(Attributes.ARMOR), 18, "Armor");
-        helper.assertTrue(apex.getBbHeight() > 3 && apex.isPersistenceRequired(), "Boss must be large and persistent");
+        helper.assertTrue(apex.getBbHeight() >= 2.6 && apex.getBbHeight() <= 2.8 && apex.isPersistenceRequired(),
+                "Boss must retain its fast-combat 2.6–2.8-block size and persistence");
         helper.assertTrue(((SpawnEggItem) ApexRegistries.APEX_SPAWN_EGG.get()).getType(null) == ApexRegistries.APEX.get(),
                 "Spawn egg must create the registered Apex entity");
         helper.succeed();

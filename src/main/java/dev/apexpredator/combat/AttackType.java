@@ -3,6 +3,7 @@ package dev.apexpredator.combat;
 /** Combat timings are expressed in server ticks (20 ticks per second). */
 public enum AttackType {
     MELEE(CombatState.MELEE, 1, 8, 12, 24),
+    BLADE_COMBO(CombatState.BLADE_COMBO, 2, 10, 20, 150),
     CHARGE(CombatState.CHARGE, 1, 14, 16, 100),
     JUMP(CombatState.JUMP, 1, 12, 18, 120),
     TELEPORT(CombatState.TELEPORT, 2, 12, 14, 100),
@@ -11,7 +12,7 @@ public enum AttackType {
     FEINT(CombatState.FEINT, 2, 14, 16, 130),
     PULL(CombatState.PULL, 3, 20, 20, 160),
     MIRAGE(CombatState.MIRAGE, 3, 16, 12, 180),
-    SPECIAL(CombatState.SPECIAL, 3, 50, 30, 360);
+    SPECIAL(CombatState.SPECIAL, 3, 36, 30, 360);
 
     private final CombatState state;
     private final int minimumPhase;

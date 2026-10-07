@@ -1,0 +1,10 @@
+package dev.apexpredator.effect;
+
+/** Semantic effects emitted by combat stages, rather than a separate client attack timer. */
+public enum EffectKind {
+    WARNING_RING, BLADE_LEFT, BLADE_RIGHT, BLADE_VERTICAL, BLADE_X,
+    CHARGE_PREPARE, CHARGE_TRAIL, HIT, SLAM, SHOCKWAVE,
+    TELEPORT_OUT, TELEPORT_IN, RANGED_PREPARE, RANGED_LAUNCH, PROJECTILE_TRAIL, PROJECTILE_IMPACT,
+    PHASE_TWO, PHASE_THREE, SPECIAL_PREPARE, SPECIAL_SLASH, SPECIAL_FINISH,
+    DODGE, MIRAGE, DEATH, CORE_AMBIENT
+}

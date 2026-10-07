@@ -2,10 +2,13 @@ package dev.apexpredator.combat;
 
 import dev.apexpredator.entity.ApexBoltEntity;
 import dev.apexpredator.entity.ApexEntity;
+import dev.apexpredator.effect.ApexEffects;
+import dev.apexpredator.effect.ApexSounds;
+import dev.apexpredator.effect.ApexTerrainEffects;
+import dev.apexpredator.effect.EffectKind;
 import dev.apexpredator.registry.ApexRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,18 +20,29 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Executes one committed attack. Decisions and cooldowns belong to CombatController. */
 public final class AttackManager {
+    public static final float EXECUTION_RADIUS = 15;
+    public static final int EXECUTION_WARNING_TICKS = 36;
+    public static final int EXECUTION_X_TICK = 40;
+    public static final int EXECUTION_SHOCKWAVE_TICK = 52;
+    public static final int EXECUTION_END_TICK = 58;
+    public static final float EXECUTION_MAXIMUM_DAMAGE = 42;
     private final ApexEntity apex;
     private final Set<Integer> struck = new HashSet<>();
+    private final Map<Integer, Float> executionDamage = new HashMap<>();
     private Vec3 targetSnapshot = Vec3.ZERO;
     private Vec3 origin = Vec3.ZERO;
     private Vec3 direction = Vec3.ZERO;
     private int strafeSign;
     private boolean launched;
+    private boolean meleeLeft;
+    private boolean dodgeBackstep;
 
     public AttackManager(ApexEntity apex) {
         this.apex = apex;
@@ -36,6 +50,7 @@ public final class AttackManager {
 
     public void begin(AttackType attack, LivingEntity target) {
         struck.clear();
+        executionDamage.clear();
         launched = false;
         apex.getNavigation().stop();
         stopHorizontalMotion();
@@ -44,8 +59,38 @@ public final class AttackManager {
         direction = targetSnapshot.subtract(origin).multiply(1, 0, 1).normalize();
         if (direction.lengthSqr() < 0.001) direction = apex.getLookAngle().multiply(1, 0, 1).normalize();
         strafeSign = apex.getRandom().nextBoolean() ? 1 : -1;
-        sound(attack == AttackType.SPECIAL ? SoundEvents.WITHER_SPAWN : SoundEvents.IRON_GOLEM_REPAIR,
-                attack == AttackType.SPECIAL ? 1.4F : 0.7F, 0.6F);
+        int windup = attack == AttackType.MELEE
+                ? Math.max(4, attack.telegraphTicks() - 2 * (apex.getPhase() - 1)) : attack.telegraphTicks();
+        String animation = switch (attack) {
+            case MELEE -> apex.getPhase() == 3 ? "rage_attack" : ((meleeLeft = !meleeLeft) ? "melee_left" : "melee_right");
+            case BLADE_COMBO -> "blade_combo_1";
+            case CHARGE, FEINT -> "charge_prepare";
+            case JUMP -> "jump_prepare";
+            case TELEPORT, MIRAGE -> "teleport_start";
+            case SHOCKWAVE, PULL -> "shockwave_prepare";
+            case RANGED -> "ranged_prepare";
+            case SPECIAL -> "special_prepare";
+        };
+        apex.playVisual(animation, windup + (attack == AttackType.MELEE || attack == AttackType.BLADE_COMBO ? 4 : 1));
+        switch (attack) {
+            case CHARGE, FEINT -> {
+                effect(EffectKind.CHARGE_PREPARE, origin, direction, 2, windup);
+                ApexSounds.play(apex, "charge_start");
+            }
+            case JUMP -> effect(EffectKind.WARNING_RING, targetSnapshot, direction, 5, windup + 45);
+            case SHOCKWAVE, PULL -> effect(EffectKind.WARNING_RING, origin, direction,
+                    attack == AttackType.PULL || apex.getPhase() == 3 ? 10 : 6, windup);
+            case TELEPORT, MIRAGE -> effect(EffectKind.TELEPORT_OUT, origin, direction, 2, windup);
+            case RANGED -> effect(EffectKind.RANGED_PREPARE, origin, direction, 2, windup);
+            case SPECIAL -> {
+                effect(EffectKind.SPECIAL_PREPARE, origin, direction, EXECUTION_RADIUS, windup);
+                ApexSounds.play(apex, "special_charge");
+            }
+            default -> {
+                effect(EffectKind.RANGED_PREPARE, origin, direction, 1, windup);
+                ApexSounds.play(apex, "blade_swing");
+            }
+        }
     }
 
     /** Includes the windup. Returns true only when this attack's active interval ends. */
@@ -55,7 +100,9 @@ public final class AttackManager {
         int windup = attack == AttackType.MELEE
                 ? Math.max(4, attack.telegraphTicks() - 2 * (apex.getPhase() - 1))
                 : attack.telegraphTicks();
-        if (attack != AttackType.SPECIAL) apex.getLookControl().setLookAt(target, 30, 30);
+        if (attack != AttackType.SPECIAL && attack != AttackType.CHARGE && attack != AttackType.FEINT) {
+            apex.getLookControl().setLookAt(target, 30, 30);
+        } else if (attack != AttackType.SPECIAL) face(direction);
         if (elapsed < windup) {
             stopHorizontalMotion();
             telegraph(attack, elapsed, windup);
@@ -68,6 +115,7 @@ public final class AttackManager {
         }
         return switch (attack) {
             case MELEE -> melee(target, elapsed, windup);
+            case BLADE_COMBO -> bladeCombo(target, elapsed, windup);
             case CHARGE, FEINT -> charge(target, elapsed, windup);
             case JUMP -> jump(target, elapsed, windup);
             case TELEPORT -> teleportAttack(target, elapsed, windup);
@@ -83,20 +131,44 @@ public final class AttackManager {
         apex.getNavigation().stop();
         stopHorizontalMotion();
         struck.clear();
+        executionDamage.clear();
         launched = false;
     }
 
     private boolean melee(LivingEntity target, int elapsed, int windup) {
         if (elapsed == windup) {
             apex.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            effect(meleeLeft ? EffectKind.BLADE_LEFT : EffectKind.BLADE_RIGHT,
+                    apex.position(), direction, 3.4F, 8);
             if (inReach(target, 3.4) && apex.hasLineOfSight(target)) {
-                apex.doHurtTarget(target);
+                if (apex.doHurtTarget(target)) hitEffect(target, 2);
                 // A readable counter pushes sustained close-range attackers out of combo range.
                 if (apex.getPhase() >= 2) knockback(target, 0.7);
             }
-            sound(SoundEvents.IRON_GOLEM_ATTACK, 1, 0.6F);
+            ApexSounds.play(apex, "blade_swing");
         }
         return elapsed >= windup + 2;
+    }
+
+    /** Three distinct server strikes, spaced beyond vanilla's ten-tick hurt cooldown. */
+    private boolean bladeCombo(LivingEntity target, int elapsed, int windup) {
+        int active = elapsed - windup;
+        if (active == 4) apex.playVisual("blade_combo_2", 12);
+        if (active == 16) apex.playVisual("blade_combo_3", 13);
+        if (active == 0 || active == 12 || active == 24) {
+            int strike = active / 12;
+            effect(strike == 0 ? EffectKind.BLADE_RIGHT : strike == 1
+                            ? EffectKind.BLADE_LEFT : EffectKind.BLADE_VERTICAL,
+                    apex.position(), direction, strike == 2 ? 4.2F : 3.6F, strike == 2 ? 16 : 8);
+            apex.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            ApexSounds.play(apex, "blade_swing");
+            if (inReach(target, strike == 2 ? 4.2 : 3.6) && apex.hasLineOfSight(target)
+                    && target.hurt(apex.damageSources().mobAttack(apex), strike == 2 ? 18 : 14)) {
+                hitEffect(target, strike == 2 ? 3 : 1.5F);
+                if (strike == 2) knockback(target, 0.8);
+            }
+        }
+        return active >= 28;
     }
 
     private boolean charge(LivingEntity target, int elapsed, int windup) {
@@ -104,17 +176,23 @@ public final class AttackManager {
         int duration = apex.getPhase() == 3 ? 11 : 12;
         if (active >= duration || (active > 1 && apex.horizontalCollision)) {
             stopHorizontalMotion();
+            apex.playVisual("charge_end", 8);
             return true;
         }
-        if (active == 0) sound(SoundEvents.ENDER_DRAGON_FLAP, 1, 0.55F);
+        if (active == 0) {
+            apex.playVisual("charge", duration);
+            ApexSounds.play(apex, "charge_dash");
+            effect(EffectKind.CHARGE_TRAIL, apex.position(), direction, 2, duration);
+        }
         Vec3 velocity = direction.scale(apex.getPhase() == 3 ? 1.9 : 1.35);
         move(velocity);
-        trail();
         AABB path = apex.getBoundingBox().expandTowards(velocity).inflate(0.35, 0.2, 0.35);
         for (LivingEntity victim : victims(path, target)) {
             if (struck.add(victim.getId()) && apex.hasLineOfSight(victim)) {
-                victim.hurt(apex.damageSources().mobAttack(apex), apex.getPhase() == 3 ? 22 : 18);
-                knockback(victim, 1.2);
+                if (victim.hurt(apex.damageSources().mobAttack(apex), apex.getPhase() == 3 ? 22 : 18)) {
+                    hitEffect(victim, 3);
+                    knockback(victim, 1.2);
+                }
             }
         }
         return false;
@@ -133,10 +211,14 @@ public final class AttackManager {
                     .add(0, Math.min(1.25, 0.85 + Math.max(0, delta.y) * 0.07), 0);
             apex.setDeltaMovement(velocity);
             apex.hurtMarked = true;
+            apex.playVisual("jump", 45);
             sound(SoundEvents.ENDER_DRAGON_FLAP, 1, 0.7F);
         }
-        trail();
         if (active >= 5 && apex.onGround()) {
+            apex.playVisual("slam", 12);
+            effect(EffectKind.SLAM, apex.position(), direction, 5, 18);
+            ApexSounds.play(apex, "slam");
+            ApexTerrainEffects.slam(apex);
             shockwave(target, 5, 16, 1.2);
             stopHorizontalMotion();
             return true;
@@ -150,28 +232,36 @@ public final class AttackManager {
         if (active >= count * 14) return true;
         if (active % 14 == 0) {
             struck.clear();
+            apex.playVisual("teleport_start", 4);
             reposition(target);
         }
         if (active % 14 == 6) {
+            apex.playVisual(active % 28 == 6 ? "melee_right" : "melee_left", 8);
+            effect(active % 28 == 6 ? EffectKind.BLADE_RIGHT : EffectKind.BLADE_LEFT,
+                    apex.position(), target.position().subtract(apex.position()).normalize(), 3.6F, 8);
             apex.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
             if (inReach(target, 3.6) && apex.hasLineOfSight(target)) {
-                apex.doHurtTarget(target);
+                if (apex.doHurtTarget(target)) hitEffect(target, 2);
                 knockback(target, 0.45);
             }
             sound(SoundEvents.IRON_GOLEM_ATTACK, 0.9F, 1.1F);
         }
-        if (active % 14 < 6) ring(apex.position(), 2.2, ParticleTypes.PORTAL, 16);
         return false;
     }
 
     private boolean shockwaveAttack(LivingEntity target, int elapsed, int windup) {
-        if (elapsed == windup) shockwave(target, apex.getPhase() == 3 ? 10 : 6,
-                apex.getPhase() == 3 ? 18 : 14, 1.3);
+        if (elapsed == windup) {
+            apex.playVisual("shockwave_attack", 10);
+            shockwave(target, apex.getPhase() == 3 ? 10 : 6,
+                    apex.getPhase() == 3 ? 18 : 14, 1.3);
+        }
         return elapsed >= windup + 4;
     }
 
     private boolean ranged(LivingEntity target, int elapsed, int windup) {
         if (elapsed == windup && apex.level() instanceof ServerLevel server) {
+            apex.playVisual("ranged_attack", 8);
+            effect(EffectKind.RANGED_LAUNCH, apex.position(), direction, 2, 10);
             ApexBoltEntity bolt = new ApexBoltEntity(ApexRegistries.APEX_BOLT.get(), server, apex, target);
             server.addFreshEntity(bolt);
             sound(SoundEvents.BLAZE_SHOOT, 1, 0.7F);
@@ -192,25 +282,18 @@ public final class AttackManager {
                 }
             }
             sound(SoundEvents.ENDERMAN_SCREAM, 1, 0.65F);
-            ring(apex.position(), 10, ParticleTypes.REVERSE_PORTAL, 64);
+            apex.playVisual("shockwave_attack", 8);
+            effect(EffectKind.SHOCKWAVE, apex.position(), direction, 10, 16);
         }
         return elapsed >= windup + 3;
     }
 
     private boolean mirage(LivingEntity target, int elapsed, int windup) {
-        if (apex.level() instanceof ServerLevel server && elapsed % 2 == 0) {
+        if (elapsed == windup) {
             for (int copy = 0; copy < 3; copy++) {
                 double angle = copy * Math.PI * 2 / 3 + strafeSign * 0.4;
                 Vec3 feet = origin.add(Math.cos(angle) * 4, 0, Math.sin(angle) * 4);
-                // Visible humanoid silhouettes: head, torso, shoulders and two separated legs.
-                for (int row = 0; row < 7; row++) {
-                    double y = row * 0.5;
-                    double width = row < 3 ? 0.32 : row < 6 ? 0.62 : 0.25;
-                    server.sendParticles(ParticleTypes.SOUL, feet.x - width, feet.y + y, feet.z,
-                            1, 0, 0, 0, 0);
-                    server.sendParticles(ParticleTypes.SOUL, feet.x + width, feet.y + y, feet.z,
-                            1, 0, 0, 0, 0);
-                }
+                effect(EffectKind.MIRAGE, feet, direction, 1.5F, 30);
             }
         }
         if (elapsed == windup + 16) reposition(target);
@@ -218,29 +301,81 @@ public final class AttackManager {
     }
 
     private boolean special(LivingEntity target, int elapsed, int windup) {
-        if (elapsed == windup) {
-            sound(SoundEvents.WARDEN_SONIC_BOOM, 1.6F, 0.6F);
-            for (LivingEntity victim : victims(new AABB(origin, origin).inflate(18, 5, 18), target)) {
-                Vec3 delta = victim.position().subtract(origin);
-                Vec3 horizontal = delta.multiply(1, 0, 1);
-                double distance = horizontal.length();
-                // A committed narrow cone, blocked by cover; no damage outside the telegraphed lane.
-                if (distance <= 18 && Math.abs(delta.y) <= 4
-                        && (distance < 0.01 || horizontal.normalize().dot(direction) >= 0.94)
-                        && specialHasLineOfSight(victim)) {
-                    victim.hurt(apex.damageSources().mobAttack(apex), 42);
-                    knockback(victim, 1.5);
-                }
+        int active = elapsed - windup;
+        if (active == 0) {
+            apex.playVisual("special_attack", EXECUTION_END_TICK);
+            ApexSounds.play(apex, "special_attack");
+        }
+        // Lanes are locked when the attack begins; the target is never tracked during the execution.
+        if (active < 36) {
+            int stage = active / 12;
+            int stageTick = active % 12;
+            Vec3 lane = executionDirection(stage);
+            face(lane);
+            if (stageTick == 0) {
+                if (stage > 0) safeTeleport(origin, false);
+                effect(EffectKind.SPECIAL_SLASH, origin, lane, EXECUTION_RADIUS, 10);
+                effect(EffectKind.CHARGE_TRAIL, apex.position(), lane, 2, 6);
+                ApexSounds.play(apex, "blade_swing");
+                damageExecution(target, lane, 0.93, 8);
             }
-            if (apex.level() instanceof ServerLevel server) {
-                for (int step = 1; step <= 35; step++) {
-                    Vec3 point = origin.add(direction.scale(step * 0.5)).add(0, 1.2, 0);
-                    server.sendParticles(ParticleTypes.SONIC_BOOM, point.x, point.y, point.z,
-                            1, 0, 0, 0, 0);
-                }
+            if (stageTick < 5 && !apex.horizontalCollision) move(lane.scale(1.55));
+            else stopHorizontalMotion();
+        } else {
+            stopHorizontalMotion();
+            face(direction);
+            if (active == 36) safeTeleport(origin, false);
+            if (active == EXECUTION_X_TICK) {
+                effect(EffectKind.SPECIAL_FINISH, origin, direction, EXECUTION_RADIUS, 18);
+                ApexSounds.play(apex, "special_attack");
+                // An X has two diagonal axes, leaving four visible gaps between the blades.
+                damageExecution(target, rotateHorizontal(direction, Math.PI / 4), 0.96, 10, true);
+            }
+            if (active == EXECUTION_SHOCKWAVE_TICK) {
+                effect(EffectKind.SHOCKWAVE, origin, direction, EXECUTION_RADIUS, 18);
+                ApexSounds.play(apex, "shockwave");
+                damageExecution(target, direction, -1, 8);
             }
         }
-        return elapsed >= windup + 8;
+        return active >= EXECUTION_END_TICK;
+    }
+
+    private Vec3 executionDirection(int stage) {
+        return rotateHorizontal(direction, stage == 0 ? 0 : stage == 1 ? Math.PI / 3 : -Math.PI / 3);
+    }
+
+    private static Vec3 rotateHorizontal(Vec3 vector, double angle) {
+        double cosine = Math.cos(angle), sine = Math.sin(angle);
+        return new Vec3(vector.x * cosine - vector.z * sine, 0,
+                vector.x * sine + vector.z * cosine).normalize();
+    }
+
+    private void damageExecution(LivingEntity target, Vec3 lane, double minimumDot, float damage) {
+        damageExecution(target, lane, minimumDot, damage, false);
+    }
+
+    private void damageExecution(LivingEntity target, Vec3 lane, double minimumDot, float damage, boolean cross) {
+        for (LivingEntity victim : victims(new AABB(origin, origin).inflate(EXECUTION_RADIUS, 5, EXECUTION_RADIUS), target)) {
+            Vec3 delta = victim.position().subtract(origin);
+            Vec3 horizontal = delta.multiply(1, 0, 1);
+            if (horizontal.lengthSqr() > EXECUTION_RADIUS * EXECUTION_RADIUS || Math.abs(delta.y) > 4
+                    || !specialHasLineOfSight(victim)) continue;
+            Vec3 offset = horizontal.normalize();
+            boolean inLane = horizontal.lengthSqr() < 0.01 || offset.dot(lane) >= minimumDot;
+            if (cross && horizontal.lengthSqr() >= 0.01) {
+                Vec3 perpendicular = new Vec3(-lane.z, 0, lane.x);
+                inLane = Math.max(Math.abs(offset.dot(lane)), Math.abs(offset.dot(perpendicular))) >= minimumDot;
+            }
+            if (!inLane) continue;
+            float remaining = EXECUTION_MAXIMUM_DAMAGE - executionDamage.getOrDefault(victim.getId(), 0F);
+            float bounded = Math.min(damage, remaining);
+            // Respect shields, armor, Forge events and vanilla hurt cooldowns; never clear iFrames.
+            if (bounded > 0 && victim.hurt(apex.damageSources().mobAttack(apex), bounded)) {
+                executionDamage.merge(victim.getId(), bounded, Float::sum);
+                hitEffect(victim, cross || minimumDot < 0 ? 3 : 1.5F);
+                if (minimumDot < 0) knockback(victim, 1.2);
+            }
+        }
     }
 
     /** Short-range, collision-safe warps never load chunks or place Apex in fluid/unsupported air. */
@@ -257,22 +392,28 @@ public final class AttackManager {
                         || y + apex.getBbHeight() >= apex.level().getMaxBuildHeight()) continue;
                 Vec3 destination = new Vec3(x, y, z);
                 if (destination.distanceToSqr(apex.position()) > 14 * 14 || !safeDestination(destination)) continue;
-                var event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(apex, x, y, z);
-                if (event.isCanceled()) return false;
-                destination = event.getTarget();
-                if (!Double.isFinite(destination.x) || !Double.isFinite(destination.y)
-                        || !Double.isFinite(destination.z) || destination.distanceToSqr(apex.position()) > 14 * 14
-                        || !safeDestination(destination)) return false;
-                Vec3 before = apex.position();
-                burst(before, ParticleTypes.PORTAL, 36);
-                apex.teleportTo(destination.x, destination.y, destination.z);
-                stopHorizontalMotion();
-                burst(apex.position(), ParticleTypes.PORTAL, 36);
-                sound(SoundEvents.ENDERMAN_TELEPORT, 1, 0.8F);
-                return true;
+                return safeTeleport(destination, true);
             }
         }
         return false;
+    }
+
+    private boolean safeTeleport(Vec3 requested, boolean animate) {
+        if (requested.distanceToSqr(apex.position()) > 14 * 14 || !safeDestination(requested)) return false;
+        var event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(apex, requested.x, requested.y, requested.z);
+        if (event.isCanceled()) return false;
+        Vec3 destination = event.getTarget();
+        if (!Double.isFinite(destination.x) || !Double.isFinite(destination.y)
+                || !Double.isFinite(destination.z) || destination.distanceToSqr(apex.position()) > 14 * 14
+                || !safeDestination(destination)) return false;
+        Vec3 before = apex.position();
+        effect(EffectKind.TELEPORT_OUT, before, direction, 2, 8);
+        apex.teleportTo(destination.x, destination.y, destination.z);
+        stopHorizontalMotion();
+        if (animate) apex.playVisual("teleport_end", 6);
+        effect(EffectKind.TELEPORT_IN, apex.position(), direction, 2, 8);
+        ApexSounds.play(apex, "teleport");
+        return true;
     }
 
     private boolean safeDestination(Vec3 destination) {
@@ -296,62 +437,41 @@ public final class AttackManager {
         if (elapsed == 0) {
             apex.beginVisualDodge(4);
             strafeSign = apex.getRandom().nextBoolean() ? 1 : -1;
-            burst(apex.position(), ParticleTypes.SMOKE, 24);
+            dodgeBackstep = apex.distanceToSqr(target) < 16 && apex.getRandom().nextBoolean();
+            apex.playVisual(dodgeBackstep ? "backstep" : strafeSign > 0 ? "dodge_left" : "dodge_right", 9);
+            effect(EffectKind.DODGE, apex.position(), direction, 1.5F, 10);
         }
-        if (elapsed > 0 && elapsed % 9 == 0) strafeSign = -strafeSign;
+        if (elapsed > 0 && elapsed % 9 == 0) {
+            strafeSign = -strafeSign;
+            dodgeBackstep = false;
+            apex.playVisual(strafeSign > 0 ? "dodge_left" : "dodge_right", 9);
+            effect(EffectKind.DODGE, apex.position(), direction, 1.5F, 9);
+        }
         Vec3 away = apex.position().subtract(target.position()).multiply(1, 0, 1).normalize();
         Vec3 side = new Vec3(-away.z, 0, away.x).scale(strafeSign);
-        Vec3 velocity = side.scale(0.58).add(away.scale(apex.distanceToSqr(target) < 36 ? 0.2 : 0));
+        Vec3 velocity = dodgeBackstep ? away.scale(0.65)
+                : side.scale(0.58).add(away.scale(apex.distanceToSqr(target) < 36 ? 0.2 : 0));
         move(velocity);
-        if (elapsed % 2 == 0) trail();
         // Only one warp during this evasion interval; phase one retains purely physical dodges.
         if (elapsed == 18 && apex.getPhase() >= 2) reposition(target);
     }
 
     private void telegraph(AttackType attack, int elapsed, int windup) {
-        if (elapsed % 3 != 0) return;
-        switch (attack) {
-            case SHOCKWAVE -> ring(apex.position(), apex.getPhase() == 3 ? 10 : 6, ParticleTypes.FLAME, 48);
-            case JUMP -> ring(targetSnapshot, 5, ParticleTypes.FLAME, 36);
-            case PULL -> ring(apex.position(), 10, ParticleTypes.REVERSE_PORTAL, 48);
-            case TELEPORT, MIRAGE -> ring(apex.position(), 3, ParticleTypes.PORTAL, 24);
-            case SPECIAL -> {
-                ring(origin, 18, ParticleTypes.SOUL_FIRE_FLAME, 64);
-                if (apex.level() instanceof ServerLevel server) {
-                    Vec3 side = new Vec3(-direction.z, 0, direction.x);
-                    for (int step = 1; step <= 18; step++) {
-                        Vec3 middle = origin.add(direction.scale(step));
-                        for (int sign : new int[]{-1, 1}) {
-                            Vec3 edge = middle.add(side.scale(sign * step * 0.36));
-                            server.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, edge.x, edge.y + 0.2,
-                                    edge.z, 1, 0, 0, 0, 0);
-                        }
-                    }
-                }
-                if (elapsed == 24 || elapsed == 42) sound(SoundEvents.WARDEN_HEARTBEAT, 1.4F, 0.55F);
-            }
-            case CHARGE, FEINT -> {
-                if (apex.level() instanceof ServerLevel server) {
-                    for (int step = 1; step <= 12; step++) {
-                        Vec3 point = apex.position().add(direction.scale(step));
-                        server.sendParticles(ParticleTypes.CRIT, point.x, point.y + 0.2, point.z,
-                                1, 0, 0, 0, 0);
-                    }
-                }
-            }
-            default -> burst(apex.position(), ParticleTypes.CRIT, 3);
-        }
+        // Client packets own finite, quality-scaled warnings and the committed directional lanes.
+        if (attack == AttackType.SPECIAL && elapsed == 24) ApexSounds.play(apex, "special_charge");
     }
 
     private void shockwave(LivingEntity target, double radius, float damage, double strength) {
-        ring(apex.position(), radius, ParticleTypes.EXPLOSION, 32);
-        sound(SoundEvents.GENERIC_EXPLODE, 1.1F, 0.65F);
+        effect(EffectKind.SHOCKWAVE, apex.position(), direction, (float) radius, 18);
+        ApexSounds.play(apex, "shockwave");
         for (LivingEntity victim : victims(apex.getBoundingBox().inflate(radius, 3, radius), target)) {
             Vec3 delta = victim.position().subtract(apex.position());
             if (delta.horizontalDistanceSqr() <= radius * radius && Math.abs(delta.y) < 3.5
                     && apex.hasLineOfSight(victim)) {
-                victim.hurt(apex.damageSources().mobAttack(apex), damage);
-                knockback(victim, strength);
+                if (victim.hurt(apex.damageSources().mobAttack(apex), damage)) {
+                    hitEffect(victim, 2);
+                    knockback(victim, strength);
+                }
             }
         }
     }
@@ -392,26 +512,23 @@ public final class AttackManager {
         apex.hurtMarked = true;
     }
 
+    private void face(Vec3 vector) {
+        apex.getLookControl().setLookAt(apex.getX() + vector.x * 10, apex.getEyeY(),
+                apex.getZ() + vector.z * 10, 30, 30);
+    }
+
     private void sound(net.minecraft.sounds.SoundEvent sound, float volume, float pitch) {
         apex.level().playSound(null, apex.getX(), apex.getY(), apex.getZ(), sound,
                 SoundSource.HOSTILE, volume, pitch);
     }
 
-    private void trail() {
-        burst(apex.position(), ParticleTypes.SMOKE, 3);
+    private void hitEffect(LivingEntity victim, float strength) {
+        effect(EffectKind.HIT, victim.position(), direction, strength, 10);
+        ApexSounds.play(apex, "blade_hit");
     }
 
-    private void burst(Vec3 position, net.minecraft.core.particles.SimpleParticleType particle, int count) {
-        if (apex.level() instanceof ServerLevel server) server.sendParticles(particle,
-                position.x, position.y + 1.5, position.z, count, 0.7, 1.2, 0.7, 0.02);
+    private void effect(EffectKind kind, Vec3 position, Vec3 vector, float radius, int duration) {
+        ApexEffects.emit(apex, kind, position, vector, radius, duration);
     }
 
-    private void ring(Vec3 position, double radius, net.minecraft.core.particles.SimpleParticleType particle, int count) {
-        if (!(apex.level() instanceof ServerLevel server)) return;
-        for (int index = 0; index < count; index++) {
-            double angle = index * Math.PI * 2 / count;
-            server.sendParticles(particle, position.x + Math.cos(angle) * radius,
-                    position.y + 0.15, position.z + Math.sin(angle) * radius, 1, 0, 0, 0, 0);
-        }
-    }
 }

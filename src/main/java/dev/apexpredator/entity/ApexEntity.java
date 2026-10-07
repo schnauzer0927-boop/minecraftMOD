@@ -5,6 +5,14 @@ import dev.apexpredator.ApexConfig;
 import dev.apexpredator.combat.*;
 import dev.apexpredator.effect.ApexParticles;
 import dev.apexpredator.effect.ApexSounds;
+import dev.apexpredator.effect.ApexEffects;
+import dev.apexpredator.effect.EffectKind;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,9 +40,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ApexEntity extends Monster {
+public class ApexEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Integer> PHASE = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> VISUAL = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Long> VISUAL_START = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<Long> VISUAL_UNTIL = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<Integer> VISUAL_SEQUENCE = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    private int renderedSequence = -1;
+    private String renderedAnimation = "";
     private final ServerBossEvent bossBar = new ServerBossEvent(Component.literal("APEX"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_10);
     private final ApexPhaseManager phases = new ApexPhaseManager();
     private final PlayerBehaviorTracker behavior = new PlayerBehaviorTracker();
@@ -61,6 +76,8 @@ public class ApexEntity extends Monster {
     @Override protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(PHASE, 1); entityData.define(STATE, CombatState.IDLE.ordinal());
+        entityData.define(VISUAL, ""); entityData.define(VISUAL_START, 0L);
+        entityData.define(VISUAL_UNTIL, 0L); entityData.define(VISUAL_SEQUENCE, 0);
     }
     @Override protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
@@ -84,7 +101,10 @@ public class ApexEntity extends Monster {
         // Short immunity must also expire when vanilla AI is disabled through NBT.
         if (!level().isClientSide && visualImmunityTicks > 0) {
             visualImmunityTicks--;
-            ApexParticles.warp(this);
+            if (visualImmunityTicks % 3 == 0) ApexParticles.warp(this);
+        }
+        if (!level().isClientSide && isAlive() && getPhase() == 3 && tickCount % 8 == 0) {
+            ApexEffects.emit(this, EffectKind.CORE_AMBIENT, position().add(0, 1.7, 0), getLookAngle(), .6F, 8);
         }
     }
     private void updatePhase() {
@@ -92,7 +112,10 @@ public class ApexEntity extends Monster {
         entityData.set(PHASE, phases.getPhaseIndex());
         getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(.34 * phases.getPhase().movementMultiplier());
         bossBar.setColor(getPhase() == 2 ? BossEvent.BossBarColor.PURPLE : BossEvent.BossBarColor.BLUE);
-        ApexSounds.phase(this); ApexParticles.burst(this);
+        combat.onPhaseChange(36);
+        ApexSounds.play(this, getPhase() == 3 ? "rage" : "phase_change");
+        ApexEffects.emit(this, getPhase() == 3 ? EffectKind.PHASE_THREE : EffectKind.PHASE_TWO,
+                position(), getLookAngle(), getPhase() == 3 ? 12 : 8, 36);
     }
     @Override public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
@@ -119,6 +142,10 @@ public class ApexEntity extends Monster {
             }
             if (isAlive()) {
                 updatePhase();
+                if (actualLoss > 0 && (getCombatState() == CombatState.IDLE || getCombatState() == CombatState.CHASE
+                        || getCombatState() == CombatState.RECOVERY)) {
+                    playVisual(actualLoss >= 18 ? "hurt_heavy" : "hurt_light", actualLoss >= 18 ? 11 : 6);
+                }
                 if (damage.isEvading(tick) && actualLoss > 0) beginVisualDodge(6);
                 combat.onDamage(reaction);
             }
@@ -169,6 +196,57 @@ public class ApexEntity extends Monster {
     public int getPhase() { return entityData.get(PHASE); }
     public CombatState getCombatState() { return CombatState.values()[entityData.get(STATE)]; }
     public void setCombatState(CombatState state) { entityData.set(STATE, state.ordinal()); }
+    /** Server-authored pose cues share the combat clock and replicate to every tracking client. */
+    public void playVisual(String animation, int durationTicks) {
+        if (level().isClientSide) return;
+        long now = level().getGameTime();
+        if (entityData.get(VISUAL).equals("phase_change") && now < entityData.get(VISUAL_UNTIL)
+                && !animation.equals("death") && !animation.equals("phase_change")) return;
+        if (!AnimationState.hasAnimation(animation)) throw new IllegalArgumentException("Unknown Apex animation: " + animation);
+        entityData.set(VISUAL, animation);
+        entityData.set(VISUAL_START, now);
+        entityData.set(VISUAL_UNTIL, now + Math.max(1, Math.min(120, durationTicks)));
+        entityData.set(VISUAL_SEQUENCE, entityData.get(VISUAL_SEQUENCE) + 1);
+    }
+    /** Movement controllers call this while maintaining a pose without restarting its clip each tick. */
+    public void maintainVisual(String animation, int durationTicks) {
+        if (!level().isClientSide && entityData.get(VISUAL).equals(animation) && AnimationState.isLooping(animation)) {
+            entityData.set(VISUAL_UNTIL, level().getGameTime() + Math.max(1, Math.min(120, durationTicks)));
+            return;
+        }
+        if (entityData.get(VISUAL).equals(animation) && level().getGameTime() < entityData.get(VISUAL_UNTIL)) return;
+        playVisual(animation, durationTicks);
+    }
+    public int getVisualSequence() { return entityData.get(VISUAL_SEQUENCE); }
+    public long getVisualStartTick() { return entityData.get(VISUAL_START); }
+    public String getVisualAnimation() {
+        if (isDeadOrDying()) return "death";
+        if (level().getGameTime() < entityData.get(VISUAL_UNTIL)) return entityData.get(VISUAL);
+        return switch (getCombatState()) {
+            case CHASE -> getDeltaMovement().horizontalDistanceSqr() > .14 ? "sprint"
+                    : getPhase() == 3 ? "rage_run" : "run";
+            case STRAFE -> "strafe_left";
+            case DODGE -> "dodge_left";
+            case RECOVERY -> "recovery";
+            default -> getDeltaMovement().horizontalDistanceSqr() > .002 ? "walk" : getPhase() == 3 ? "rage_idle" : "idle";
+        };
+    }
+    @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return animationCache; }
+    @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "combat", 2, state -> {
+            String animation = getVisualAnimation();
+            if (renderedSequence != getVisualSequence() || !renderedAnimation.equals(animation)) {
+                state.getController().forceAnimationReset();
+                renderedSequence = getVisualSequence(); renderedAnimation = animation;
+            }
+            RawAnimation raw = RawAnimation.begin();
+            state.getController().setAnimationSpeed(animation.startsWith("melee_")
+                    ? 8.0 / Math.max(4, 8 - 2 * (getPhase() - 1)) : 1.0);
+            if (AnimationState.isLooping(animation)) raw.thenLoop("animation.apex." + animation);
+            else raw.thenPlayAndHold("animation.apex." + animation);
+            return state.setAndContinue(raw);
+        }));
+    }
     public AnimationState getAnimationState() {
         if (isDeadOrDying()) return AnimationState.DEATH;
         if (hurtTime > 0 && getCombatState() != CombatState.DODGE) return AnimationState.HURT;
@@ -186,7 +264,19 @@ public class ApexEntity extends Monster {
     public String debugSummary() { return combat.debugSummary(); }
     @Override public void startSeenByPlayer(ServerPlayer p) { super.startSeenByPlayer(p); bossBar.addPlayer(p); }
     @Override public void stopSeenByPlayer(ServerPlayer p) { super.stopSeenByPlayer(p); bossBar.removePlayer(p); }
-    @Override public void die(DamageSource s) { super.die(s); bossBar.removeAllPlayers(); }
+    @Override public void die(DamageSource s) {
+        playVisual("death", 40);
+        super.die(s); bossBar.removeAllPlayers();
+        if (!level().isClientSide) ApexEffects.emit(this, EffectKind.DEATH, position(), getLookAngle(), 3, 40);
+    }
+    @Override protected void tickDeath() {
+        // Keep the entity until the complete two-second authored collapse has played.
+        deathTime++;
+        if (deathTime >= 40 && !level().isClientSide && !isRemoved()) {
+            level().broadcastEntityEvent(this, (byte) 60);
+            remove(RemovalReason.KILLED);
+        }
+    }
     @Override public void remove(RemovalReason r) { bossBar.removeAllPlayers(); super.remove(r); }
     @Override public void addAdditionalSaveData(CompoundTag t) { super.addAdditionalSaveData(t); t.putInt("ApexPhase", getPhase()); }
     @Override public void readAdditionalSaveData(CompoundTag t) {
@@ -198,7 +288,7 @@ public class ApexEntity extends Monster {
     }
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
     @Override protected SoundEvent getHurtSound(DamageSource s) { return SoundEvents.RAVAGER_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WITHER_DEATH; }
+    @Override protected SoundEvent getDeathSound() { return ApexSounds.event("death"); }
     @Override protected boolean shouldDespawnInPeaceful() { return false; }
     @Override public boolean removeWhenFarAway(double distance) { return false; }
 }
