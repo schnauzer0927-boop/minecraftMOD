@@ -1,0 +1,8 @@
+{
+  "entity.apexpredator.apex": "Apex",
+  "item.apexpredator.apex_spawn_egg": "Apex Spawn Egg",
+  "item.apexpredator.apex_core": "Apex Core",
+  "itemGroup.apexpredator": "Apex Predator",
+  "commands.apexpredator.debug.enabled": "Apex combat debug logging enabled",
+  "commands.apexpredator.debug.disabled": "Apex combat debug logging disabled"
+}

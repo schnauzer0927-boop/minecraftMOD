@@ -1,0 +1,8 @@
+{
+  "entity.apexpredator.apex": "Apex",
+  "item.apexpredator.apex_spawn_egg": "Apexのスポーンエッグ",
+  "item.apexpredator.apex_core": "Apex Core",
+  "itemGroup.apexpredator": "Apex Predator",
+  "commands.apexpredator.debug.enabled": "Apexの戦闘デバッグログを有効にしました",
+  "commands.apexpredator.debug.disabled": "Apexの戦闘デバッグログを無効にしました"
+}

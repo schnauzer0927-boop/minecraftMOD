@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '6.0.36'
+}
+
+group = 'dev.apexpredator'
+version = mod_version
+base { archivesName = 'apexpredator-1.20.1' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            property 'forge.enabledGameTestNamespaces', 'apexpredator'
+            if (project.hasProperty('taczDir')) {
+                property 'mixin.env.remapRefMap', 'true'
+                property 'mixin.env.refMapRemappingFile', layout.buildDirectory.file('createSrgToMcp/output.srg').get().asFile.absolutePath
+            }
+            mods { apexpredator { source sourceSets.main } }
+        }
+        client {
+            if (project.hasProperty('quickPlayWorld')) {
+                args '--quickPlaySingleplayer', project.property('quickPlayWorld')
+            }
+        }
+        server { args '--nogui' }
+        gameTestServer { }
+    }
+}
+
+repositories { mavenCentral() }
+// Optional, verified external TaCZ jar for compatibility development. Never bundled.
+if (project.hasProperty('taczDir')) {
+    repositories { flatDir { dirs project.property('taczDir') } }
+}
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
+    testImplementation platform('org.junit:junit-bom:5.10.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    if (project.hasProperty('taczDir')) {
+        runtimeOnly fg.deobf('local:tacz-1.20.1:1.1.8-hotfix2')
+    }
+}
+tasks.named('test', Test) { useJUnitPlatform() }
+if (project.hasProperty('taczDir')) {
+    tasks.matching { it.name in ['runClient', 'runServer', 'runGameTestServer'] }.configureEach {
+        dependsOn 'createSrgToMcp'
+    }
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('jar', Jar) {
+    from('LICENSE')
+    manifest { attributes 'Implementation-Version': project.version }
+    finalizedBy 'reobfJar'
+}
