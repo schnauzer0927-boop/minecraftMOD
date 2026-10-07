@@ -4,9 +4,9 @@ Minecraft **1.20.1** / Forge **47.4.10** / Java **17** 向けの、プレイヤ�
 
 ## 導入・召喚
 
-ビルド済み MOD は [dist/apexpredator-1.20.1-1.1.0.jar](dist/apexpredator-1.20.1-1.1.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
+ビルド済み MOD は [dist/apexpredator-1.20.1-1.2.0.jar](dist/apexpredator-1.20.1-1.2.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
 
-1.1.0 は `build/libs/apexpredator-1.20.1-1.1.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
+1.2.0 は `build/libs/apexpredator-1.20.1-1.2.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
 
 ```mcfunction
 /summon apexpredator
@@ -59,7 +59,9 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 
 `debug=true` はフェーズ・戦闘状態・対象・最後の技・実被ダメージ/DPS を毎秒ログへ出します。`/apex debug` でも近くの個体を確認できます。
 
-1.1.0 は GeckoLib のオリジナルモデルです。高さ 2.7 ブロック、28 ボーン・193 キューブの専用形状と 256×256 の装甲テクスチャ／発光マスクを同梱しています。黒い装甲、鋭い頭部、橙色のコアと目、大型前腕ブレード、可動背面フィン、逆関節脚と爪を造形しました。今回提供された添付は依頼文だけなので、未提供のコンセプト画像を参照した完全再現ではありません。
+1.2.0 は添付の APEX コンセプトアートを基にした外観リメイクです。高さ 2.7 ブロック、28 ボーン・290 キューブ（1,740 面）、512×512 の装甲テクスチャ／発光マスクを同梱します。小さな尖ったマスクと細い眼、V 字に重なる胸部外殻、細い胸骨発光と腰、後方へ流れる肩・背部フィン、曲線状の複合前腕刃、3 本爪、逆関節脚へ再設計しました。黒い内部と金属の明暗、縁のハイライト、控えめな擦れを描き、発光は細い溝に限定しています。
+
+1.1.0 のボーン名・親子関係・pivot、37 アニメーションを完全維持しています。Java・適応 AI・攻撃判定・タイミング・フェーズ・残像・Particle・SE・カメラ・TaCZ 連携に変更はありません。
 
 歩行・走行・低姿勢ダッシュ、左右横移動・近接・回避、3 段コンボ、突進の準備／発動／終了、ジャンプ／スラム、ワープ前後、衝撃波・射撃・必殺技の準備／発動、フェーズ移行、被弾・よろめき・復帰・死亡・Phase 3 の荒々しい姿勢など、**37 クリップ**を収録。サーバーの技進行と同期して切り替え、近接はフェーズの攻撃速度に追従します。死亡モデルは 2 秒の崩れ落ちを終えてから消えます。
 
@@ -75,7 +77,7 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `screenEffects` | true。画面の縁の光と必殺技の表示 |
 | `bossMusic` | true。近くの生存 Apex に専用ループ音楽 |
 
-[モデルの四方向プレビュー](docs/visuals/apex-model-turnaround.png)・[実ゲームの斬撃表示](docs/visuals/apex-in-game.png)・[変更ファイル一覧](docs/CHANGES-1.1.0.md)を公開しています。
+[正面](docs/visuals/apex-1.2-front.png)・[側面](docs/visuals/apex-1.2-side.png)・[背面](docs/visuals/apex-1.2-back.png)・[四方向プレビュー](docs/visuals/apex-1.2-turnaround.png)・[実ゲーム](docs/visuals/apex-1.2-ingame.png)・[変更ファイル一覧](docs/CHANGES-1.2.0.md)を公開しています。
 
 モデル・アニメーション・エフェクト素材の構成と再生成方法は [scripts/art/README.md](scripts/art/README.md) に記載。`assets/apexpredator/sounds/` の専用 OGG と `sounds.json` はリソースパックで差し替えられます。
 

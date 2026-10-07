@@ -1,8 +1,8 @@
-# APEX original model source
+# APEX model authoring source
 
-`generate_apex_model.py` is the reproducible authoring source for the 1.1.0
-original boss model, its two UV-matched textures, and a four-view inspection
-sheet. It uses Python 3, Pillow and NumPy. Run:
+`generate_apex_model.py` is the reproducible authoring source for the 1.2.0
+appearance remake, its two UV-matched textures, three orthographic views and
+four-view turnaround. It uses Python 3, Pillow and NumPy. Run:
 
 ```sh
 python3 scripts/art/generate_apex_model.py
@@ -10,27 +10,37 @@ python3 scripts/art/generate_apex_model.py
 
 The game needs only the committed `geo/apex.geo.json`, `textures/entity/apex.png`
 and `textures/entity/apex_glow.png`. Python and its libraries are **not runtime
-dependencies**. Preview images and model metrics go to ignored `build/art/`.
+dependencies**. Model metrics and enlarged atlas inspection images go to ignored
+`build/art/`. Front, side, back and turnaround go to `docs/visuals/apex-1.2-*.png`.
+The in-game screenshot is captured separately from the running client.
 
-The model has 28 independently animated bones and 193 individually UV-mapped
-cubes (1,158 quads). Its exact transformed neutral bounds are Y=0..43.2 model
-pixels, or 2.7 blocks at renderer scale 1. The base and emissive atlases are
-256×256. Emission is restricted to 1,254 actual eye, reactor, neck, joint,
-blade-channel and dorsal-seam pixels; the rest of the glow texture is fully
-transparent. Palette, material machining, geometry and atlas packing are all
-deterministic.
+The remade model has the **same 28 bones, parent links and pivots as 1.1.0** and
+290 individually UV-mapped cubes (1,740 quads), below the 300-cube budget.
+Transformed neutral bounds are Y=0..43.2 model pixels: 2.7 blocks at renderer
+scale 1. Both atlases are 512×512. Emission is limited to 964 texels belonging to
+thin eye, sternum/abdomen/neck fissures, elbow, blade-channel and dorsal grooves;
+the remainder of the glow atlas is fully transparent. Every face has its own
+UV island and a one-texel base gutter. Armor receives individual value variation,
+edge highlights, darker centers, shaded seams and small controlled scratches.
+Palette, materials, geometry and atlas packing are deterministic.
 
-Coordinates: feet at Y=0, front=-Z, anatomical left=+X. Bone transforms start
-neutral. Individual cube rotations define facets and swept fins without
-competing with animation. `body` is the body/hips control at [0,22,0.5]; `chest`
-is the forward-posture control at [0,27,0]. Arm chains use the requested
-`left/right_arm` and `left/right_forearm`, leg chains `left/right_leg` and
-`left/right_lower_leg`. Digitigrade knees are at Y=13,Z=-1 and hocks at Y=4,Z=2.
-`back_spines` owns the independently animated `back_blade_left/right` fins.
+The attached APEX concept art is the visual reference for this remake. Its
+narrow pointed mask, swept crown, layered V-shaped thoracic shells, slim waist,
+rearward shoulder fins, curved compound forearm blades, three claws, cascading
+dorsal plates and digitigrade legs are interpreted as original GeckoLib cube
+geometry. No external mesh or texture is embedded. The comparison images render
+the actual authored geometry and atlas, rather than a separate illustration.
 
-This is newly authored geometry and pixel artwork based on the written design
-brief. No external model or texture is included, and an unavailable concept-art
-attachment is not treated as a source that was inspected.
+Coordinates: feet at Y=0, front=-Z, anatomical left=+X. Bone transforms remain
+neutral; rotations are local to cubes. All existing named rig controls and
+animation data are unchanged. Knees remain at Y=13,Z=-1 and hocks at Y=4,Z=2;
+`back_spines` still owns `back_blade_left/right`. The software inspection renderer
+matches GeckoLib's mirrored X and source rotation convention, equivalent in
+source coordinates to Rz(-Z) Ry(Y) Rx(-X). This avoids the old preview's inverted
+sweep angles while leaving the runtime model coordinates unchanged.
+
+The existing 37 animation clips are preserved byte-for-byte for 1.2.0. Do not
+regenerate the animation file as part of a visual-only model edit.
 
 ## Skeletal animation source
 
