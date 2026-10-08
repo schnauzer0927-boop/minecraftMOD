@@ -18,5 +18,7 @@
   "sound.apexpredator.special_attack": "Apex Execution strikes",
   "sound.apexpredator.death": "Apex core collapses",
   "sound.apexpredator.boss_music": "Apex encounter music",
+  "sound.apexpredator.heal_entry": "Apex core recharges",
+  "sound.apexpredator.heal_hum": "Apex regeneration hums",
   "effect.apexpredator.execution": "APEX EXECUTION"
 }

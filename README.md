@@ -32,6 +32,8 @@ Minecraft **1.20.1** / Forge **47.4.10** / Java **17** 向けの、プレイヤ�
 
 必殺技 **APEX EXECUTION** は **36 tick（1.8 秒）**停止して半径 **15 ブロック**を予告します。固定された 3 方向への突進斬撃、中央への安全な復帰、X 字斬撃、12 tick 遅れの衝撃波を行います。範囲外へ逃げるか遮蔽物に隠れることで回避できます。受理された各攻撃の基本ダメージは個体ごとの合計で 42 以下に制限し、通常の難易度・防具・盾・無敵時間を維持します。投射物は遅く、追尾は弱く、壁に当たると消えます。引き寄せ後も距離と隙を残します。
 
+Phase 3突入時には **60 HP** を一度だけ回復します。その後は実HPが減る被弾から **5秒** 経過すると、通常戦闘を続けながら **毎秒4 HP**、**300 HPまで** 自己回復します。通常の待機では最後の1秒にコアの点滅と吸収粒子が出るため、攻撃して回復を妨害できます。被弾時は即停止し、再び5秒待ちます。APEX EXECUTION、フェーズ移行、stagger、死亡中は継続回復を停止します。回復してもPhase 3を維持し、HP600まで完全復活する継続回復はありません。
+
 ## 銃・高 DPS 対策
 
 - 通常の 1 ヒット上限は 35。防具計算は維持します。
@@ -56,8 +58,15 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `evasionTicks` | 50（40–60） |
 | `debug` | false |
 | `destroyTerrain` | false（着地の地形破壊を無効化。true でも mobGriefing・Forge 保護イベントを尊重し、軟らかい表面最大 8 ブロックに限定） |
+| `phase3Healing` | true。falseで突入時・継続回復とその演出をすべて無効化 |
+| `phase3EntryHeal` | 60 HP。実際の最大HPまで |
+| `phase3HealDelaySeconds` | 5秒。最後の実HP減少からの待機時間 |
+| `phase3HealPerSecond` | 4 HP。20 tickごとに回復 |
+| `phase3HealCap` | 300 HP。継続回復の上限（最大HPも超えない） |
 
 `debug=true` はフェーズ・戦闘状態・対象・最後の技・実被ダメージ/DPS を毎秒ログへ出します。円形攻撃の WarningCenter / DamageCenter / radius / playerDistance / YDifference / InsideHitbox、ジャンプの SlamTarget / ActualLanding / LandingError も表示します。攻撃時には `[APEX AREA DEBUG]` / `[APEX SLAM DEBUG]` を記録し、`/apex debug` でも近くの個体を確認できます。
+
+回復時計は既存の`DamageTracker`へ統合しています。20 tickのDPS窓から古い被弾を削除しても、最後の実ダメージ時刻は回復判定のため保持します。TaCZの弾丸による実HP減少も同じ経路で回復を停止し、銃声やPostイベントだけではダメージを二重計上しません。回復の詳細は [Phase 3自己回復](docs/PHASE3-HEALING.md) に記録しています。
 
 1.3.0 は 1.2.0 の外観を基に、頭部を新規の細い装甲マスクへ作り直し、首・肩・肘・手首・腰・股関節・膝・足首へ内部軸と重なりカバーを追加しました。装甲と発光アトラスは 512×512。V 字の胸部外殻、複合前腕刃、後方へ流れる背部フィン、逆関節脚の方向性を維持しています。
 

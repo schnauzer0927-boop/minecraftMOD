@@ -48,7 +48,9 @@ public final class TaczGameTests {
         if (!ModList.get().isLoaded("tacz")) return List.of();
         return List.of(
                 test("taczgametests.servergunfireeventreachesapex", TaczGameTests::serverGunfireEventReachesApex),
-                test("taczgametests.posthiteventdoesnotcountdamagetwice", TaczGameTests::postHitEventDoesNotCountDamageTwice));
+                test("taczgametests.posthiteventdoesnotcountdamagetwice", TaczGameTests::postHitEventDoesNotCountDamageTwice),
+                new TestFunction("apexpredator_tacz", "taczgametests.actualgunhitinterruptshealingbutobservationsdonot",
+                        "apexpredator:empty", 240, 0, true, TaczGameTests::actualGunHitInterruptsHealingButObservationsDoNot));
     }
 
     private static TestFunction test(String name, java.util.function.Consumer<GameTestHelper> body) {
@@ -125,6 +127,93 @@ public final class TaczGameTests {
             throw new IllegalStateException("Installed TaCZ post-hit API does not match the optional bridge", exception);
         }
         helper.succeed();
+    }
+
+    private static void actualGunHitInterruptsHealingButObservationsDoNot(GameTestHelper helper) {
+        helper.assertTrue(TaczCompat.isActive(), "Installed TaCZ must retain the optional event bridge");
+        ApexEntity apex = boss(helper);
+        apex.getAttribute(Attributes.ARMOR).setBaseValue(0);
+        apex.setHealth(201);
+        helper.assertTrue(apex.hurt(apex.damageSources().generic(), 1), "Final-phase trigger must cause actual health loss");
+        near(helper, apex.getHealth(), 260, "TaCZ fixture must retain final-phase entry healing");
+        Player shooter = shooter(helper);
+        EntityType<?> bulletType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation("tacz", "bullet"));
+        helper.assertTrue(bulletType != null, "TaCZ's real bullet entity must be registered");
+        Entity bullet = bulletType.create(helper.getLevel());
+        helper.assertTrue(bullet instanceof Projectile, "TaCZ's bullet factory must create a projectile");
+        ((Projectile) bullet).setOwner(shooter);
+        bullet.setPos(shooter.getEyePosition());
+        var damageType = helper.getLevel().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE)
+                .getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullet")));
+        DamageSource source = new DamageSource(damageType, bullet, shooter);
+        long originalDamageTick = apex.damageTracker().getLastDamageTick();
+        long[] gunDamageTick = {-1};
+        helper.runAfterDelay(81, () -> {
+            helper.assertTrue(apex.getHealingVisualState() == 2, "Gunfire observation fixture must be in its heal warning");
+            postGunfire(shooter);
+            helper.assertTrue(apex.damageTracker().getLastDamageTick() == originalDamageTick,
+                    "Hearing TaCZ gunfire alone must not restart the actual damage clock");
+            helper.assertTrue(apex.getHealingVisualState() == 2, "Hearing gunfire must not stop healing without health loss");
+        });
+        helper.runAfterDelay(83, () -> {
+            postGunHit(bullet, apex, shooter, source, 20);
+            helper.assertTrue(apex.damageTracker().getLastDamageTick() == originalDamageTick,
+                    "TaCZ Post observation alone must not invent health damage");
+            helper.assertTrue(apex.getHealingVisualState() == 2, "TaCZ Post alone must not interrupt the warning");
+        });
+        helper.runAfterDelay(101, () -> {
+            near(helper, apex.getHealth(), 264, "Observations alone must allow the normal five-second healing pulse");
+            helper.assertTrue(apex.getHealingVisualState() == 3, "The real bullet must interrupt active healing");
+            apex.invulnerableTime = 0;
+            helper.assertTrue(apex.hurt(source, 20), "TaCZ bullet's real damage hook must land");
+            gunDamageTick[0] = helper.getLevel().getGameTime();
+            near(helper, apex.getHealth(), 244, "A TaCZ hit must remove its actual 20 HP");
+            helper.assertTrue(apex.getHealingVisualState() == 0, "TaCZ damage must stop healing in the same hurt hook");
+            helper.assertTrue(apex.damageTracker().getLastDamageTick() == gunDamageTick[0],
+                    "TaCZ hit must update the same DamageTracker damage clock");
+        });
+        helper.runAfterDelay(106, () -> {
+            postGunHit(bullet, apex, shooter, source, 20);
+            near(helper, apex.getHealth(), 244, "TaCZ Post must not deal or restore HP a second time");
+            helper.assertTrue(apex.damageTracker().getLastDamageTick() == gunDamageTick[0],
+                    "A delayed TaCZ Post callback must not restart the five-second delay");
+            near(helper, apex.damageTracker().getDamagePerSecond(helper.getLevel().getGameTime()), 20,
+                    "TaCZ Post must not count the actual health loss twice");
+        });
+        helper.runAfterDelay(180, () -> near(helper, apex.getHealth(), 244, "Actual gun damage must suppress later pulses"));
+        helper.runAfterDelay(183, () -> helper.assertTrue(apex.getHealingVisualState() == 2,
+                "A new warning must follow five quiet seconds after gun damage"));
+        helper.runAfterDelay(203, () -> {
+            near(helper, apex.getHealth(), 248, "Recovery must resume from the actual bullet damage clock");
+            helper.succeed();
+        });
+    }
+
+    private static void postGunfire(Player shooter) {
+        Item gunItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation("tacz", "modern_kinetic_gun"));
+        if (gunItem == null || gunItem == Items.AIR) throw new IllegalStateException("TaCZ gun item is absent");
+        ItemStack gun = new ItemStack(gunItem);
+        gun.getOrCreateTag().putString("GunId", GUN_ID.toString());
+        try {
+            Constructor<?> constructor = Class.forName("com.tacz.guns.api.event.common.GunFireEvent")
+                    .getConstructor(LivingEntity.class, ItemStack.class, LogicalSide.class);
+            MinecraftForge.EVENT_BUS.post((Event) constructor.newInstance(shooter, gun, LogicalSide.SERVER));
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("TaCZ gunfire event API does not match the optional bridge", exception);
+        }
+    }
+
+    private static void postGunHit(Entity bullet, ApexEntity apex, Player shooter, DamageSource source, float damage) {
+        try {
+            Constructor<?> constructor = Class.forName("com.tacz.guns.api.event.common.EntityHurtByGunEvent$Post")
+                    .getConstructor(Entity.class, Entity.class, LivingEntity.class,
+                            ResourceLocation.class, ResourceLocation.class, float.class, Pair.class,
+                            boolean.class, float.class, LogicalSide.class);
+            MinecraftForge.EVENT_BUS.post((Event) constructor.newInstance(bullet, apex, shooter,
+                    GUN_ID, GUN_ID, damage, Pair.of(source, source), false, 1.0F, LogicalSide.SERVER));
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("TaCZ Post event API does not match the optional bridge", exception);
+        }
     }
 
     private static ApexEntity boss(GameTestHelper helper) {

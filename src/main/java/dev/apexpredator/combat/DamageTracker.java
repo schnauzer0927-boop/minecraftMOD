@@ -40,6 +40,11 @@ public final class DamageTracker {
     private final Settings settings;
     private final Deque<Hit> hits = new ArrayDeque<>();
     private long lastTick = Long.MIN_VALUE;
+    // Recovery keeps its clock after the short DPS window has been pruned.
+    private long lastDamageTick = Long.MIN_VALUE;
+    private long recoveryClockStartTick = Long.MIN_VALUE;
+    private long damageRevision;
+    public static final long MAX_PERSISTED_IDLE_TICKS = 12_000;
     private long evasionUntil = Long.MIN_VALUE;
     private long lastRepositionTick = Long.MIN_VALUE;
     private float damageSinceReposition;
@@ -61,6 +66,7 @@ public final class DamageTracker {
             return new DamageReaction(false, false, remainingEvasionTicks(tick),
                     hits.size(), recentDamage, isSustainedFire(tick));
         }
+        recordRecoveryLoss(tick, actualDamage);
         hits.addLast(new Hit(tick, actualDamage));
         recentDamage += actualDamage;
         damageSinceReposition += actualDamage;
@@ -78,10 +84,23 @@ public final class DamageTracker {
                 hits.size(), recentDamage, isSustainedFire(tick));
     }
 
+    /** Administrative damage still interrupts healing without entering the combat DPS/evasion budget. */
+    public void recordDamageForRecovery(long tick, float actualDamage) {
+        tick(tick);
+        recordRecoveryLoss(tick, actualDamage);
+    }
+
+    private void recordRecoveryLoss(long tick, float actualDamage) {
+        if (!Float.isFinite(actualDamage) || actualDamage <= 0) return;
+        lastDamageTick = tick;
+        damageRevision++;
+    }
+
     public void tick(long tick) {
         // Game time may restart after loading. Never retain damage from a future timeline.
         if (lastTick != Long.MIN_VALUE && tick < lastTick) reset();
         lastTick = tick;
+        if (recoveryClockStartTick == Long.MIN_VALUE) recoveryClockStartTick = tick;
         while (!hits.isEmpty() && tick - hits.peekFirst().tick() >= DPS_WINDOW_TICKS) {
             recentDamage -= hits.removeFirst().damage();
         }
@@ -106,6 +125,36 @@ public final class DamageTracker {
 
     public Settings getSettings() { return settings; }
 
+    /** Only finite, positive health loss advances this timestamp, including ordinary gun damage. */
+    public long getLastDamageTick() { return lastDamageTick; }
+    /** Distinguishes multiple positive hits on the same tick for reentrant Forge healing events. */
+    public long getDamageRevision() { return damageRevision; }
+    public boolean hasDamageHistory() { return lastDamageTick != Long.MIN_VALUE; }
+
+    public long getRecoveryReadyTick(long now, int delayTicks) {
+        if (delayTicks < 0) throw new IllegalArgumentException("Recovery delay must not be negative");
+        tick(now);
+        long anchor = hasDamageHistory() ? lastDamageTick : recoveryClockStartTick;
+        return anchor > Long.MAX_VALUE - delayTicks ? Long.MAX_VALUE : anchor + delayTicks;
+    }
+
+    public long getTicksSinceLastDamage(long now) {
+        tick(now);
+        long anchor = hasDamageHistory() ? lastDamageTick : recoveryClockStartTick;
+        long elapsed = now - anchor;
+        return elapsed < 0 ? Long.MAX_VALUE : elapsed;
+    }
+
+    /** Store elapsed time rather than an absolute world timestamp; reject future/oversized NBT clocks. */
+    public void restoreNoDamageTime(long now, long elapsedTicks, boolean hasActualDamage) {
+        reset();
+        long elapsed = Math.max(0, Math.min(MAX_PERSISTED_IDLE_TICKS, elapsedTicks));
+        long anchor = now < Long.MIN_VALUE + elapsed ? Long.MIN_VALUE + 1 : now - elapsed;
+        lastTick = now;
+        recoveryClockStartTick = anchor;
+        if (hasActualDamage) lastDamageTick = anchor;
+    }
+
     public void reset() {
         hits.clear();
         recentDamage = 0.0F;
@@ -113,5 +162,8 @@ public final class DamageTracker {
         evasionUntil = Long.MIN_VALUE;
         lastRepositionTick = Long.MIN_VALUE;
         lastTick = Long.MIN_VALUE;
+        lastDamageTick = Long.MIN_VALUE;
+        recoveryClockStartTick = Long.MIN_VALUE;
+        damageRevision = 0;
     }
 }

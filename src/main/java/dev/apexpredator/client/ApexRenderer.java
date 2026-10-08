@@ -24,11 +24,14 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 public final class ApexRenderer extends GeoEntityRenderer<ApexEntity> {
     private static final ResourceLocation GLOW = new ResourceLocation(ApexPredator.MOD_ID,
             "textures/entity/apex_glow.png");
+    private static final ResourceLocation HEALING_GLOW = new ResourceLocation(ApexPredator.MOD_ID,
+            "textures/entity/apex_healing_glow.png");
 
     public ApexRenderer(EntityRendererProvider.Context context) {
         super(context, new ApexModel());
         shadowRadius = 0.75F;
         addRenderLayer(new Glow(this));
+        addRenderLayer(new HealingGlow(this));
         addRenderLayer(new ApexAfterimageLayer(this));
     }
 
@@ -62,6 +65,32 @@ public final class ApexRenderer extends GeoEntityRenderer<ApexEntity> {
             getRenderer().reRender(model, stack, buffers, entity, glow, buffers.getBuffer(glow),
                     partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
                     brightness, brightness, brightness, 1);
+        }
+    }
+
+    /** A second narrow mask makes regeneration visible even when Phase 3's ordinary glow is already full-bright. */
+    private static final class HealingGlow extends GeoRenderLayer<ApexEntity> {
+        private HealingGlow(ApexRenderer renderer) { super(renderer); }
+
+        @Override
+        public void render(PoseStack stack, ApexEntity entity, BakedGeoModel model, RenderType renderType,
+                           MultiBufferSource buffers, VertexConsumer buffer, float partialTick,
+                           int packedLight, int packedOverlay) {
+            int state = entity.getHealingVisualState();
+            if (state == 0 || entity.isInvisible() || !entity.isAlive() || entity.getPhase() != 3) return;
+            float age = (float)Math.max(0, entity.level().getGameTime() - entity.getHealingVisualStartTick()) + partialTick;
+            float strength = switch (state) {
+                // The entry flash accompanies, rather than replacing, the existing phase-change animation.
+                case 1 -> .95F * (1F - Mth.clamp(age / 20F, 0F, 1F));
+                case 2 -> .15F + .70F * (.5F + .5F * Mth.sin(age * .9F));
+                case 3 -> .24F + .52F * (.5F + .5F * Mth.sin(age * .23F));
+                default -> 0F;
+            };
+            if (strength < .01F) return;
+            RenderType glow = RenderType.eyes(HEALING_GLOW);
+            getRenderer().reRender(model, stack, buffers, entity, glow, buffers.getBuffer(glow),
+                    partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+                    strength, strength, strength, 1);
         }
     }
 }

@@ -119,7 +119,7 @@ public final class ApexGameTests {
         helper.assertTrue(restored != null, "Registered entity factory must create Apex");
         restored.load(saved);
         helper.assertTrue(restored.getPhase() == 3, "Phase three must survive entity NBT loading");
-        near(helper, restored.getHealth(), 200, "Saved health");
+        near(helper, restored.getHealth(), 260, "Saved health including the one-time final-phase entry heal");
         near(helper, restored.getAttributeValue(Attributes.MOVEMENT_SPEED),
                 apex.getAttributeValue(Attributes.MOVEMENT_SPEED), "Saved phase speed");
         restored.setHealth(600);
@@ -207,9 +207,10 @@ public final class ApexGameTests {
                 // No world insertion: fixtures must not add extra physical arrow collisions.
                 boolean evading = apex.damageTracker().isEvading(helper.getLevel().getGameTime());
                 apex.invulnerableTime = 0;
-                float before = apex.getHealth();
+                float dpsBefore = apex.damageTracker().getDamagePerSecond(helper.getLevel().getGameTime());
                 boolean accepted = apex.hurt(apex.damageSources().arrow(bullet, null), 10_000);
-                float actual = before - apex.getHealth();
+                // Entry healing can raise HP on the same hit; damage accounting still records the actual loss first.
+                float actual = apex.damageTracker().getDamagePerSecond(helper.getLevel().getGameTime()) - dpsBefore;
                 damageTaken[0] += actual;
                 helper.assertTrue(actual <= (evading ? 14.001F : 35.001F), "Hit ceiling must follow the finite evasion mode");
                 if (accepted && evading) {

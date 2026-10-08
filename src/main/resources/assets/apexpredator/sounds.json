@@ -115,5 +115,23 @@
         "stream": true
       }
     ]
+  },
+  "heal_entry": {
+    "subtitle": "sound.apexpredator.heal_entry",
+    "sounds": [
+      {
+        "name": "apexpredator:heal_entry",
+        "stream": false
+      }
+    ]
+  },
+  "heal_hum": {
+    "subtitle": "sound.apexpredator.heal_hum",
+    "sounds": [
+      {
+        "name": "apexpredator:heal_hum",
+        "stream": false
+      }
+    ]
   }
 }

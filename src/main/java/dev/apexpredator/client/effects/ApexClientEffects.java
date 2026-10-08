@@ -55,7 +55,9 @@ public final class ApexClientEffects {
                 && mc.level.getEntity(packet.entityId()) instanceof ApexEntity apex) {
             dev.apexpredator.client.ApexAfterimageLayer.addGhost(apex, packet.origin(), packet.duration());
         }
-        burst(packet, mc);
+        // Healing cues wait for the entity's synchronized stage before spawning anything.
+        // A custom cue can arrive just before vanilla entity-data synchronization in the same tick.
+        if (!healing(packet.kind())) burst(packet, mc);
         float distance = (float)mc.player.position().distanceTo(packet.origin());
         float falloff = Math.max(0, 1 - distance / 32F);
         float strength = switch (packet.kind()) {
@@ -76,6 +78,27 @@ public final class ApexClientEffects {
         }
     }
     private static boolean warning(EffectKind kind) { return kind == EffectKind.WARNING_RING || kind == EffectKind.SPECIAL_PREPARE; }
+    private static boolean healing(EffectKind kind) {
+        return kind == EffectKind.HEAL_ENTRY || kind == EffectKind.HEAL_PREPARE || kind == EffectKind.HEAL_PULSE;
+    }
+    private static boolean healingStageMatches(ApexEffectPacket packet, ApexEntity apex) {
+        if (!apex.isAlive() || apex.getPhase() != 3) return false;
+        int expected = switch (packet.kind()) {
+            case HEAL_ENTRY -> 1;
+            case HEAL_PREPARE -> 2;
+            case HEAL_PULSE -> 3;
+            default -> 0;
+        };
+        return expected != 0 && apex.getHealingVisualState() == expected;
+    }
+    private static boolean expired(ActiveEffect effect, Minecraft mc) {
+        if (tick - effect.born >= effect.packet.duration()) return true;
+        if (!healing(effect.packet.kind())) return false;
+        if (!(mc.level.getEntity(effect.packet.entityId()) instanceof ApexEntity apex) || !apex.isAlive()) return true;
+        // No particles during this two-tick synchronization grace. Once active, damage stops
+        // both particles and the render layer immediately when the server clears its visual state.
+        return tick - effect.born > 2 && !healingStageMatches(effect.packet, apex);
+    }
     private static void clear(ClientLevel level) {
         EFFECTS.clear(); tick = particlesThisTick = shakeTicks = pulseTicks = 0;
         shakeStrength = pulseStrength = 0; observedLevel = level; ApexBossMusic.clear();
@@ -86,12 +109,17 @@ public final class ApexClientEffects {
         if (mc.level != observedLevel) clear(mc.level);
         if (mc.level == null || mc.player == null || mc.isPaused()) return;
         tick++; particlesThisTick = 0;
-        EFFECTS.removeIf(e -> tick - e.born >= e.packet.duration());
+        EFFECTS.removeIf(e -> expired(e, mc));
         if (shakeTicks > 0) shakeTicks--; else shakeStrength = 0;
         if (pulseTicks > 0) pulseTicks--;
         for (ActiveEffect effect : EFFECTS) {
             ApexEffectPacket p = effect.packet;
             int age = tick - effect.born;
+            if (healing(p.kind()) && mc.level.getEntity(p.entityId()) instanceof ApexEntity apex
+                    && healingStageMatches(p, apex)) {
+                int interval = p.kind() == EffectKind.HEAL_ENTRY ? 4 : p.kind() == EffectKind.HEAL_PREPARE ? 3 : 5;
+                if (age % interval == 0) healingParticles(apex, p.kind(), mc);
+            }
             if ((p.kind() == EffectKind.SPECIAL_PREPARE || p.kind() == EffectKind.RANGED_PREPARE || p.kind() == EffectKind.CHARGE_PREPARE) && age % 3 == 0) {
                 for (int i = 0; i < count(5, mc); i++) {
                     double angle = mc.level.random.nextDouble() * Math.PI * 2;
@@ -105,6 +133,22 @@ public final class ApexClientEffects {
             }
         }
         ApexBossMusic.update(mc);
+    }
+    private static void healingParticles(ApexEntity apex, EffectKind kind, Minecraft mc) {
+        // Follow the moving entity, rather than the position captured in the cue packet.
+        // The chest remains the primary destination; the existing narrow core/energy sprites stay small.
+        double yaw = Math.toRadians(apex.yBodyRot);
+        Vec3 core = apex.position().add(-Math.sin(yaw) * .16, apex.getBbHeight() * .68, Math.cos(yaw) * .16);
+        int number = count(kind == EffectKind.HEAL_ENTRY ? 3 : 2, mc);
+        for (int i = 0; i < number; i++) {
+            double angle = mc.level.random.nextDouble() * Math.PI * 2;
+            double radius = .55 + mc.level.random.nextDouble() * .50;
+            Vec3 offset = new Vec3(Math.cos(angle) * radius, (mc.level.random.nextDouble() - .5) * .9,
+                    Math.sin(angle) * radius);
+            Vec3 position = core.add(offset);
+            particle(i % 2 == 0 ? ApexEffects.CORE.get() : ApexEffects.ENERGY.get(),
+                    position, core.subtract(position).scale(.18), mc);
+        }
     }
     private static int count(int base, Minecraft mc) {
         double vanilla = mc.options.particles().get() == ParticleStatus.MINIMAL ? .25 : mc.options.particles().get() == ParticleStatus.DECREASED ? .6 : 1;

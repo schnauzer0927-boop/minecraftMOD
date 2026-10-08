@@ -16,7 +16,7 @@ public final class ApexSounds {
     private static final Map<String, RegistryObject<SoundEvent>> EVENTS = new LinkedHashMap<>();
     static {
         for (String name : new String[]{"blade_swing", "blade_hit", "charge_start", "charge_dash", "slam", "shockwave", "teleport",
-                "phase_change", "rage", "special_charge", "special_attack", "death", "boss_music"}) {
+                "phase_change", "rage", "special_charge", "special_attack", "death", "boss_music", "heal_entry", "heal_hum"}) {
             EVENTS.put(name, SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ApexPredator.MOD_ID, name))));
         }
     }

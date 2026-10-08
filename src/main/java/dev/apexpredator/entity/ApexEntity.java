@@ -36,6 +36,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -47,6 +48,8 @@ public class ApexEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Long> VISUAL_START = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Long> VISUAL_UNTIL = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Integer> VISUAL_SEQUENCE = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HEALING_VISUAL = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Long> HEALING_VISUAL_START = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private int renderedSequence = -1;
     private String renderedAnimation = "";
@@ -55,6 +58,10 @@ public class ApexEntity extends Monster implements GeoEntity {
     private final PlayerBehaviorTracker behavior = new PlayerBehaviorTracker();
     private final DamageTracker damage;
     private final CombatController combat;
+    private final Phase3HealingController healing = new Phase3HealingController();
+    private long entryHealingUntil = Long.MIN_VALUE;
+    private int healingPulseCount;
+    private boolean healingSuppressed;
     private int visualImmunityTicks;
     private long projectileBudgetTick = Long.MIN_VALUE;
     private final Map<UUID, Float> projectileBudgets = new HashMap<>();
@@ -78,6 +85,7 @@ public class ApexEntity extends Monster implements GeoEntity {
         entityData.define(PHASE, 1); entityData.define(STATE, CombatState.IDLE.ordinal());
         entityData.define(VISUAL, ""); entityData.define(VISUAL_START, 0L);
         entityData.define(VISUAL_UNTIL, 0L); entityData.define(VISUAL_SEQUENCE, 0);
+        entityData.define(HEALING_VISUAL, 0); entityData.define(HEALING_VISUAL_START, 0L);
     }
     @Override protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
@@ -98,6 +106,8 @@ public class ApexEntity extends Monster implements GeoEntity {
     }
     @Override public void tick() {
         super.tick();
+        // This remains server-authoritative even when vanilla AI is disabled through NBT.
+        if (!level().isClientSide) tickPhase3Healing();
         // Short immunity must also expire when vanilla AI is disabled through NBT.
         if (!level().isClientSide && visualImmunityTicks > 0) {
             visualImmunityTicks--;
@@ -116,11 +126,116 @@ public class ApexEntity extends Monster implements GeoEntity {
         ApexSounds.play(this, getPhase() == 3 ? "rage" : "phase_change");
         ApexEffects.emit(this, getPhase() == 3 ? EffectKind.PHASE_THREE : EffectKind.PHASE_TWO,
                 position(), getLookAngle(), getPhase() == 3 ? 12 : 8, 36);
+        if (getPhase() == 3 && isAlive()) {
+            var settings = phase3HealingSettings();
+            float restored = applyHealing(Phase3HealingController.entryHealAmount(settings, getHealth(), getMaxHealth()), false);
+            if (restored > 0) {
+                long now = level().getGameTime();
+                entryHealingUntil = now + 20;
+                setHealingVisual(1, now);
+                ApexEffects.emit(this, EffectKind.HEAL_ENTRY, position().add(0, 1.7, 0), getLookAngle(), .6F, 20);
+                playSound(ApexSounds.event("heal_entry"), .6F, 1F);
+            }
+        }
+    }
+
+    /** Live configuration also permits a test fixture to exercise settings without global mutations. */
+    protected Phase3HealingController.Settings phase3HealingSettings() {
+        return new Phase3HealingController.Settings(ApexConfig.PHASE3_HEALING.get(),
+                ApexConfig.PHASE3_ENTRY_HEAL.get().floatValue(), ApexConfig.PHASE3_HEAL_DELAY_SECONDS.get() * 20,
+                ApexConfig.PHASE3_HEAL_PER_SECOND.get().floatValue(), ApexConfig.PHASE3_HEAL_CAP.get().floatValue());
+    }
+
+    private void tickPhase3Healing() {
+        long now = level().getGameTime();
+        damage.tick(now);
+        if (isAlive()) updatePhase();
+        var settings = phase3HealingSettings();
+        if (!settings.enabled() || !isAlive() || getPhase() != 3) {
+            cancelHealingVisuals();
+            return;
+        }
+        boolean blocked = isHealingBlocked();
+        var result = healing.tick(now, getPhase(), isAlive(), blocked, getHealth(), getMaxHealth(), damage, settings);
+        if (result.state() == Phase3HealingController.State.INACTIVE) {
+            healingPulseCount = 0;
+            healingSuppressed = false;
+        }
+        if (result.warningStarted()) {
+            healingSuppressed = false;
+            ApexEffects.emit(this, EffectKind.HEAL_PREPARE, position().add(0, 1.7, 0), getLookAngle(), .6F, 20);
+            playSound(ApexSounds.event("heal_hum"), .25F, 1F);
+        }
+        if (result.healAmount() > 0) {
+            float restored = applyHealing(result.healAmount(), true);
+            healingSuppressed = restored <= 0;
+            if (restored > 0) {
+                ApexEffects.emit(this, EffectKind.HEAL_PULSE, position().add(0, 1.7, 0), getLookAngle(), .6F, 20);
+                if (++healingPulseCount % 5 == 0) playSound(ApexSounds.event("heal_hum"), .25F, 1F);
+            }
+        }
+        if (now < entryHealingUntil) return;
+        int visual = healingSuppressed ? 0 : switch (healing.getState()) {
+            case INACTIVE -> 0;
+            case WARNING -> 2;
+            case HEALING -> 3;
+        };
+        setHealingVisual(visual, healing.getStateStartTick());
+    }
+
+    private boolean isHealingBlocked() {
+        String animation = getVisualAnimation();
+        return combat.getPhasePauseRemaining() > 0 || animation.equals("phase_change")
+                || getCombatState() == CombatState.SPECIAL || combat.getState() == CombatState.SPECIAL
+                || animation.equals("special_prepare") || animation.equals("special_attack")
+                || animation.equals("stagger") || animation.equals("death");
+    }
+
+    /** Dispatch the same event as vanilla heal, then validate before applying its mutable amount. */
+    private float applyHealing(float amount, boolean passive) {
+        if (amount <= 0 || !isAlive()) return 0;
+        long revision = damage.getDamageRevision();
+        float eventAmount = ForgeEventFactory.onLivingHeal(this, amount);
+        var settings = phase3HealingSettings();
+        if (!Float.isFinite(eventAmount) || eventAmount <= 0 || !isAlive() || getPhase() != 3
+                || !settings.enabled() || revision != damage.getDamageRevision()
+                || passive && isHealingBlocked()) return 0;
+        float ceiling = passive ? Math.min(getMaxHealth(), settings.healCap()) : getMaxHealth();
+        float before = getHealth();
+        if (before >= ceiling) return 0;
+        setHealth(before + Math.min(eventAmount, ceiling - before));
+        float restored = Math.max(0, getHealth() - before);
+        if (restored > 0) bossBar.setProgress(Math.max(0, getHealth()) / getMaxHealth());
+        return restored;
+    }
+
+    private void setHealingVisual(int state, long startTick) {
+        if (entityData.get(HEALING_VISUAL) != state) {
+            entityData.set(HEALING_VISUAL, state);
+            entityData.set(HEALING_VISUAL_START, state == 0 ? 0L : startTick);
+        }
+    }
+
+    private void cancelHealingVisuals() {
+        healing.onDamage();
+        entryHealingUntil = Long.MIN_VALUE;
+        healingPulseCount = 0;
+        healingSuppressed = false;
+        setHealingVisual(0, 0);
     }
     @Override public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
         // Preserve administrative /kill and out-of-world handling.
-        if (isAdministrativeDamage(source)) return super.hurt(source, amount);
+        if (isAdministrativeDamage(source)) {
+            float before = getHealth();
+            boolean accepted = super.hurt(source, amount);
+            float actualLoss = Math.max(0, before - getHealth());
+            if (accepted && Float.isFinite(actualLoss) && actualLoss > 0) {
+                damage.recordDamageForRecovery(level().getGameTime(), actualLoss);
+                cancelHealingVisuals();
+            }
+            return accepted;
+        }
         if (visualImmunityTicks > 0 || isDeadOrDying()) return false;
         float capped = damage.capIncomingDamage(amount);
         if (damage.isEvading(level().getGameTime())) capped = Math.min(capped, ApexConfig.EVASION_HIT_DAMAGE.get().floatValue());
@@ -135,6 +250,7 @@ public class ApexEntity extends Monster implements GeoEntity {
             float actualLoss = Math.max(0, before - getHealth());
             if (projectile != null) projectileBudgets.merge(projectile, Math.max(capped, actualLoss), Float::sum);
             var reaction = damage.recordDamage(tick, actualLoss);
+            if (actualLoss > 0) cancelHealingVisuals();
             if (source.getEntity() instanceof LivingEntity attacker) {
                 if (!(attacker instanceof Player p) || !p.isCreative() && !p.isSpectator()) setTarget(attacker);
                 if (attacker instanceof Player p) behavior.recordAttack(p.getUUID(), tick,
@@ -191,6 +307,10 @@ public class ApexEntity extends Monster implements GeoEntity {
         if (shooter != null) onGunfire(shooter);
     }
     public DamageTracker damageTracker() { return damage; }
+    public Phase3HealingController healingController() { return healing; }
+    public int getHealingVisualState() { return entityData.get(HEALING_VISUAL); }
+    public long getHealingVisualStartTick() { return entityData.get(HEALING_VISUAL_START); }
+    public float getBossBarProgress() { return bossBar.getProgress(); }
     public PlayerBehaviorTracker behaviorTracker() { return behavior; }
     public CombatController combatController() { return combat; }
     public int getPhase() { return entityData.get(PHASE); }
@@ -261,10 +381,17 @@ public class ApexEntity extends Monster implements GeoEntity {
             default -> getDeltaMovement().horizontalDistanceSqr() > .002 ? AnimationState.WALK : AnimationState.IDLE;
         };
     }
-    public String debugSummary() { return combat.debugSummary(); }
+    public String debugSummary() {
+        long now = level().getGameTime();
+        return combat.debugSummary() + " health=" + getHealth() + " healing=" + healing.getState()
+                + " healingVisual=" + getHealingVisualState() + " healingTick=" + now + " lastDamageTick=" + damage.getLastDamageTick()
+                + " healingReadyTick=" + damage.getRecoveryReadyTick(now, phase3HealingSettings().healDelayTicks())
+                + " nextHealTick=" + healing.getNextHealTick();
+    }
     @Override public void startSeenByPlayer(ServerPlayer p) { super.startSeenByPlayer(p); bossBar.addPlayer(p); }
     @Override public void stopSeenByPlayer(ServerPlayer p) { super.stopSeenByPlayer(p); bossBar.removePlayer(p); }
     @Override public void die(DamageSource s) {
+        if (!level().isClientSide) cancelHealingVisuals();
         playVisual("death", 40);
         super.die(s); bossBar.removeAllPlayers();
         if (!level().isClientSide) ApexEffects.emit(this, EffectKind.DEATH, position(), getLookAngle(), 3, 40);
@@ -278,13 +405,22 @@ public class ApexEntity extends Monster implements GeoEntity {
         }
     }
     @Override public void remove(RemovalReason r) { bossBar.removeAllPlayers(); super.remove(r); }
-    @Override public void addAdditionalSaveData(CompoundTag t) { super.addAdditionalSaveData(t); t.putInt("ApexPhase", getPhase()); }
+    @Override public void addAdditionalSaveData(CompoundTag t) {
+        super.addAdditionalSaveData(t);
+        t.putInt("ApexPhase", getPhase());
+        t.putLong("ApexHealingNoDamageTicks", Math.min(DamageTracker.MAX_PERSISTED_IDLE_TICKS,
+                damage.getTicksSinceLastDamage(level().getGameTime())));
+        t.putBoolean("ApexHealingHasDamageHistory", damage.hasDamageHistory());
+    }
     @Override public void readAdditionalSaveData(CompoundTag t) {
         super.readAdditionalSaveData(t);
         phases.restore(Math.max(1, Math.min(3, t.getInt("ApexPhase")))); phases.update(getHealth());
         entityData.set(PHASE, phases.getPhaseIndex());
         getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(.34*phases.getPhase().movementMultiplier());
         bossBar.setColor(getPhase()==1 ? BossEvent.BossBarColor.RED : getPhase()==2 ? BossEvent.BossBarColor.PURPLE : BossEvent.BossBarColor.BLUE);
+        damage.restoreNoDamageTime(level().getGameTime(), t.getLong("ApexHealingNoDamageTicks"), t.getBoolean("ApexHealingHasDamageHistory"));
+        cancelHealingVisuals();
+        bossBar.setProgress(Math.max(0, getHealth()) / getMaxHealth());
     }
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
     @Override protected SoundEvent getHurtSound(DamageSource s) { return SoundEvents.RAVAGER_HURT; }

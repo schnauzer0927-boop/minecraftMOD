@@ -130,14 +130,24 @@ public final class CircularAttackGameTests {
         boolean[] pulled = {false, true, true, false};
         for (int index = 0; index < distances.length; index++) {
             ApexEntity apex = stillBoss(helper);
-            Player player = player(helper, new Vec3(5.5 + distances[index], 2, 5.5));
+            // Keep every complete target box inside the 12-block arena instead of natural terrain outside it.
+            Vec3 localCenter = new Vec3(.9, 2, .9);
+            apex.moveTo(helper.absoluteVec(localCenter));
+            double diagonal = distances[index] / Math.sqrt(2);
+            Player player = player(helper, localCenter.add(diagonal, 0, diagonal));
             AttackManager attacks = new AttackManager(apex);
             attacks.begin(AttackType.PULL, player);
             AttackArea warning = attacks.getAttackArea();
-            apex.moveTo(helper.absoluteVec(new Vec3(20.5, 2, 5.5)));
+            var ray = helper.getLevel().clip(new ClipContext(warning.center().add(0, 1.2, 0),
+                    player.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, apex));
+            helper.assertTrue(ray.getType() == net.minecraft.world.phys.HitResult.Type.MISS,
+                    "Pull fixture must not hide behind solid cover: " + ray.getBlockPos());
+            apex.moveTo(helper.absoluteVec(new Vec3(10.5, 2, .9)));
             attacks.tick(AttackType.PULL, player, AttackType.PULL.telegraphTicks());
-            helper.assertTrue((player.getDeltaMovement().x < 0) == pulled[index],
+            helper.assertTrue((player.getDeltaMovement().horizontalDistanceSqr() > 1.0e-9) == pulled[index],
                     "Pull did not respect its original center, body boundary, or four-block gap: " + distances[index]);
+            if (pulled[index]) helper.assertTrue(player.getDeltaMovement().x < 0 && player.getDeltaMovement().z < 0,
+                    "Pull direction must point toward the committed center, rather than the relocated boss");
             helper.assertTrue(warning.center().equals(attacks.getDamageCenter()), "Pull moved its displayed center");
             helper.assertTrue(player.getHealth() == 1000, "Pull must preserve its original non-damaging behavior");
             apex.discard();
@@ -148,10 +158,17 @@ public final class CircularAttackGameTests {
     @GameTest(template = "empty", timeoutTicks = 20)
     public static void aPhaseUpdateCannotEnlargeAnAlreadyWarnedShockwave(GameTestHelper helper) {
         ApexEntity apex = stillBoss(helper);
-        Player outsideOriginalCircle = player(helper, new Vec3(13.5, 2, 5.5));
+        Vec3 localCenter = new Vec3(.9, 2, .9);
+        apex.moveTo(helper.absoluteVec(localCenter));
+        double diagonal = 8 / Math.sqrt(2);
+        Player outsideOriginalCircle = player(helper, localCenter.add(diagonal, 0, diagonal));
         AttackManager attacks = new AttackManager(apex);
         attacks.begin(AttackType.SHOCKWAVE, outsideOriginalCircle);
         AttackArea warning = attacks.getAttackArea();
+        var ray = helper.getLevel().clip(new ClipContext(warning.center().add(0, 1.2, 0),
+                outsideOriginalCircle.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, apex));
+        helper.assertTrue(ray.getType() == net.minecraft.world.phys.HitResult.Type.MISS,
+                "Phase-radius fixture must be exposed so solid cover cannot hide an incorrectly enlarged circle");
         CompoundTag phase = apex.saveWithoutId(new CompoundTag());
         phase.putInt("ApexPhase", 3);
         phase.putFloat("Health", 200);

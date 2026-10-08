@@ -18,5 +18,7 @@
   "sound.apexpredator.special_attack": "APEX EXECUTION発動",
   "sound.apexpredator.death": "Apexのコアが崩壊",
   "sound.apexpredator.boss_music": "Apex戦闘曲",
+  "sound.apexpredator.heal_entry": "Apexのコアが再充填",
+  "sound.apexpredator.heal_hum": "Apexの回復振動",
   "effect.apexpredator.execution": "APEX EXECUTION"
 }

@@ -62,4 +62,73 @@ class DamageTrackerTest {
         assertEquals(0.0F, tracker.getDamagePerSecond(0));
         assertFalse(tracker.isEvading(0));
     }
+
+    @Test
+    void lastHealthLossSurvivesExpirationOfTheDpsWindow() {
+        DamageTracker tracker = new DamageTracker();
+        tracker.recordDamage(12, 5);
+        assertTrue(tracker.hasDamageHistory());
+        assertEquals(12, tracker.getLastDamageTick());
+        assertEquals(0, tracker.getDamagePerSecond(42));
+        assertEquals(12, tracker.getLastDamageTick());
+        assertEquals(30, tracker.getTicksSinceLastDamage(42));
+        assertEquals(112, tracker.getRecoveryReadyTick(42, 100));
+    }
+
+    @Test
+    void rejectedOrNonFiniteDamageCannotRestartTheRecoveryClock() {
+        DamageTracker tracker = new DamageTracker();
+        tracker.recordDamage(10, 2);
+        for (float rejected : new float[]{0, -1, Float.NaN, Float.POSITIVE_INFINITY}) {
+            tracker.recordDamage(50, rejected);
+            assertEquals(10, tracker.getLastDamageTick());
+            assertEquals(110, tracker.getRecoveryReadyTick(50, 100));
+        }
+    }
+
+    @Test
+    void elapsedDamageTimeCanBeRestoredWithoutReplayingBurstDamage() {
+        DamageTracker tracker = new DamageTracker();
+        tracker.recordDamage(100, 35);
+        tracker.restoreNoDamageTime(200, 40, true);
+        assertTrue(tracker.hasDamageHistory());
+        assertEquals(160, tracker.getLastDamageTick());
+        assertEquals(40, tracker.getTicksSinceLastDamage(200));
+        assertEquals(260, tracker.getRecoveryReadyTick(200, 100));
+        assertEquals(0, tracker.getDamagePerSecond(200));
+        assertFalse(tracker.isEvading(200));
+    }
+
+    @Test
+    void timelineRollbackInvalidatesFutureRecoveryHistory() {
+        DamageTracker tracker = new DamageTracker();
+        tracker.recordDamage(100, 35);
+        tracker.tick(1);
+        assertFalse(tracker.hasDamageHistory());
+        assertEquals(0, tracker.getDamagePerSecond(1));
+    }
+
+    @Test
+    void administrativeHealthLossRestartsRecoveryWithoutEnteringCombatDamageBudgets() {
+        DamageTracker tracker = new DamageTracker();
+        tracker.recordDamage(0, 35);
+        long beforeRevision = tracker.getDamageRevision();
+        tracker.recordDamageForRecovery(10, 1000);
+        assertEquals(10, tracker.getLastDamageTick());
+        assertEquals(beforeRevision + 1, tracker.getDamageRevision());
+        assertEquals(110, tracker.getRecoveryReadyTick(10, 100));
+        assertEquals(35, tracker.getDamagePerSecond(10));
+        assertEquals(1, tracker.getConsecutiveHits(10));
+        assertFalse(tracker.isEvading(10));
+        DamageTracker.DamageReaction nextOrdinaryHit = tracker.recordDamage(11, 35);
+        assertEquals(70, nextOrdinaryHit.damagePerSecond());
+        assertFalse(nextOrdinaryHit.enterEvasion());
+        assertFalse(nextOrdinaryHit.forceReposition());
+        long revisionAfterOrdinaryHit = tracker.getDamageRevision();
+        for (float rejected : new float[]{0, -1, Float.NaN, Float.POSITIVE_INFINITY}) {
+            tracker.recordDamageForRecovery(12, rejected);
+            assertEquals(11, tracker.getLastDamageTick());
+            assertEquals(revisionAfterOrdinaryHit, tracker.getDamageRevision());
+        }
+    }
 }
