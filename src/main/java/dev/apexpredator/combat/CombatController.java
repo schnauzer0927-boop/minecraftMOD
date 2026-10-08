@@ -69,7 +69,13 @@ public final class CombatController {
         PlayerBehaviorTracker.BehaviorSnapshot behavior = entity.behaviorTracker().snapshot(target.getUUID(), now);
         if (activeAttack != AttackType.SPECIAL) entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-        if (pendingReposition) {
+        // Incoming damage caps remain immediate. Movement reactions wait for the
+        // bounded, committed jump so a burst cannot move its advertised landing.
+        boolean committedJump = activeAttack == AttackType.JUMP && attacks.isJumpCommitted();
+        if (committedJump) {
+            requestedEvasionTicks = Math.min(requestedEvasionTicks, entity.damageTracker().remainingEvasionTicks(now));
+        }
+        if (pendingReposition && !committedJump) {
             pendingReposition = false;
             if (entity.getPhase() == 1) {
                 // Warps unlock in phase two. Early damage thresholds produce a
@@ -88,7 +94,7 @@ public final class CombatController {
                 attacks.reposition(target);
             }
         }
-        if (pendingEvasion || entity.damageTracker().isEvading(now)) {
+        if (!committedJump && (pendingEvasion || entity.damageTracker().isEvading(now))) {
             int duration = Math.max(requestedEvasionTicks, entity.damageTracker().remainingEvasionTicks(now));
             pendingEvasion = false;
             requestedEvasionTicks = 0;
@@ -217,7 +223,7 @@ public final class CombatController {
                 entity.getPhase(), state, entity.getVisualAnimation(), target == null ? "none" : target.getName().getString(),
                 lastAttack == null ? "none" : lastAttack == AttackType.SPECIAL ? "APEX_EXECUTION" : lastAttack,
                 entity.damageTracker().getDamagePerSecond(entity.level().getGameTime()),
-                entity.damageTracker().getConsecutiveHits(entity.level().getGameTime()));
+                entity.damageTracker().getConsecutiveHits(entity.level().getGameTime())) + attacks.debugSummary(target);
     }
 
     private void startAttack(AttackType type, LivingEntity target, long now) {

@@ -4,9 +4,9 @@ Minecraft **1.20.1** / Forge **47.4.10** / Java **17** 向けの、プレイヤ�
 
 ## 導入・召喚
 
-ビルド済み MOD は [dist/apexpredator-1.20.1-1.2.0.jar](dist/apexpredator-1.20.1-1.2.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
+ビルド済み MOD は [dist/apexpredator-1.20.1-1.3.0.jar](dist/apexpredator-1.20.1-1.3.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
 
-1.2.0 は `build/libs/apexpredator-1.20.1-1.2.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
+1.3.0 は `build/libs/apexpredator-1.20.1-1.3.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
 
 ```mcfunction
 /summon apexpredator
@@ -57,11 +57,16 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `debug` | false |
 | `destroyTerrain` | false（着地の地形破壊を無効化。true でも mobGriefing・Forge 保護イベントを尊重し、軟らかい表面最大 8 ブロックに限定） |
 
-`debug=true` はフェーズ・戦闘状態・対象・最後の技・実被ダメージ/DPS を毎秒ログへ出します。`/apex debug` でも近くの個体を確認できます。
+`debug=true` はフェーズ・戦闘状態・対象・最後の技・実被ダメージ/DPS を毎秒ログへ出します。円形攻撃の WarningCenter / DamageCenter / radius / playerDistance / YDifference / InsideHitbox、ジャンプの SlamTarget / ActualLanding / LandingError も表示します。攻撃時には `[APEX AREA DEBUG]` / `[APEX SLAM DEBUG]` を記録し、`/apex debug` でも近くの個体を確認できます。
 
-1.2.0 は添付の APEX コンセプトアートを基にした外観リメイクです。高さ 2.7 ブロック、28 ボーン・290 キューブ（1,740 面）、512×512 の装甲テクスチャ／発光マスクを同梱します。小さな尖ったマスクと細い眼、V 字に重なる胸部外殻、細い胸骨発光と腰、後方へ流れる肩・背部フィン、曲線状の複合前腕刃、3 本爪、逆関節脚へ再設計しました。黒い内部と金属の明暗、縁のハイライト、控えめな擦れを描き、発光は細い溝に限定しています。
+1.3.0 は 1.2.0 の外観を基に、頭部を新規の細い装甲マスクへ作り直し、首・肩・肘・手首・腰・股関節・膝・足首へ内部軸と重なりカバーを追加しました。装甲と発光アトラスは 512×512。V 字の胸部外殻、複合前腕刃、後方へ流れる背部フィン、逆関節脚の方向性を維持しています。
 
-1.1.0 のボーン名・親子関係・pivot、37 アニメーションを完全維持しています。Java・適応 AI・攻撃判定・タイミング・フェーズ・残像・Particle・SE・カメラ・TaCZ 連携に変更はありません。
+37 アニメーションを維持し、攻撃時刻・フェーズ・瞬殺防止・残像・Particle・SE・カメラ・TaCZ 連携は従来どおりです。円形攻撃とジャンプの位置合わせは以下のように修正しています。
+
+- 予告開始時に不変の `AttackArea` を保存し、予告・衝撃波・ダメージで同じ中心と半径を使用します。通常衝撃波は 6、Phase 3 は 10、ジャンプは 5、APEX EXECUTION は 15 ブロックです。
+- 円とプレイヤーの BoundingBox の重なりで判定し、境界誤差は 0.15 ブロック。地面攻撃の上下範囲は中心から下 1.5・上 3.0 ブロックで、段差と通常ジャンプを扱いつつ高所を除外します。遮蔽物・防具・盾・無敵時間は有効です。
+- ジャンプの `slamTarget` は予告時に足場の衝突形状から取得します。対象が移動しても更新せず、実際の重力と空中速度から毎 tick 補正します。着地演出・地形処理・ダメージも保存した地点を使用します。地形で遠くへ阻まれた場合は攻撃を中止します。
+- フェーズ変更時の円は従来から演出のみで、ダメージを追加していません。
 
 歩行・走行・低姿勢ダッシュ、左右横移動・近接・回避、3 段コンボ、突進の準備／発動／終了、ジャンプ／スラム、ワープ前後、衝撃波・射撃・必殺技の準備／発動、フェーズ移行、被弾・よろめき・復帰・死亡・Phase 3 の荒々しい姿勢など、**37 クリップ**を収録。サーバーの技進行と同期して切り替え、近接はフェーズの攻撃速度に追従します。死亡モデルは 2 秒の崩れ落ちを終えてから消えます。
 
@@ -77,7 +82,7 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `screenEffects` | true。画面の縁の光と必殺技の表示 |
 | `bossMusic` | true。近くの生存 Apex に専用ループ音楽 |
 
-[正面](docs/visuals/apex-1.2-front.png)・[側面](docs/visuals/apex-1.2-side.png)・[背面](docs/visuals/apex-1.2-back.png)・[四方向プレビュー](docs/visuals/apex-1.2-turnaround.png)・[実ゲーム](docs/visuals/apex-1.2-ingame.png)・[変更ファイル一覧](docs/CHANGES-1.2.0.md)を公開しています。
+[正面](docs/visuals/apex-1.3-front.png)・[側面](docs/visuals/apex-1.3-side.png)・[背面](docs/visuals/apex-1.3-back.png)・[四方向プレビュー](docs/visuals/apex-1.3-turnaround.png)・[頭部比較](docs/visuals/apex-1.2-vs-1.3-head-comparison.png)・[実ゲーム全身](docs/visuals/apex-1.3-ingame.png)・[実ゲーム頭部](docs/visuals/apex-1.3-head-ingame.png)・[変更ファイル一覧](docs/CHANGES-1.3.0.md)を公開しています。
 
 モデル・アニメーション・エフェクト素材の構成と再生成方法は [scripts/art/README.md](scripts/art/README.md) に記載。`assets/apexpredator/sounds/` の専用 OGG と `sounds.json` はリソースパックで差し替えられます。
 
@@ -120,7 +125,7 @@ TaCZ 1.1.8-hotfix2 を使う開発検証では、公式の jar を置いたデ�
 
 単体テストはダメージ窓・フェーズ境界・プレイヤー別観測・技選択を検証します。GameTest は登録、実ダメージ、防具、連射、フェーズ保存、ドロップ、攻撃の予告と隙、遮蔽物、ワープのキャンセルを実ゲーム上で検証します。
 
-主な責務は `ApexEntity`、`CombatController`、`CombatDecisionPolicy`、`AttackManager`、`DamageTracker`、`PlayerBehaviorTracker`、`ApexPhaseManager`、`ApexSounds`、`ApexParticles`、`TaczCompat` に分けています。
+主な責務は `ApexEntity`、`CombatController`、`CombatDecisionPolicy`、`AttackManager`、`AttackArea`、`SlamTargetResolver`、`DamageTracker`、`PlayerBehaviorTracker`、`ApexPhaseManager`、`ApexSounds`、`ApexParticles`、`TaczCompat` に分けています。
 
 TaCZ の検証対象は **1.1.8-hotfix2** です。開発環境の Mixin refmap も ForgeGradle の SRG→Mojmap 変換に合わせて設定しており、TaCZ 付きの起動ではその変換タスクを実行します。GeckoLib 4.4.9 の Forge 版は Modrinth の不変バージョン ID `RBA7lJaW` で取得し、通常ビルドにも正しい依存関係を追加しています。Apex jar に GeckoLib・TaCZ 自体を同梱しません。
 

@@ -163,28 +163,20 @@ public final class VisualGameTests {
         });
     }
 
-    @GameTest(template = "empty", timeoutTicks = 20)
+    @GameTest(template = "empty", timeoutTicks = 80)
     public static void jumpSlamKeepsTerrainIntactWithTheDefaultConfiguration(GameTestHelper helper) {
         helper.assertFalse(ApexConfig.DESTROY_TERRAIN.get(), "Terrain destruction must default to disabled");
         for (int x = 3; x <= 7; x++) {
             for (int z = 3; z <= 7; z++) helper.setBlock(x, 1, z, Blocks.DIRT);
         }
-        ApexEntity apex = boss(helper);
+        ApexEntity apex = SlamGameTestSupport.boss(helper, new Vec3(5.5, 2, 5.5));
         Pig victim = durableTarget(helper, new Vec3(7.5, 2, 5.5));
-        AttackManager attacks = new AttackManager(apex);
-        attacks.begin(AttackType.JUMP, victim);
-        int windup = AttackType.JUMP.telegraphTicks();
-        attacks.tick(AttackType.JUMP, victim, windup);
-        helper.assertTrue(apex.getDeltaMovement().y > 0, "Jump must launch before its landing effect");
-        // Simulate ground contact; this fixture isolates the landing callback from ballistic travel.
-        apex.setOnGround(true);
-        helper.assertTrue(attacks.tick(AttackType.JUMP, victim, windup + 6), "Ground contact must complete the slam");
-        helper.assertTrue(apex.getVisualAnimation().equals("slam"), "Landing must publish its slam animation");
-        helper.assertTrue(victim.getHealth() < 1000, "Terrain-safe slam must still damage a target in its radius");
-        for (int x = 3; x <= 7; x++) {
-            for (int z = 3; z <= 7; z++) helper.assertBlockPresent(Blocks.DIRT, x, 1, z);
-        }
-        helper.succeed();
+        SlamGameTestSupport.run(helper, apex, victim, landed -> {
+            helper.assertTrue(victim.getHealth() < 1000, "Terrain-safe slam must still damage a target in its radius");
+            for (int x = 3; x <= 7; x++) {
+                for (int z = 3; z <= 7; z++) helper.assertBlockPresent(Blocks.DIRT, x, 1, z);
+            }
+        });
     }
 
     private static ApexEntity boss(GameTestHelper helper) {

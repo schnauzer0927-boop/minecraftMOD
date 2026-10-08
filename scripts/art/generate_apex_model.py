@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Author the APEX 1.2 concept-driven Bedrock model and paired 512 px atlases.
+"""Author the APEX 1.3 predator-mask Bedrock model and paired 512 px atlases.
 
 All geometry, materials and pixels are created here, with a deterministic seed.
 The supplied APEX concept is interpreted as original cube geometry. Front is -Z,
@@ -11,6 +11,8 @@ from pathlib import Path
 import json
 import math
 import random
+import subprocess
+from io import BytesIO
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -18,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / 'src/main/resources/assets/apexpredator'
 SIZE = 512
-RNG = random.Random(12027)
+RNG = random.Random(13027)
 BONES = []
 MATERIALS = []
 
@@ -69,7 +71,7 @@ bone('back_blade_left', [3.5, 31.5, 2.5], 'back_spines')
 bone('back_blade_right', [-3.5, 31.5, 2.5], 'back_spines')
 bone('tail_or_rear_spine', [0, 23, 2.8], 'waist')
 
-# 1.2 concept-driven remake. Preserve all rig names, hierarchy and pivots above.
+# 1.3 concept-driven remake. Preserve all rig names, hierarchy and pivots above.
 # Form is carried by swept segmented shells around narrow black mechanisms,
 # rather than by large rectangular armor blocks. One unit is 1/16 block.
 centered('waist', [0, 23.1, .35], [3.9, 4.1, 2.9], 'joint')
@@ -104,56 +106,106 @@ for i in range(4):
     centered('chest', [0, 31.25 - i * 1.32, -2.87 + i * .04], [.15, .96, .12],
              'core' if i == 1 else 'seam', [-5, 0, 0])
 
-# Slim segmented neck; thin orange seams are recesses, not luminous armor.
-centered('neck', [0, 34.55, .2], [1.7, 2.7, 1.65], 'joint', [-9, 0, 0])
-for y in [33.9, 35.1]:
-    centered('neck', [0, y, .25], [2.03, .38, 1.95], 'armor', [-12, 0, 0])
-    centered('neck', [0, y - .08, -.81], [.15, .24, .12], 'seam')
-
-# Forward hooked mask: small jaw, dark eye sockets, sloping brow, swept crown.
-# Facets step toward a narrow nose and continue backward as long crest plates.
-centered('head', [0, 38.2, -.15], [2.38, 3.65, 2.65], 'joint', [-12, 0, 0])
-for i, (y, z, w, h, d, angle) in enumerate([
-        (39.8, .2, 1.75, 1.1, 3.3, -24),
-        (40.6, 1.55, 1.12, 1.2, 3.0, -31),
-        (40.98, 3.28, .56, .62, 2.8, -35),
-        (40.26, 4.85, .18, .25, 1.35, -35)]):
-    centered('head', [0, y, z], [w, h, d], 'blade' if i > 1 else 'armor', [angle, 0, 0])
-centered('head', [0, 40.85, 1.1], [.62, 1.8, .76], 'armor', [-32, 0, 0])
-centered('head', [0, 41.86, 1.8], [.36, 1.65, .54], 'blade', [-35, 0, 0])
-centered('head', [0, 42.7084, 2.28], [.13, 1.05, .24], 'blade', [-37, 0, 0])
-centered('face_plate', [0, 38.55, -2.06], [1.4, 2.6, 1.1], 'armor', [-24, 0, 0])
-centered('face_plate', [0, 37.3, -3.0], [.77, 1.65, .84], 'blade', [-31, 0, 0])
-centered('face_plate', [0, 36.7, -3.7], [.29, .78, .65], 'edge', [-35, 0, 0])
+# A continuous black cervical frame reaches inside the chest and the new skull.
+# The three floating-looking 1.2 neck pieces are replaced with overlapping
+# collars; the thin recessed seam is the only luminous cervical surface.
+centered('chest', [0, 33.9, .2], [2.4, 2.4, 2.3], 'joint')
+centered('neck', [0, 35.2, .22], [2.02, 4.8, 1.95], 'joint', [-5, 0, 0])
+for y, width in [(33.55, 2.7), (35.1, 2.45), (36.7, 2.15)]:
+    centered('neck', [0, y, .2], [width, .43, 2.22], 'armor', [-8, 0, 0])
 for s in [1, -1]:
-    centered('head', [s * 1.17, 39.25, .08], [.48, 2.65, 2.6], 'armor', [-26, s * 18, s * -20])
-    centered('head', [s * 1.2, 39.72, 1.67], [.35, .5, 3.69], 'blade', [-38, s * 9, s * -17])
-    centered('head', [s * 1.32, 38.82, 3.66], [.18, .27, 2.28], 'blade', [-35, s * 11, s * -14])
-    centered('face_plate', [s * .9, 38.35, -2.31], [1.28, 1.17, .54], 'joint', [-14, s * -25, s * 22])
-    centered('face_plate', [s * .94, 39.03, -2.4], [1.55, .26, .85], 'edge', [-14, s * -18, s * -27])
-    centered('face_plate', [s * 1.07, 37.68, -2.47], [.78, 1.62, .59], 'armor', [-19, s * -24, s * -24])
-    centered('face_plate', [s * .62, 36.8, -2.69], [.55, 1.06, .52], 'metal', [-30, s * -20, s * -24])
-    centered('eye_glow', [s * .85, 38.32, -2.97], [1.07, .115, .105], 'eye', [-12, s * -18, s * -27])
+    centered('neck', [s * .72, 35.2, .78], [.23, 3.7, .3], 'joint', [-7, 0, 0])
+    centered('neck', [s * .93, 35.2, -.14], [.36, 3.05, .78], 'armor', [-14, s * -12, s * -11])
+centered('neck', [0, 35.28, -.805], [.11, 2.65, .11], 'seam', [-5, 0, 0])
 
+# Every 1.2 head/face/eye cube is discarded. The new mask has no exposed nasal
+# bridge, mouth aperture or helmet side walls: five armor families converge on
+# one narrow inverted-triangle ridge. Dark sensor beds hide behind thin brows.
+centered('head', [0, 39.12, .25], [1.03, 2.22, 1.82], 'joint', [-17, 0, 0])
+centered('head', [0, 38.15, .2], [1.14, 1.21, 1.74], 'joint', [-18, 0, 0])
+centered('head', [0, 39.95, .65], [1.23, .72, 2.55], 'joint', [9, 0, 0])
+centered('head', [0, 40.0, -1.05], [1.2, .85, 1.63], 'joint', [-23, 0, 0])
+centered('head', [0, 38.55, -1.24], [1.0, 1.4, 2.2], 'joint', [-20, 0, 0])
+centered('head', [0, 38.32, -2.43], [.82, 1.18, 1.65], 'joint', [-25, 0, 0])
+# This small head-owned axle is concealed inside the neck collars. It crosses
+# the unchanged head pivot, so teleport, stagger, death and look rotations
+# cannot pull the skull entirely off the neck mechanism.
+CERVICAL_HUB = centered('head', [0, 37.1, -.18], [1.12, 3.2, 1.05], 'joint')
+for y, z, width, height, depth in [(39.9, -2.77, .17, 1.1, .35),
+                                   (38.85, -3.25, .14, 1.15, .35),
+                                   (37.91, -3.68, .10, .95, .24)]:
+    centered('face_plate', [0, y, z], [width, height, depth], 'edge', [-25, 0, 0])
 for s in [1, -1]:
-    centered('neck', [s * .97, 34.1, -.03], [.45, 2.35, 1.2], 'armor', [-21, s * -12, s * 19])
-    centered('face_plate', [s * .63, 38.05, -2.53], [.61, 2.93, .31], 'armor', [-23, s * -12, s * 15])
-    centered('head', [s * 1.17, 39.43, 1.92], [.22, .25, 3.88], 'edge', [-32, s * 8, s * -12])
+    # Forehead vanes overlap the ridge and swept cranial chassis, rather than
+    # sitting on a broad horizontal helmet brow.
+    centered('face_plate', [s * .76, 40.18, -1.87], [1.17, .83, 1.13], 'armor',
+             [-25, s * -20, s * 19])
+    centered('face_plate', [s * .64, 39.76, -2.8], [1.03, .16, .46], 'metal',
+             [-24, s * -21, s * 13])
+    # Low cheek facets taper inward toward the tiny closed chin, avoiding a
+    # human jaw line or a segmented mouth-like gap.
+    for x, y, z, width, height in [(.57, 39.25, -2.65, .97, .92),
+                                  (.4, 38.49, -3.08, .73, .93),
+                                  (.2, 37.81, -3.47, .38, .76)]:
+        centered('face_plate', [s * x, y, z], [width, height, .36], 'armor',
+                 [-25, s * -17, s * 13])
+    # The sensor slit itself is 0.055 model units tall. Its black cavity is much deeper
+    # than the emitting insert; the bright insert is never an armor panel.
+    centered('face_plate', [s * .64, 39.56, -2.9], [.98, .17, .29], 'joint',
+             [-24, s * -21, s * 13])
+    centered('eye_glow', [s * .64, 39.565, -3.04], [.73, .055, .07], 'eye',
+             [-24, s * -21, s * 13])
+    centered('head', [s * .8, 39.15, -1.66], [.3, .87, 2.06], 'armor',
+             [-17, s * 25, s * 13])
+    centered('head', [s * .39, 38.1, -2.12], [.24, .58, 2.04], 'metal',
+             [-18, s * 20, s * 19])
+    # Narrow lateral shells run aft into the rear crest, not outward into
+    # helmet cheeks. Their differently angled lower plate covers the neck.
+    for x, y, z, height, depth, rx, ry in [
+            (1.17, 40.02, .45, .66, 2.72, -8, 21),
+            (.89, 39.28, .48, .77, 2.5, -18, 16),
+            (.59, 38.5, .3, .74, 1.85, -26, 14)]:
+        centered('head', [s * x, y, z], [.28, height, depth], 'armor',
+                 [rx, s * ry, s * 23])
+    # Small oblique bridging facets close the seams between the side tiers.
+    centered('head', [s * .86, 39.76, .39], [.45, .49, 2.44], 'metal',
+             [-12, s * 15, s * 28])
+    centered('head', [s * .64, 38.92, .32], [.37, .47, 1.93], 'metal',
+             [-23, s * 16, s * 25])
+    centered('head', [s * .55, 40.47, 1.62], [.38, .55, 2.27], 'blade',
+             [18, s * 13, s * 16])
 
-# Dark cranial spine and overlapping mask facets connect the swept layers into
-# one animal-like cranium rather than a stack of detached ornamental rods.
-centered('head', [0, 39.27, .66], [1.49, 2.7, 2.54], 'joint', [-27, 0, 0])
-centered('head', [0, 40.25, 1.94], [.89, 1.1, 2.34], 'armor', [-34, 0, 0])
+# A single swept sagittal crest replaces the 1.2 vertical antenna-like horns.
+# Narrow overlapping blade segments retain a 2.70-block overall height while
+# the face and skull below are visibly smaller and elongated fore-to-aft.
+centered('head', [0, 40.64, 1.66], [1.18, 1.02, 3.17], 'armor', [19, 0, 0])
+centered('head', [0, 41.37, 3.48], [.77, .7, 3.13], 'blade', [23, 0, 0])
+centered('head', [0, 42.15, 4.85], [.43, .62, 1.78], 'blade', [35, 0, 0])
+centered('head', [0, 42.72, 5.22], [.38, .36, 2.25], 'blade', [16, 0, 0])
+centered('head', [0, 43.0, 6.59], [.12, .17, 1.15], 'edge', [-9, 0, 0])
+centered('head', [0, 39.5, 1.77], [1.12, .33, 2.51], 'armor', [-7, 0, 0])
+
+# Flexible abdominal chassis remains behind both independently animated chest
+# and waist shells. The upper overlapping V plates conceal the waist seam.
+centered('body', [0, 25.0, .15], [3.25, 3.65, 2.64], 'joint')
 for s in [1, -1]:
-    centered('face_plate', [s * .93, 38.47, -2.07], [.49, 2.69, .55], 'metal', [-25, s * -17, s * 19])
-    centered('face_plate', [s * .45, 36.78, -3.16], [.32, 1.12, .47], 'armor', [-29, s * -20, s * 12])
-    centered('neck', [s * .81, 35.22, .58], [.4, 1.7, 1.68], 'armor', [-28, s * 12, s * -16])
+    centered('waist', [s * .88, 25.3, -1.49], [1.85, .65, 1.17], 'armor',
+             [-14, s * -13, s * -24])
 
 # Arms stay on the original shoulder/elbow/wrist rig. Thin upper arms and long
 # tapered blades create the elongated silhouette without moving any joints.
 for side, s in [('left', 1), ('right', -1)]:
     sh, arm, fore, blade, hand = [f'{side}_{n}' for n in ['shoulder', 'arm', 'forearm', 'blade', 'hand']]
+    centered('chest', [s * 4.65, 31, 0], [3.1, 1.6, 2.25], 'joint')
+    centered('chest', [s * 4.37, 31.34, -.84], [.86, .4, 1.74], 'armor',
+             [-14, s * -11, s * -14])
     centered(sh, [s * 5.15, 30.65, .4], [2.15, 2.5, 2.65], 'joint')
+    # Socket axis spans the chest/shoulder seam, with a second sleeve carried
+    # by the upper arm. Both remain centered on the original animated joints.
+    centered(sh, [s * 5.2, 31, 0], [3.45, 1.7, 2.12], 'joint')
+    centered(sh, [s * 5.12, 31.27, -1.03], [2.75, .45, .63], 'armor',
+             [-11, s * -8, s * -12])
+    centered(arm, [s * 5.8, 30, 0], [2.13, 2.05, 2.15], 'joint')
     for i in range(3):
         centered(sh, [s * (5.65 + i * .53), 32.1 - i * .57, 1.1 + i * .85],
                  [1.81 - i * .45, .4, 3.5 - i * .3], 'armor' if i == 0 else 'blade',
@@ -167,6 +219,8 @@ for side, s in [('left', 1), ('right', -1)]:
     centered(arm, [s * 6.58, 25.61, -.1], [1.72, 2.18, 1.83], 'metal', [-8, 0, s * 5])
     centered(arm, [s * 6.85, 23.72, -.49], [2.08, 1.24, 2.08], 'joint')
     centered(arm, [s * 6.75, 23.7, -1.56], [.94, .13, .1], 'seam')
+    centered(fore, [s * 6.8, 23, -.5], [2.48, 1.58, 2.12], 'joint')
+    centered(fore, [s * 6.8, 23, -1.54], [2.12, .91, .44], 'metal', [-14, 0, 0])
     centered(fore, [s * 6.9, 20.1, -1.1], [1.77, 6.05, 1.96], 'joint', [11, 0, s * -3])
     for i in range(3):
         centered(fore, [s * (7.08 + i * .17), 22.43 - i * 1.44, -1.67 - i * .24],
@@ -174,6 +228,8 @@ for side, s in [('left', 1), ('right', -1)]:
                  [17, s * -10, s * -17])
     centered(fore, [s * 7.2, 20.4, .05], [1.81, 3.8, 1.09], 'armor', [10, 0, s * -8])
     centered(fore, [s * 7.28, 21.0, -2.55], [.13, 2.65, .12], 'seam', [17, s * -10, s * -17])
+    centered(fore, [s * 7, 16.45, -2], [1.52, 1.78, 1.62], 'joint')
+    centered(hand, [s * 7, 16, -2], [1.96, .42, 1.93], 'metal', [7, 0, 0])
     # Four overlapping swept main-blade sections create a convex armored spine
     # and a hooked cutting tip, with distinct narrower bevel facets.
     for i, (x, y, z, w, h, d, rx, rz) in enumerate([
@@ -210,6 +266,9 @@ for side, s in [('left', 1), ('right', -1)]:
 # the tibia slopes back to a fine hock before the long low three-clawed foot.
 for side, s in [('left', 1), ('right', -1)]:
     leg, shin, foot = [f'{side}_{n}' for n in ['leg', 'lower_leg', 'foot']]
+    centered(leg, [s * 2.8, 22, .5], [2.25, 2.08, 2.4], 'joint')
+    centered('waist', [s * 3.65, 22.3, .5], [.42, 2.22, 2.3], 'armor',
+             [-12, s * 10, s * -8])
     centered(leg, [s * 2.85, 18.27, -.16], [2.04, 7.4, 2.21], 'joint', [-12, 0, s * -2])
     for i in range(3):
         centered(leg, [s * (3.0 + i * .055), 20.49 - i * 2.02, -1.09 - i * .22],
@@ -220,6 +279,8 @@ for side, s in [('left', 1), ('right', -1)]:
     centered(leg, [s * 3.09, 14.37, -2.17], [2.32, 1.46, .8], 'blade', [-22, 0, 0])
     centered(leg, [s * 3.09, 14.71, -2.4], [.61, 1.09, .65], 'edge', [-31, 0, 0])
     centered(leg, [s * 3.02, 17.65, -1.89], [.12, 2.18, .1], 'seam', [-17, s * -5, s * -11])
+    centered(shin, [s * 3.1, 13, -1], [2.0, 1.81, 1.9], 'joint')
+    centered(shin, [s * 3.1, 13.0, -1.99], [2.14, .93, .45], 'metal', [-14, 0, 0])
     centered(shin, [s * 3.1, 8.7, .56], [1.16, 9.29, 1.46], 'joint', [23, 0, 0])
     for i in range(3):
         centered(shin, [s * 3.1, 11.42 - i * 2.19, -.32 + i * .93],
@@ -229,6 +290,8 @@ for side, s in [('left', 1), ('right', -1)]:
     centered(shin, [s * 3.1, 6.09, 3.71], [.49, 2.71, 1.55], 'blade', [-33, 0, 0])
     centered(shin, [s * 3.93, 10.48, 1.51], [.31, 3.3, 1.58], 'blade', [-19, 0, s * -13])
     centered(shin, [s * 3.1, 10.2, -.44], [.12, 2.6, .1], 'seam', [25, 0, 0])
+    centered(shin, [s * 3.1, 4, 2], [1.45, 1.65, 1.85], 'joint')
+    centered(foot, [s * 3.1, 4.05, 2], [1.8, .38, 2.1], 'metal', [8, 0, 0])
     centered(foot, [s * 3.1, 3.55, 1.68], [1.65, 2.62, 2.34], 'joint', [17, 0, 0])
     centered(foot, [s * 3.1, 1.83, -.3], [2.1, 1.62, 4.6], 'armor', [13, 0, 0])
     centered(foot, [s * 3.1, 2.15, -1.1], [1.72, .62, 2.7], 'metal', [18, 0, 0])
@@ -411,7 +474,8 @@ FACE_VERTS = {
 }
 
 
-def preview(yaw, pitch, width=600, height=740):
+def preview(yaw, pitch, width=600, height=740, *, materials=None,
+            texture=None, glow_texture=None, focus=None, pixels_per_unit=None):
     """Z-buffer each textured triangle at 2x, then downsample for inspection."""
     aa = 2
     width, height = width * aa, height * aa
@@ -421,16 +485,19 @@ def preview(yaw, pitch, width=600, height=740):
     emissive = np.zeros((height, width, 4), dtype=np.uint8)
     camera = rot_xyz([pitch, yaw, 0])
     # camera looks at the negative Z facade and sees larger camera-space Z.
-    scale = 13.4 * aa * (height / (740 * aa))
+    scale = (pixels_per_unit or 13.4 * (height / (740 * aa))) * aa
     light = np.array([-.5, .8, .65])
     light /= np.linalg.norm(light)
-    tex = np.asarray(base)
-    glowtex = np.asarray(glow)
-    for c, mat, owner in MATERIALS:
+    tex = np.asarray(texture if texture is not None else base)
+    glowtex = np.asarray(glow_texture if glow_texture is not None else glow)
+    for c, mat, owner in materials if materials is not None else MATERIALS:
         v = vertices(c)
+        if focus is not None:
+            v = v - np.array(focus)
         camera_v = v @ camera.T
+        baseline = height * .58 if focus is not None else height - (78 / 740) * height
         screen = np.column_stack([width / 2 + camera_v[:, 0] * scale,
-                                  height - (78 / 740) * height - camera_v[:, 1] * scale,
+                                  baseline - camera_v[:, 1] * scale,
                                   camera_v[:, 2]])
         for face, indices in FACE_VERTS.items():
             # The reverse front-facing camera transform below works with no
@@ -494,6 +561,24 @@ def preview(yaw, pitch, width=600, height=740):
     return image.resize((width // aa, height // aa), Image.Resampling.LANCZOS)
 
 
+def reference_120():
+    """Load exact 1.2 assets for matched cameras; never synthesize old images."""
+    baseline = ROOT / 'build/remake-1.3/baseline'
+    commit = 'a993aa4142e2c23c7e3af3bfccca368cfdeed592'
+
+    def read(filename, source):
+        local = baseline / filename
+        return local.read_bytes() if local.exists() else subprocess.check_output(
+            ['git', 'show', f'{commit}:src/main/resources/assets/apexpredator/{source}'], cwd=ROOT)
+
+    old_geometry = json.loads(read('apex.geo.json', 'geo/apex.geo.json'))
+    old_materials = [(c, 'reference', b['name']) for b in
+                     old_geometry['minecraft:geometry'][0]['bones'] for c in b.get('cubes', [])]
+    old_base = Image.open(BytesIO(read('apex.png', 'textures/entity/apex.png'))).convert('RGBA')
+    old_glow = Image.open(BytesIO(read('apex_glow.png', 'textures/entity/apex_glow.png'))).convert('RGBA')
+    return old_materials, old_base, old_glow
+
+
 if __name__ == '__main__':
     output = ROOT / 'build/art'
     output.mkdir(parents=True, exist_ok=True)
@@ -510,7 +595,7 @@ if __name__ == '__main__':
     except OSError:
         font = title = ImageFont.load_default()
     draw.text((35, 15), 'A P E X   /   P R E D A T O R', font=title, fill=(225, 233, 240))
-    draw.text((35, 55), '1.2 concept remake  |  2.70 blocks  |  unchanged 28-bone animation rig',
+    draw.text((35, 55), '1.3 predator mask + articulated joint sleeves | 2.70 blocks | original 28-bone rig',
               font=font, fill=(143, 156, 169))
     for i, (label, yaw, pitch) in enumerate(views):
         sheet.paste(preview(yaw, pitch), (600 * i, 90))
@@ -519,17 +604,66 @@ if __name__ == '__main__':
     visual_dir = ROOT / 'docs/visuals'
     visual_dir.mkdir(parents=True, exist_ok=True)
     for label, yaw in [('front', 180), ('side', 90), ('back', 0)]:
-        preview(yaw, 0, 900, 1100).save(visual_dir / f'apex-1.2-{label}.png')
-    sheet.save(visual_dir / 'apex-1.2-turnaround.png')
+        preview(yaw, 0, 900, 1100).save(visual_dir / f'apex-1.3-{label}.png')
+    sheet.save(visual_dir / 'apex-1.3-turnaround.png')
+    old_materials, old_base, old_glow = reference_120()
+    matched_focus = (0, 38.8, 1.0)
+    comparison = Image.new('RGB', (2700, 1760), (13, 18, 24))
+    comparison_draw = ImageDraw.Draw(comparison)
+    for i, (label, yaw) in enumerate([('front', 180), ('side', 90), ('45deg', 135)]):
+        options = dict(width=900, height=800, focus=matched_focus, pixels_per_unit=68)
+        new_head = preview(yaw, 0, **options)
+        old_head = preview(yaw, 0, materials=old_materials, texture=old_base,
+                           glow_texture=old_glow, **options)
+        new_head.save(visual_dir / f'apex-1.3-head-{label}.png')
+        comparison.paste(old_head, (900 * i, 55))
+        comparison.paste(new_head, (900 * i, 935))
+        comparison_draw.text((900 * i + 25, 18), f'1.2 / {label.upper()} / original assets',
+                             font=font, fill=(181, 191, 204))
+        comparison_draw.text((900 * i + 25, 895), f'1.3 / {label.upper()} / new mask',
+                             font=font, fill=(245, 122, 48))
+        pair = Image.new('RGB', (1800, 855), (13, 18, 24))
+        pair.paste(old_head, (0, 55))
+        pair.paste(new_head, (900, 55))
+        pair_draw = ImageDraw.Draw(pair)
+        pair_draw.text((25, 18), f'1.2 / {label.upper()}', font=font, fill=(181, 191, 204))
+        pair_draw.text((925, 18), f'1.3 / {label.upper()}', font=font, fill=(245, 122, 48))
+        pair.save(visual_dir / f'apex-1.2-vs-1.3-head-{label}.png')
+    comparison.save(visual_dir / 'apex-1.2-vs-1.3-head-comparison.png')
+    body_comparison = Image.new('RGB', (1800, 1155), (13, 18, 24))
+    body_comparison.paste(preview(180, 0, 900, 1100, materials=old_materials,
+                                texture=old_base, glow_texture=old_glow), (0, 55))
+    body_comparison.paste(preview(180, 0, 900, 1100), (900, 55))
+    body_draw = ImageDraw.Draw(body_comparison)
+    body_draw.text((25, 18), '1.2 / SAME NEUTRAL RIG / FRONT', font=font, fill=(181, 191, 204))
+    body_draw.text((925, 18), '1.3 / CONTINUOUS ARTICULATED JOINTS', font=font, fill=(245, 122, 48))
+    body_comparison.save(visual_dir / 'apex-1.2-vs-1.3-front.png')
     base.resize((1024, 1024), Image.Resampling.NEAREST).save(output / 'apex-atlas.png')
     glow.resize((1024, 1024), Image.Resampling.NEAREST).save(output / 'apex-glow-atlas.png')
     allv = np.concatenate([vertices(c) for c, _, _ in MATERIALS])
+    cranial_names = {'head', 'face_plate', 'eye_glow'}
+    old_head_v = np.concatenate([vertices(c) for c, _, n in old_materials if n in cranial_names])
+    new_head_v = np.concatenate([vertices(c) for c, _, n in MATERIALS
+                                 if n in cranial_names and c is not CERVICAL_HUB])
+    old_head_size = np.ptp(old_head_v, axis=0)
+    new_head_size = np.ptp(new_head_v, axis=0)
+    raw_head_v = np.concatenate([vertices(c) for c, _, n in MATERIALS if n in cranial_names])
     metrics = {
         'bones': len(BONES), 'cubes': len(MATERIALS), 'quads': len(MATERIALS) * 6,
         'atlas_size': SIZE, 'atlas_last_row': cursor_y + shelf,
         'bounds_min_pixels': np.min(allv, axis=0).round(3).tolist(),
         'bounds_max_pixels': np.max(allv, axis=0).round(3).tolist(),
         'emissive_pixels': int(np.count_nonzero(np.asarray(glow)[:, :, 3])),
+        'head_1_2_size_pixels': old_head_size.round(4).tolist(),
+        'head_1_3_size_pixels': new_head_size.round(4).tolist(),
+        'head_size_change_percent': ((new_head_size / old_head_size - 1) * 100).round(2).tolist(),
+        'head_size_measurement': 'cranial silhouette; concealed neck-pivot axle excluded',
+        'head_1_3_all_geometry_size_pixels': np.ptp(raw_head_v, axis=0).round(4).tolist(),
+        'cervical_hub_bounds_min_pixels': vertices(CERVICAL_HUB).min(0).round(4).tolist(),
+        'cervical_hub_bounds_max_pixels': vertices(CERVICAL_HUB).max(0).round(4).tolist(),
+        'head_cubes_1_2': sum(n in cranial_names for c, _, n in old_materials),
+        'head_cubes_1_3': sum(n in cranial_names for c, _, n in MATERIALS),
+        'preserved_head_cube_definitions': 0,
         'hierarchy': [{'name': b['name'], 'parent': b.get('parent'), 'pivot': b['pivot']} for b in BONES],
     }
     (output / 'apex-model-metrics.json').write_text(json.dumps(metrics, indent=2) + '\n')

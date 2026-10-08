@@ -1,5 +1,7 @@
 package dev.apexpredator.combat;
 
+import com.mojang.logging.LogUtils;
+import dev.apexpredator.ApexConfig;
 import dev.apexpredator.entity.ApexBoltEntity;
 import dev.apexpredator.entity.ApexEntity;
 import dev.apexpredator.effect.ApexEffects;
@@ -18,10 +20,13 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,12 +48,21 @@ public final class AttackManager {
     private boolean launched;
     private boolean meleeLeft;
     private boolean dodgeBackstep;
+    private AttackType committedAttack;
+    private AttackArea attackArea;
+    private Vec3 slamTarget;
+    private Vec3 actualLanding;
+    private Vec3 damageCenter;
+    private boolean slamTargetValid;
+    private boolean jumpOwnsGravity;
+    private boolean previousNoGravity;
 
     public AttackManager(ApexEntity apex) {
         this.apex = apex;
     }
 
     public void begin(AttackType attack, LivingEntity target) {
+        restoreJumpGravity();
         struck.clear();
         executionDamage.clear();
         launched = false;
@@ -56,6 +70,22 @@ public final class AttackManager {
         stopHorizontalMotion();
         origin = apex.position();
         targetSnapshot = target.position();
+        committedAttack = attack;
+        attackArea = null;
+        slamTarget = null;
+        actualLanding = null;
+        damageCenter = null;
+        slamTargetValid = false;
+        if (attack == AttackType.JUMP) {
+            var ground = SlamTargetResolver.resolve(apex, targetSnapshot);
+            slamTargetValid = ground.isPresent();
+            slamTarget = ground.orElse(targetSnapshot);
+            attackArea = AttackArea.ground(slamTarget, 5);
+        } else if (attack == AttackType.SHOCKWAVE || attack == AttackType.PULL) {
+            attackArea = AttackArea.ground(origin, attack == AttackType.PULL || apex.getPhase() == 3 ? 10 : 6);
+        } else if (attack == AttackType.SPECIAL) {
+            attackArea = AttackArea.ground(origin, EXECUTION_RADIUS);
+        }
         direction = targetSnapshot.subtract(origin).multiply(1, 0, 1).normalize();
         if (direction.lengthSqr() < 0.001) direction = apex.getLookAngle().multiply(1, 0, 1).normalize();
         strafeSign = apex.getRandom().nextBoolean() ? 1 : -1;
@@ -77,13 +107,12 @@ public final class AttackManager {
                 effect(EffectKind.CHARGE_PREPARE, origin, direction, 2, windup);
                 ApexSounds.play(apex, "charge_start");
             }
-            case JUMP -> effect(EffectKind.WARNING_RING, targetSnapshot, direction, 5, windup + 45);
-            case SHOCKWAVE, PULL -> effect(EffectKind.WARNING_RING, origin, direction,
-                    attack == AttackType.PULL || apex.getPhase() == 3 ? 10 : 6, windup);
+            case JUMP -> areaEffect(EffectKind.WARNING_RING, windup + 45);
+            case SHOCKWAVE, PULL -> areaEffect(EffectKind.WARNING_RING, windup);
             case TELEPORT, MIRAGE -> effect(EffectKind.TELEPORT_OUT, origin, direction, 2, windup);
             case RANGED -> effect(EffectKind.RANGED_PREPARE, origin, direction, 2, windup);
             case SPECIAL -> {
-                effect(EffectKind.SPECIAL_PREPARE, origin, direction, EXECUTION_RADIUS, windup);
+                areaEffect(EffectKind.SPECIAL_PREPARE, windup);
                 ApexSounds.play(apex, "special_charge");
             }
             default -> {
@@ -95,12 +124,18 @@ public final class AttackManager {
 
     /** Includes the windup. Returns true only when this attack's active interval ends. */
     public boolean tick(AttackType attack, LivingEntity target, int elapsed) {
-        if (apex.level().isClientSide || !validVictim(target)) return true;
+        if (apex.level().isClientSide || !validVictim(target)) {
+            restoreJumpGravity();
+            return true;
+        }
         apex.getNavigation().stop();
+        if (attack == AttackType.JUMP) stopOrdinaryMovement();
         int windup = attack == AttackType.MELEE
                 ? Math.max(4, attack.telegraphTicks() - 2 * (apex.getPhase() - 1))
                 : attack.telegraphTicks();
-        if (attack != AttackType.SPECIAL && attack != AttackType.CHARGE && attack != AttackType.FEINT) {
+        if (attack == AttackType.JUMP && slamTarget != null) {
+            apex.getLookControl().setLookAt(slamTarget.x, slamTarget.y + 1, slamTarget.z, 30, 30);
+        } else if (attack != AttackType.SPECIAL && attack != AttackType.CHARGE && attack != AttackType.FEINT) {
             apex.getLookControl().setLookAt(target, 30, 30);
         } else if (attack != AttackType.SPECIAL) face(direction);
         if (elapsed < windup) {
@@ -128,11 +163,34 @@ public final class AttackManager {
     }
 
     public void cancel() {
+        restoreJumpGravity();
         apex.getNavigation().stop();
         stopHorizontalMotion();
         struck.clear();
         executionDamage.clear();
         launched = false;
+    }
+
+    public AttackArea getAttackArea() { return attackArea; }
+    public Vec3 getSlamTarget() { return slamTarget; }
+    public Vec3 getActualLanding() { return actualLanding; }
+    public Vec3 getDamageCenter() { return damageCenter; }
+    public double getLandingError() {
+        return actualLanding == null || slamTarget == null ? Double.NaN : actualLanding.distanceTo(slamTarget);
+    }
+    public boolean isJumpCommitted() { return committedAttack == AttackType.JUMP && slamTargetValid && actualLanding == null; }
+
+    public String debugSummary(LivingEntity target) {
+        if (attackArea == null) return "";
+        String area = String.format(Locale.ROOT,
+                " Attack=%s WarningCenter=%s DamageCenter=%s radius=%.2f playerDistance=%.2f YDifference=%.2f InsideHitbox=%s",
+                committedAttack, coordinates(attackArea.center()), coordinates(damageCenter), attackArea.radius(),
+                target == null ? Double.NaN : attackArea.horizontalDistance(target.getBoundingBox()),
+                target == null ? Double.NaN : target.getY() - attackArea.center().y,
+                target != null && attackArea.intersects(target.getBoundingBox()));
+        return slamTarget == null ? area : area + String.format(Locale.ROOT,
+                " SlamTarget=%s ActualLanding=%s LandingError=%.3f", coordinates(slamTarget),
+                coordinates(actualLanding), getLandingError());
     }
 
     private boolean melee(LivingEntity target, int elapsed, int windup) {
@@ -203,27 +261,81 @@ public final class AttackManager {
         // The deliberate landing attack should not trigger health-loss evasion against itself.
         apex.fallDistance = 0;
         if (!launched) {
+            if (!slamTargetValid) {
+                logSlam(target);
+                return true;
+            }
             launched = true;
-            Vec3 delta = targetSnapshot.subtract(apex.position());
-            Vec3 horizontal = delta.multiply(1, 0, 1);
-            double speed = Math.min(0.9, horizontal.length() / 13.0);
-            Vec3 velocity = horizontal.normalize().scale(speed)
-                    .add(0, Math.min(1.25, 0.85 + Math.max(0, delta.y) * 0.07), 0);
-            apex.setDeltaMovement(velocity);
+            Vec3 delta = slamTarget.subtract(apex.position());
+            double lift = Math.min(1.25, 0.85 + Math.max(0, delta.y) * 0.07);
+            previousNoGravity = apex.isNoGravity();
+            jumpOwnsGravity = true;
+            apex.setNoGravity(false);
+            apex.setDeltaMovement(0, lift, 0);
             apex.hurtMarked = true;
             apex.playVisual("jump", 45);
             sound(SoundEvents.ENDER_DRAGON_FLAP, 1, 0.7F);
         }
         if (active >= 5 && apex.onGround()) {
+            actualLanding = apex.position();
+            restoreJumpGravity();
+            // A wall or newly placed obstacle may stop the body far from the warning.
+            // Cancel that blocked landing rather than damaging an unreachable remote area.
+            if (getLandingError() > 1.25) {
+                stopHorizontalMotion();
+                logSlam(target);
+                return true;
+            }
             apex.playVisual("slam", 12);
-            effect(EffectKind.SLAM, apex.position(), direction, 5, 18);
+            areaEffect(EffectKind.SLAM, 18);
             ApexSounds.play(apex, "slam");
-            ApexTerrainEffects.slam(apex);
-            shockwave(target, 5, 16, 1.2);
+            ApexTerrainEffects.slam(apex, slamTarget);
+            shockwave(target, 16, 1.2);
             stopHorizontalMotion();
+            logSlam(target);
             return true;
         }
-        return active > 45;
+        if (active > 45) {
+            restoreJumpGravity();
+            stopHorizontalMotion();
+            logSlam(target);
+            return true;
+        }
+        // Recompute remaining flight from actual height/vertical speed and Forge gravity.
+        // Only the horizontal correction changes: the committed target never follows a player.
+        int remaining = remainingFlightTicks(active);
+        Vec3 delta = slamTarget.subtract(apex.position()).multiply(1, 0, 1);
+        Vec3 horizontal = delta.scale(1.0 / remaining);
+        if (horizontal.lengthSqr() > 1.4 * 1.4) horizontal = horizontal.normalize().scale(1.4);
+        move(horizontal);
+        return false;
+    }
+
+    private int remainingFlightTicks(int active) {
+        double y = apex.getY();
+        double velocity = apex.getDeltaMovement().y;
+        double gravity = Math.max(0.001, apex.getAttributeValue(ForgeMod.ENTITY_GRAVITY.get()));
+        for (int step = 1; step <= Math.max(1, 46 - active); step++) {
+            y += velocity;
+            if (velocity < 0 && y <= slamTarget.y + 0.001) return step;
+            velocity = (velocity - gravity) * 0.98;
+        }
+        return Math.max(1, 46 - active);
+    }
+
+    private void stopOrdinaryMovement() {
+        apex.getNavigation().stop();
+        apex.getMoveControl().setWantedPosition(apex.getX(), apex.getY(), apex.getZ(), 0);
+        apex.setSpeed(0);
+        apex.xxa = 0;
+        apex.zza = 0;
+    }
+
+    private void restoreJumpGravity() {
+        if (jumpOwnsGravity) {
+            apex.setNoGravity(previousNoGravity);
+            jumpOwnsGravity = false;
+        }
     }
 
     private boolean teleportAttack(LivingEntity target, int elapsed, int windup) {
@@ -252,8 +364,7 @@ public final class AttackManager {
     private boolean shockwaveAttack(LivingEntity target, int elapsed, int windup) {
         if (elapsed == windup) {
             apex.playVisual("shockwave_attack", 10);
-            shockwave(target, apex.getPhase() == 3 ? 10 : 6,
-                    apex.getPhase() == 3 ? 18 : 14, 1.3);
+            shockwave(target, apex.getPhase() == 3 ? 18 : 14, 1.3);
         }
         return elapsed >= windup + 4;
     }
@@ -271,11 +382,14 @@ public final class AttackManager {
 
     private boolean pull(LivingEntity target, int elapsed, int windup) {
         if (elapsed == windup) {
-            for (LivingEntity victim : victims(apex.getBoundingBox().inflate(10, 5, 10), target)) {
-                Vec3 delta = apex.position().subtract(victim.position()).multiply(1, 0, 1);
+            damageCenter = attackArea.center();
+            logArea(target);
+            for (LivingEntity victim : victims(attackArea.bounds(), target)) {
+                Vec3 delta = attackArea.center().subtract(victim.position()).multiply(1, 0, 1);
                 double distance = delta.length();
                 // Stop at a four-block gap and leave the full recovery window to escape.
-                if (distance > 4 && distance <= 10 && apex.hasLineOfSight(victim)) {
+                if (victim != target) logArea(victim);
+                if (distance > 4 && attackArea.intersects(victim.getBoundingBox()) && areaHasLineOfSight(victim)) {
                     victim.setDeltaMovement(victim.getDeltaMovement().add(
                             delta.normalize().scale(Math.min(0.75, (distance - 4) * 0.12))).add(0, 0.12, 0));
                     victim.hurtMarked = true;
@@ -283,7 +397,7 @@ public final class AttackManager {
             }
             sound(SoundEvents.ENDERMAN_SCREAM, 1, 0.65F);
             apex.playVisual("shockwave_attack", 8);
-            effect(EffectKind.SHOCKWAVE, apex.position(), direction, 10, 16);
+            areaEffect(EffectKind.SHOCKWAVE, 16);
         }
         return elapsed >= windup + 3;
     }
@@ -314,7 +428,7 @@ public final class AttackManager {
             face(lane);
             if (stageTick == 0) {
                 if (stage > 0) safeTeleport(origin, false);
-                effect(EffectKind.SPECIAL_SLASH, origin, lane, EXECUTION_RADIUS, 10);
+                effect(EffectKind.SPECIAL_SLASH, attackArea.center(), lane, (float) attackArea.radius(), 10);
                 effect(EffectKind.CHARGE_TRAIL, apex.position(), lane, 2, 6);
                 ApexSounds.play(apex, "blade_swing");
                 damageExecution(target, lane, 0.93, 8);
@@ -326,13 +440,13 @@ public final class AttackManager {
             face(direction);
             if (active == 36) safeTeleport(origin, false);
             if (active == EXECUTION_X_TICK) {
-                effect(EffectKind.SPECIAL_FINISH, origin, direction, EXECUTION_RADIUS, 18);
+                areaEffect(EffectKind.SPECIAL_FINISH, 18);
                 ApexSounds.play(apex, "special_attack");
                 // An X has two diagonal axes, leaving four visible gaps between the blades.
                 damageExecution(target, rotateHorizontal(direction, Math.PI / 4), 0.96, 10, true);
             }
             if (active == EXECUTION_SHOCKWAVE_TICK) {
-                effect(EffectKind.SHOCKWAVE, origin, direction, EXECUTION_RADIUS, 18);
+                areaEffect(EffectKind.SHOCKWAVE, 18);
                 ApexSounds.play(apex, "shockwave");
                 damageExecution(target, direction, -1, 8);
             }
@@ -355,11 +469,13 @@ public final class AttackManager {
     }
 
     private void damageExecution(LivingEntity target, Vec3 lane, double minimumDot, float damage, boolean cross) {
-        for (LivingEntity victim : victims(new AABB(origin, origin).inflate(EXECUTION_RADIUS, 5, EXECUTION_RADIUS), target)) {
-            Vec3 delta = victim.position().subtract(origin);
+        damageCenter = attackArea.center();
+        logArea(target);
+        for (LivingEntity victim : victims(attackArea.bounds(), target)) {
+            Vec3 delta = victim.position().subtract(attackArea.center());
             Vec3 horizontal = delta.multiply(1, 0, 1);
-            if (horizontal.lengthSqr() > EXECUTION_RADIUS * EXECUTION_RADIUS || Math.abs(delta.y) > 4
-                    || !specialHasLineOfSight(victim)) continue;
+            if (victim != target) logArea(victim);
+            if (!attackArea.intersects(victim.getBoundingBox()) || !areaHasLineOfSight(victim)) continue;
             Vec3 offset = horizontal.normalize();
             boolean inLane = horizontal.lengthSqr() < 0.01 || offset.dot(lane) >= minimumDot;
             if (cross && horizontal.lengthSqr() >= 0.01) {
@@ -373,7 +489,7 @@ public final class AttackManager {
             if (bounded > 0 && victim.hurt(apex.damageSources().mobAttack(apex), bounded)) {
                 executionDamage.merge(victim.getId(), bounded, Float::sum);
                 hitEffect(victim, cross || minimumDot < 0 ? 3 : 1.5F);
-                if (minimumDot < 0) knockback(victim, 1.2);
+                if (minimumDot < 0) areaKnockback(victim, 1.2);
             }
         }
     }
@@ -461,28 +577,35 @@ public final class AttackManager {
         if (attack == AttackType.SPECIAL && elapsed == 24) ApexSounds.play(apex, "special_charge");
     }
 
-    private void shockwave(LivingEntity target, double radius, float damage, double strength) {
-        effect(EffectKind.SHOCKWAVE, apex.position(), direction, (float) radius, 18);
+    private void shockwave(LivingEntity target, float damage, double strength) {
+        damageCenter = attackArea.center();
+        logArea(target);
+        areaEffect(EffectKind.SHOCKWAVE, 18);
         ApexSounds.play(apex, "shockwave");
-        for (LivingEntity victim : victims(apex.getBoundingBox().inflate(radius, 3, radius), target)) {
-            Vec3 delta = victim.position().subtract(apex.position());
-            if (delta.horizontalDistanceSqr() <= radius * radius && Math.abs(delta.y) < 3.5
-                    && apex.hasLineOfSight(victim)) {
+        for (LivingEntity victim : victims(attackArea.bounds(), target)) {
+            if (victim != target) logArea(victim);
+            if (attackArea.intersects(victim.getBoundingBox()) && areaHasLineOfSight(victim)) {
                 if (victim.hurt(apex.damageSources().mobAttack(apex), damage)) {
                     hitEffect(victim, 2);
-                    knockback(victim, strength);
+                    areaKnockback(victim, strength);
                 }
             }
         }
     }
 
     private List<LivingEntity> victims(AABB box, LivingEntity target) {
-        return apex.level().getEntitiesOfClass(LivingEntity.class, box,
-                entity -> entity != apex && validVictim(entity) && (entity == target || entity instanceof Player));
+        List<LivingEntity> result = new ArrayList<>(apex.level().getEntitiesOfClass(LivingEntity.class, box,
+                entity -> entity != apex && validVictim(entity) && (entity == target || entity instanceof Player)));
+        // Mock players and Forge-controlled primary targets need not be inserted in the world's query index.
+        if (target != apex && validVictim(target) && box.intersects(target.getBoundingBox()) && !result.contains(target)) {
+            result.add(target);
+        }
+        return result;
     }
 
     private boolean validVictim(LivingEntity target) {
-        return target != null && target.isAlive() && !target.isSpectator()
+        return target != null && target.isAlive() && !target.isRemoved() && !target.isSpectator()
+                && target.level() == apex.level()
                 && (!(target instanceof Player player) || !player.isCreative());
     }
 
@@ -490,8 +613,8 @@ public final class AttackManager {
         return apex.distanceToSqr(target) <= radius * radius;
     }
 
-    private boolean specialHasLineOfSight(LivingEntity target) {
-        Vec3 source = origin.add(0, 1.2, 0);
+    private boolean areaHasLineOfSight(LivingEntity target) {
+        Vec3 source = attackArea.center().add(0, 1.2, 0);
         return apex.level().clip(new ClipContext(source, target.getEyePosition(),
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, apex)).getType()
                 == net.minecraft.world.phys.HitResult.Type.MISS;
@@ -500,6 +623,27 @@ public final class AttackManager {
     private void knockback(LivingEntity target, double strength) {
         target.knockback(strength, apex.getX() - target.getX(), apex.getZ() - target.getZ());
         target.hurtMarked = true;
+    }
+
+    private void areaKnockback(LivingEntity target, double strength) {
+        target.knockback(strength, attackArea.center().x - target.getX(), attackArea.center().z - target.getZ());
+        target.hurtMarked = true;
+    }
+
+    private void areaEffect(EffectKind kind, int duration) {
+        effect(kind, attackArea.center(), direction, (float) attackArea.radius(), duration);
+    }
+
+    private void logArea(LivingEntity target) {
+        if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info("[APEX AREA DEBUG] Apex {}{}", apex.getId(), debugSummary(target));
+    }
+
+    private void logSlam(LivingEntity target) {
+        if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info("[APEX SLAM DEBUG] Apex {}{}", apex.getId(), debugSummary(target));
+    }
+
+    private static String coordinates(Vec3 position) {
+        return position == null ? "pending" : String.format(Locale.ROOT, "(%.3f,%.3f,%.3f)", position.x, position.y, position.z);
     }
 
     private void stopHorizontalMotion() {
