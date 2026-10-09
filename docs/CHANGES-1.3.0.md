@@ -1,8 +1,10 @@
 # Apex Predator 1.3.0
 
+その後の[BGM改修](BOSS-MUSIC.md)では、提供曲 **The Stalking Motif** をOGGへ変換し、実際の交戦中にだけ流れる単一RECORDSループへ更新しました。バージョンは1.3.0のままです。[改修前の回復検証](VALIDATION-1.3.0-healing.md)と[現在の検証](../VALIDATION.md)を保持しています。
+
 Minecraft 1.20.1 / Forge 47.4.10 / Java 17。1.2.0 のモデルと戦闘を基に、頭部・関節の外観、円形予告とダメージ、ジャンプ着地の位置合わせを修正しました。1.2.0 はコミット `a993aa4142e2c23c7e3af3bfccca368cfdeed592`、今回の作業は `feature/apex-1.3.0` に保持しています。
 
-後続の1.3.0更新では、ここで制作したモデル・戦闘を保持して [Phase 3自己回復](PHASE3-HEALING.md) を追加しました。[外観・判定改修時の検証記録](VALIDATION-1.3.0-visuals.md)も保存しています。最新の回復検証と配布jarはルートのVALIDATION.mdを参照してください。
+後続の1.3.0更新では、ここで制作したモデル・戦闘を保持して [Phase 3自己回復](PHASE3-HEALING.md) を追加しました。[外観・判定改修時の検証記録](VALIDATION-1.3.0-visuals.md)も保存しています。最新のBGM・回復検証と配布jarはルートのVALIDATION.mdを参照してください。
 
 ## 頭部と関節
 

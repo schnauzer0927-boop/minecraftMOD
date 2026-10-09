@@ -55,6 +55,6 @@ Forgeの`LivingHealEvent`を一度だけ発火し、キャンセルを尊重し�
 
 CombatController、AttackManager、PhaseManager、TaCZ連携、円形判定、固定slamTarget、APEX EXECUTION、37アニメーション、geometry、装甲・通常発光テクスチャの保護対象は追加前とバイト単位で一致します。DamageTrackerとApexEntityには回復用の時計と処理を追加し、既存の瞬殺防止の計算・挙動を維持しています。回復で新しい攻撃モーションや技のタイミングは追加していません。
 
-回復の同期データと新しい効果種類を追加したため、Apexの通信プロトコルを2へ更新しました。マルチプレイではクライアント・サーバー双方を今回の回復追加jarへ入れ替えてください。更新前1.3.0との混在は接続時に拒否し、不明な同期データによる不具合を防ぎます。TaCZは従来どおり任意、GeckoLib 4.4.9 Forge版は必須です。
+回復追加時にApexの通信プロトコルを2へ更新し、その後の[BGM改修](BOSS-MUSIC.md)で戦闘対象の同期を追加して3へ更新しました。マルチプレイではクライアント・サーバー双方を現在の追加jarへ入れ替えてください。更新前1.3.0との混在は接続時に拒否し、不明な同期データによる不具合を防ぎます。TaCZは従来どおり任意、GeckoLib 4.4.9 Forge版は必須です。
 
 `/apex debug`と`debug=true`には、HP・回復状態・視覚状態・server tick・lastDamageTick・healingReadyTick・nextHealTickを追加しました。試験結果、配布jarとハッシュ、実クライアント画像は [VALIDATION.md](../VALIDATION.md) に記録します。追加前の外観・戦闘検証は [旧1.3.0記録](VALIDATION-1.3.0-visuals.md) に保存しました。

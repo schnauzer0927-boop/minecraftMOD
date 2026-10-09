@@ -89,7 +89,13 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `cameraShake` | true。短い距離減衰付きシェイク |
 | `afterImages` | true。高速移動と幻影の半透明モデル |
 | `screenEffects` | true。画面の縁の光と必殺技の表示 |
-| `bossMusic` | true。近くの生存 Apex に専用ループ音楽 |
+| `bossMusic` | true。近くでプレイヤーと交戦中のApexに専用ループ音楽 |
+
+専用BGMはユーザー提供の **The Stalking Motif**。`apexpredator:boss_music`としてステレオOGGをストリーミングし、RECORDSカテゴリ（「ジュークボックス／音符ブロック」）で音量を調整できます。マスターとRECORDSの両方を反映し、初期音量は0.22です。曲は最後まで再生すると同じ音源でループし、複数のApexが交戦していても1曲だけ流します。
+
+近くにいるだけの非戦闘ボスやNoAI個体では流れません。戦闘終了、ボス・プレイヤーの死亡、64ブロックの音響範囲からの離脱、デスポーン、ワールド退出・ディメンション移動、消音で停止します。近くの別ボスとの交戦が続く場合は同じ曲を保持します。再戦・消音解除時は先頭から再生します。[BGMの仕組み・変更ファイル](docs/BOSS-MUSIC.md)に詳細を記録しています。
+
+マルチプレイでは両側を今回のBGM追加jarへ更新してください。戦闘対象の同期フィールド追加により通信プロトコルを3へ更新しており、追加前1.3.0との混在は接続時に拒否します。
 
 [正面](docs/visuals/apex-1.3-front.png)・[側面](docs/visuals/apex-1.3-side.png)・[背面](docs/visuals/apex-1.3-back.png)・[四方向プレビュー](docs/visuals/apex-1.3-turnaround.png)・[頭部比較](docs/visuals/apex-1.2-vs-1.3-head-comparison.png)・[実ゲーム全身](docs/visuals/apex-1.3-ingame.png)・[実ゲーム頭部](docs/visuals/apex-1.3-head-ingame.png)・[変更ファイル一覧](docs/CHANGES-1.3.0.md)を公開しています。
 

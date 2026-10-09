@@ -39,6 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ApexEntity extends Monster implements GeoEntity {
@@ -50,6 +51,7 @@ public class ApexEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Integer> VISUAL_SEQUENCE = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HEALING_VISUAL = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Long> HEALING_VISUAL_START = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<Optional<UUID>> MUSIC_TARGET = SynchedEntityData.defineId(ApexEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private int renderedSequence = -1;
     private String renderedAnimation = "";
@@ -86,6 +88,7 @@ public class ApexEntity extends Monster implements GeoEntity {
         entityData.define(VISUAL, ""); entityData.define(VISUAL_START, 0L);
         entityData.define(VISUAL_UNTIL, 0L); entityData.define(VISUAL_SEQUENCE, 0);
         entityData.define(HEALING_VISUAL, 0); entityData.define(HEALING_VISUAL_START, 0L);
+        entityData.define(MUSIC_TARGET, Optional.empty());
     }
     @Override protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
@@ -106,6 +109,8 @@ public class ApexEntity extends Monster implements GeoEntity {
     }
     @Override public void tick() {
         super.tick();
+        // Mob targets are server-only; announce only an actual eligible player encounter.
+        if (!level().isClientSide) synchronizeMusicTarget();
         // This remains server-authoritative even when vanilla AI is disabled through NBT.
         if (!level().isClientSide) tickPhase3Healing();
         // Short immunity must also expire when vanilla AI is disabled through NBT.
@@ -314,6 +319,31 @@ public class ApexEntity extends Monster implements GeoEntity {
     public PlayerBehaviorTracker behaviorTracker() { return behavior; }
     public CombatController combatController() { return combat; }
     public int getPhase() { return entityData.get(PHASE); }
+    public Optional<UUID> getMusicTargetUuid() { return entityData.get(MUSIC_TARGET); }
+
+    public boolean isMusicTarget(Player player) {
+        return player != null && getMusicTargetUuid().filter(player.getUUID()::equals).isPresent()
+                && isEligibleMusicPlayer(player);
+    }
+
+    /** Nearby listeners share one track even when another player is the current target. */
+    public boolean isMusicEncounterFor(Player player) {
+        return player != null && ApexMusicEncounter.eligibleListener(isAlive(), isRemoved(), isNoAi(),
+                getMusicTargetUuid().isPresent(), player.isAlive(), player.isRemoved(), player.isSpectator(),
+                player.level() == level(), distanceToSqr(player));
+    }
+
+    private boolean isEligibleMusicPlayer(Player player) {
+        return ApexMusicEncounter.eligibleTarget(isAlive(), isRemoved(), isNoAi(), player.isAlive(),
+                player.isCreative(), player.isSpectator(), player.level() == level(), distanceToSqr(player));
+    }
+
+    private void synchronizeMusicTarget() {
+        LivingEntity target = getTarget();
+        Optional<UUID> next = target instanceof Player player && isEligibleMusicPlayer(player)
+                ? Optional.of(player.getUUID()) : Optional.empty();
+        entityData.set(MUSIC_TARGET, next);
+    }
     public CombatState getCombatState() { return CombatState.values()[entityData.get(STATE)]; }
     public void setCombatState(CombatState state) { entityData.set(STATE, state.ordinal()); }
     /** Server-authored pose cues share the combat clock and replicate to every tracking client. */

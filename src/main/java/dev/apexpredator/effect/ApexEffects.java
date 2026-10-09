@@ -24,8 +24,8 @@ public final class ApexEffects {
     public static final RegistryObject<SimpleParticleType> SLASH = particle("apex_slash"), ENERGY = particle("apex_energy"),
             SMOKE = particle("apex_smoke"), SPARK = particle("apex_spark"), AFTERIMAGE = particle("apex_afterimage"),
             SHOCKWAVE = particle("apex_shockwave"), CORE = particle("apex_core");
-    // Recovery adds entity data and effect kinds; require the updated mod on both sides.
-    private static final String PROTOCOL = "2";
+    // Encounter music adds synchronized target data; require the updated mod on both sides.
+    private static final String PROTOCOL = "3";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(ApexPredator.MOD_ID, "effects"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     private static boolean initialized;
     private ApexEffects() { }

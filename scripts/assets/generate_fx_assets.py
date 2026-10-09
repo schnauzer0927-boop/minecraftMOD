@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Regenerate original Apex sprites and synthetic sound samples (Python + numpy/Pillow + ffmpeg).
+"""Regenerate original Apex sprites and synthetic combat SE (Python + numpy/Pillow + ffmpeg).
 
-No downloaded images or third-party sound recordings are used. Samples are mono Vorbis,
-44100 Hz; resource-pack authors may replace any identically named .ogg file.
+Samples are mono Vorbis, 44100 Hz. The imported user-supplied boss music is
+preserved and must be regenerated separately with import_boss_music.py.
 """
 from pathlib import Path
 import json
@@ -99,6 +99,9 @@ def generate_audio():
     folder.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="apex-sounds-") as temp:
         for index, (name, duration) in enumerate(zip(SOUND_NAMES, DURATION)):
+            # Never replace the user's Suno composition with the old synthetic placeholder.
+            if name == "boss_music":
+                continue
             samples = sound(name, duration, 4700 + index)
             source = Path(temp) / f"{name}.wav"
             with wave.open(str(source), "wb") as wav:
@@ -108,7 +111,12 @@ def generate_audio():
                             "-map_metadata", "-1", "-c:a", "libvorbis", "-q:a", "5", str(folder / f"{name}.ogg")], check=True)
     entries = {name: {"subtitle": f"sound.apexpredator.{name}", "sounds": [{"name": f"apexpredator:{name}", "stream": name == "boss_music"}]}
                for name in SOUND_NAMES}
-    (ASSETS / "sounds.json").write_text(json.dumps(entries, indent=2) + "\n")
+    definitions = ASSETS / "sounds.json"
+    existing = json.loads(definitions.read_text()) if definitions.is_file() else {}
+    # Keep additive healing events and resource-pack metadata intact on regeneration.
+    for name, entry in entries.items():
+        existing.setdefault(name, entry)
+    definitions.write_text(json.dumps(existing, indent=2) + "\n")
 
 
 def generate_sprites():
@@ -159,4 +167,4 @@ def language():
 
 if __name__ == "__main__":
     generate_sprites(); generate_audio(); language()
-    print("Generated 7 particle sprite sets and 13 original sound samples.")
+    print("Generated 7 particle sprite sets and 12 original combat SE; imported boss music preserved.")

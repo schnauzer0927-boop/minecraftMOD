@@ -107,6 +107,8 @@ public final class ApexClientEffects {
         if (event.phase != TickEvent.Phase.END) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != observedLevel) clear(mc.level);
+        // Lifecycle checks must still run on death, disconnect and mute, before FX early returns.
+        ApexBossMusic.update(mc);
         if (mc.level == null || mc.player == null || mc.isPaused()) return;
         tick++; particlesThisTick = 0;
         EFFECTS.removeIf(e -> expired(e, mc));
@@ -132,7 +134,6 @@ public final class ApexClientEffects {
                 particle(ApexEffects.ENERGY.get(), p.origin().add(offset), offset.scale(-.2), mc);
             }
         }
-        ApexBossMusic.update(mc);
     }
     private static void healingParticles(ApexEntity apex, EffectKind kind, Minecraft mc) {
         // Follow the moving entity, rather than the position captured in the cue packet.

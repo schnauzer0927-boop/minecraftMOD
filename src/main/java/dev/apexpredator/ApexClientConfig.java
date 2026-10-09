@@ -18,7 +18,7 @@ public final class ApexClientConfig {
         CAMERA_SHAKE = b.comment("Short, distance-scaled camera shake. Does not change player aim on the server.").define("cameraShake", true);
         AFTER_IMAGES = b.comment("Short translucent silhouettes during fast movements.").define("afterImages", true);
         SCREEN_EFFECTS = b.comment("Brief edge glow for phase changes and major attacks; never changes game speed.").define("screenEffects", true);
-        BOSS_MUSIC = b.comment("Original looping encounter music while a living Apex is nearby.").define("bossMusic", true);
+        BOSS_MUSIC = b.comment("Loop The Stalking Motif during nearby Apex player encounters. Volume follows Master and Jukebox/Note Blocks (RECORDS).").define("bossMusic", true);
         SPEC = b.build();
     }
     private ApexClientConfig() { }
