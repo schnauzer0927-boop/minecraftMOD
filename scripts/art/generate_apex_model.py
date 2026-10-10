@@ -8,6 +8,18 @@ every section. Preview is a software-rasterized inspection artifact, not an
 asset used by the game. Run from any directory with Python, Pillow and NumPy.
 """
 from pathlib import Path
+import sys
+
+# This historical procedural author is a backup, not the editable model source.
+# Check before optional imaging imports or any of the original file writes.
+_EDITABLE_APEX = Path(__file__).resolve().parents[2] / "models/blockbench/apex.bbmodel"
+if _EDITABLE_APEX.exists() and "--legacy-overwrite-model" not in sys.argv:
+    raise SystemExit(
+        "Apex is now authored in models/blockbench/apex.bbmodel. "
+        "Use scripts/blockbench/apex_body.py export to apply edits. "
+        "Historical regeneration requires the explicit --legacy-overwrite-model flag "
+        "and will replace the runtime geometry and textures."
+    )
 import json
 import math
 import random

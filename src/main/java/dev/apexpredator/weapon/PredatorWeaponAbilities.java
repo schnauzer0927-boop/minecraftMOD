@@ -7,8 +7,10 @@ import dev.apexpredator.effect.ApexEffects;
 import dev.apexpredator.effect.ApexSounds;
 import dev.apexpredator.effect.EffectKind;
 import dev.apexpredator.item.ApexFangItem;
+import dev.apexpredator.registry.ApexRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundCooldownPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,15 +45,28 @@ import java.util.UUID;
 /** Server-owned, finite weapon actions. No client action timers or entity AI are changed. */
 @Mod.EventBusSubscriber(modid = ApexPredator.MOD_ID)
 public final class PredatorWeaponAbilities {
-    public static final int COOLDOWN_TICKS = 200;
+    public static final int SLASH_COOLDOWN_TICKS = 200;
     public static final int DASH_TICKS = 8, SLASH_TICKS = 10;
     public static final int DASH_DURABILITY = 4, SLASH_DURABILITY = 6;
     public static final double DASH_DISTANCE = 7, SLASH_DISTANCE = 9;
     public static final float DASH_DAMAGE = 12, SLASH_DAMAGE = 10;
     private static final Map<UUID, Action> ACTIVE = new HashMap<>();
     private static final Map<UUID, Long> NORMAL_EFFECT_AT = new HashMap<>();
+    private static final Map<UUID, Cooldowns> COOLDOWNS = new HashMap<>();
 
     public enum Mode { PREDATOR_DASH, APEX_SLASH }
+
+    private static final class Cooldowns {
+        long dashReadyAt, slashReadyAt;
+        long projectedGateAt, projectedVisualAt;
+        Mode projectedMode;
+
+        long readyAt(Mode mode) { return mode == Mode.PREDATOR_DASH ? dashReadyAt : slashReadyAt; }
+        void start(Mode mode, long readyAt) {
+            if (mode == Mode.PREDATOR_DASH) dashReadyAt = readyAt;
+            else slashReadyAt = readyAt;
+        }
+    }
 
     private static final class Action {
         final Mode mode;
@@ -87,7 +102,8 @@ public final class PredatorWeaponAbilities {
         if (!(player.level() instanceof ServerLevel level) || !player.isAlive() || player.isSpectator()) return false;
         ItemStack weapon = player.getItemInHand(hand);
         if (!(weapon.getItem() instanceof ApexFangItem)) return false;
-        if (ACTIVE.containsKey(player.getUUID()) || player.getCooldowns().isOnCooldown(weapon.getItem())) {
+        Mode mode = slash ? Mode.APEX_SLASH : Mode.PREDATOR_DASH;
+        if (ACTIVE.containsKey(player.getUUID()) || cooldownRemaining(player, mode) > 0) {
             player.displayClientMessage(Component.translatable("message.apexpredator.fang.cooldown"), true);
             return false;
         }
@@ -109,9 +125,11 @@ public final class PredatorWeaponAbilities {
                 return false;
             }
         }
-        Action action = new Action(player, hand, slash ? Mode.APEX_SLASH : Mode.PREDATOR_DASH, direction);
+        Action action = new Action(player, hand, mode, direction);
         ACTIVE.put(player.getUUID(), action);
-        player.getCooldowns().addCooldown(weapon.getItem(), COOLDOWN_TICKS);
+        int cooldown = slash ? SLASH_COOLDOWN_TICKS : ApexConfig.APEX_FANG_DASH_COOLDOWN_TICKS.get();
+        COOLDOWNS.computeIfAbsent(player.getUUID(), ignored -> new Cooldowns()).start(mode, level.getGameTime() + cooldown);
+        synchronizeCooldown(player);
         weapon.hurtAndBreak(slash ? SLASH_DURABILITY : DASH_DURABILITY, player,
                 owner -> owner.broadcastBreakEvent(hand));
         if (!slash && player instanceof ServerPlayer server && server.connection != null) {
@@ -127,12 +145,14 @@ public final class PredatorWeaponAbilities {
         if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info(
                 "Apex Fang accept mode={} player={} start={} direction={} cooldown={} wear={}",
                 action.mode, player.getName().getString(), action.origin, action.direction,
-                COOLDOWN_TICKS, slash ? SLASH_DURABILITY : DASH_DURABILITY);
+                cooldown, slash ? SLASH_DURABILITY : DASH_DURABILITY);
         return true;
     }
 
     /** Public for integration tests; advances at most once per server game tick. */
     public static void tick(Player player) {
+        if (!(player.level() instanceof ServerLevel)) return;
+        synchronizeCooldown(player);
         Action action = ACTIVE.get(player.getUUID());
         if (action == null) return;
         if (!(player.level() instanceof ServerLevel) || player.level() != action.level || !player.isAlive()
@@ -352,10 +372,63 @@ public final class PredatorWeaponAbilities {
         Action action = ACTIVE.get(playerId);
         return action == null ? null : action.mode;
     }
+
+    /** Authoritative per-player deadlines also cover every other Fang stack in the inventory. */
+    public static int cooldownRemaining(Player player, Mode mode) {
+        Cooldowns cooldowns = COOLDOWNS.get(player.getUUID());
+        return cooldowns == null ? 0 : remaining(cooldowns.readyAt(mode), player.level().getGameTime());
+    }
+
+    private static int remaining(long readyAt, long now) {
+        return (int) Math.max(0, Math.min(Integer.MAX_VALUE, readyAt - now));
+    }
+
+    private static void synchronizeCooldown(Player player) {
+        Cooldowns cooldowns = COOLDOWNS.get(player.getUUID());
+        if (cooldowns == null) return;
+        long now = player.level().getGameTime();
+        Mode selected = player.isShiftKeyDown() ? Mode.APEX_SLASH : Mode.PREDATOR_DASH;
+        int dash = remaining(cooldowns.dashReadyAt, now);
+        int slash = remaining(cooldowns.slashReadyAt, now);
+        int gateTicks = Math.min(dash, slash);
+        int visualTicks = selected == Mode.PREDATOR_DASH ? dash : slash;
+        long gateAt = gateTicks == 0 ? 0 : now + gateTicks;
+        long visualAt = visualTicks == 0 ? 0 : now + visualTicks;
+        boolean gateChanged = gateAt != cooldowns.projectedGateAt;
+        boolean visualChanged = visualAt != cooldowns.projectedVisualAt || selected != cooldowns.projectedMode;
+        var item = ApexRegistries.APEX_FANG.get();
+
+        // Vanilla ServerPlayerGameMode checks this gate before Item.use. Keep it open when
+        // either action is ready; the selected action's own deadline remains authoritative.
+        // This also avoids rejecting a ready action when Shift changes in the same packet tick.
+        if (gateChanged) {
+            if (gateTicks > 0) player.getCooldowns().addCooldown(item, gateTicks);
+            else if (player.getCooldowns().isOnCooldown(item)) player.getCooldowns().removeCooldown(item);
+        }
+        // Use the vanilla cooldown packet and client ItemCooldowns for the hotbar overlay.
+        // No client timer, custom HUD or new network protocol is needed. Selection changes
+        // and expiry boundaries send updates, rather than resending the remaining time each tick.
+        // Native gate expiry sends zero itself; restore a longer selected cooldown that same tick.
+        if ((gateChanged || visualChanged) && player instanceof ServerPlayer server && server.connection != null) {
+            server.connection.send(new ClientboundCooldownPacket(item, visualTicks));
+        }
+        if (ApexConfig.DEBUG.get() && (gateChanged || visualChanged)) LogUtils.getLogger().info(
+                "Apex Fang cooldown player={} selected={} dashRemaining={} slashRemaining={} nativeGate={} overlay={}",
+                player.getName().getString(), selected, dash, slash, gateTicks, visualTicks);
+        cooldowns.projectedGateAt = gateAt;
+        cooldowns.projectedVisualAt = visualAt;
+        cooldowns.projectedMode = selected;
+        if (dash == 0 && slash == 0) COOLDOWNS.remove(player.getUUID(), cooldowns);
+    }
+
     public static void clear(Player player) {
         Action action = ACTIVE.get(player.getUUID());
         if (action != null) finish(player, action, "cleanup");
         NORMAL_EFFECT_AT.remove(player.getUUID());
+        // A selected client overlay can exist while the server's minimum gate is already open.
+        if (COOLDOWNS.remove(player.getUUID()) != null && !player.level().isClientSide) {
+            player.getCooldowns().removeCooldown(ApexRegistries.APEX_FANG.get());
+        }
     }
 
     public static void normalHitEffect(Player player, LivingEntity target) {
@@ -386,5 +459,5 @@ public final class PredatorWeaponAbilities {
     @SubscribeEvent public static void death(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) clear(player);
     }
-    @SubscribeEvent public static void stop(ServerStoppingEvent event) { ACTIVE.clear(); NORMAL_EFFECT_AT.clear(); }
+    @SubscribeEvent public static void stop(ServerStoppingEvent event) { ACTIVE.clear(); NORMAL_EFFECT_AT.clear(); COOLDOWNS.clear(); }
 }

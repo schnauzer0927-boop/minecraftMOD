@@ -29,7 +29,7 @@
   "tooltip.apexpredator.apex_fang": "Apex Coreの力から鍛えられた二重の刃。",
   "tooltip.apexpredator.apex_fang.dash": "右クリック：Predator Dash — 7ブロック、12ダメージ",
   "tooltip.apexpredator.apex_fang.slash": "スニーク＋右クリック：Apex Slash — 9ブロック、10ダメージ",
-  "tooltip.apexpredator.apex_fang.cooldown": "特殊技は10秒のクールダウンを共有。",
+  "tooltip.apexpredator.apex_fang.cooldown": "クールダウンは独立：Dashは初期設定で2秒、Slashは10秒。",
   "message.apexpredator.beacon.started": "Apexへの信号を送信中。召喚儀式には5秒かかります。",
   "message.apexpredator.beacon.busy": "すでに召喚儀式が進行中です。",
   "message.apexpredator.beacon.apex_nearby": "付近にApexが存在するため、追加で召喚できません。",

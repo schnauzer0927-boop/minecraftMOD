@@ -56,7 +56,10 @@ dependencies {
         runtimeOnly fg.deobf('local:tacz-1.20.1:1.1.8-hotfix2')
     }
 }
-tasks.named('test', Test) { useJUnitPlatform() }
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    inputs.files('models/blockbench/apex.bbmodel', 'models/blockbench/apex_fang.bbmodel')
+}
 tasks.matching { it.name in ['runClient', 'runServer', 'runGameTestServer'] }.configureEach {
     dependsOn 'createSrgToMcp'
 }

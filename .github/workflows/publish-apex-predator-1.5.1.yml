@@ -1,0 +1,81 @@
+name: Publish Apex Predator 1.5.1
+
+on:
+  push:
+    branches:
+      - feature/apex-blockbench-1.5.1
+    paths:
+      - .github/workflows/publish-apex-predator-1.5.1.yml
+      - docs/RELEASE-1.5.1.md
+      - dist/apexpredator-1.20.1-1.5.1.jar
+      - dist/apexpredator-1.20.1-1.5.1.jar.sha256
+      - dist/apexpredator-blockbench-1.5.1.zip
+      - dist/apexpredator-blockbench-1.5.1.zip.sha256
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apex-predator-1.5.1-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the validated distribution
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify the exact validated jar and editor archive
+        working-directory: dist
+        run: |
+          sha256sum --check apexpredator-1.20.1-1.5.1.jar.sha256
+          sha256sum --check apexpredator-blockbench-1.5.1.zip.sha256
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import zipfile
+          artifacts = [
+              ('apexpredator-1.20.1-1.5.1.jar', 4389041, '1a22ecad06799cd8daed8f5dddaafa216bd26bf71dcbf3640abaadad2da7d4f9'),
+              ('apexpredator-blockbench-1.5.1.zip', 641877, 'b8954c37f12e6451776d5b71d4edb82684154a70aa08e4ba4bf122266c8833b6'),
+          ]
+          for name, size, digest in artifacts:
+              path = pathlib.Path(name)
+              assert path.stat().st_size == size
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+              with zipfile.ZipFile(path) as archive:
+                  assert archive.testzip() is None
+                  assert len(archive.namelist()) == len(set(archive.namelist()))
+                  if name.endswith('.jar'):
+                      assert 'version="1.5.1"' in archive.read('META-INF/mods.toml').decode()
+                      assert 'Implementation-Version: 1.5.1' in archive.read('META-INF/MANIFEST.MF').decode()
+                  else:
+                      assert 'models/blockbench/apex.bbmodel' in archive.namelist()
+                      assert 'models/blockbench/apex_fang.bbmodel' in archive.namelist()
+          PY
+
+      - name: Publish the mod and editor sources as Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view v1.5.1 >/dev/null 2>&1; then
+            gh release upload v1.5.1 \
+              dist/apexpredator-1.20.1-1.5.1.jar \
+              dist/apexpredator-1.20.1-1.5.1.jar.sha256 \
+              dist/apexpredator-blockbench-1.5.1.zip \
+              dist/apexpredator-blockbench-1.5.1.zip.sha256 --clobber
+            gh release edit v1.5.1 --draft=false --latest \
+              --title "Apex Predator 1.5.1" --notes-file docs/RELEASE-1.5.1.md
+          else
+            gh release create v1.5.1 \
+              dist/apexpredator-1.20.1-1.5.1.jar \
+              dist/apexpredator-1.20.1-1.5.1.jar.sha256 \
+              dist/apexpredator-blockbench-1.5.1.zip \
+              dist/apexpredator-blockbench-1.5.1.zip.sha256 \
+              --target "$GITHUB_SHA" --latest \
+              --title "Apex Predator 1.5.1" --notes-file docs/RELEASE-1.5.1.md
+          fi

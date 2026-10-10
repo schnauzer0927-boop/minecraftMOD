@@ -5,6 +5,7 @@ import dev.apexpredator.registry.ApexRegistries;
 import dev.apexpredator.weapon.PredatorWeaponAbilities;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.protocol.game.ClientboundCooldownPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -28,6 +30,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /** Native sword damage/repair and real item-use abilities, including player travel and collision. */
@@ -89,8 +93,8 @@ public final class FangGameTests {
         });
     }
 
-    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 240)
-    public static void dashTravelsSevenBlocksHitsEachEnemyOnceAndSharesItsFiniteCooldown(GameTestHelper helper) {
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 80)
+    public static void dashTravelsSevenBlocksHitsEachEnemyOnceAndBecomesReadyOnTickForty(GameTestHelper helper) {
         ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
         ServerPlayer player = arena.player(false, 3.5, 8.5);
         ItemStack fang = equip(player);
@@ -99,8 +103,9 @@ public final class FangGameTests {
         var neutral = arena.mob(EntityType.PIG, 6.5, 8.5);
         helper.runAfterDelay(4, () -> {
             Vec3 start = player.position();
+            long activated = arena.level.getGameTime();
             helper.assertTrue(player.onGround(), "Dash actor must naturally stand on its supporting floor");
-            helper.assertTrue(use(player, false), "Real Fang right-click failed to activate the grounded dash");
+            helper.assertTrue(use(arena, player, false), "Real Fang right-click failed to activate the grounded dash");
             helper.assertTrue(fang.getDamageValue() == 4, "Dash did not consume its four durability once");
             helper.runAfterDelay(12, () -> {
                 double distance = player.position().subtract(start).horizontalDistance();
@@ -110,13 +115,27 @@ public final class FangGameTests {
                 near(helper, neutral.getHealth(), 1000, "Dash must not damage a neutral animal");
                 helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Eight-tick dash remained active indefinitely");
                 ItemStack replacement = equip(player);
-                helper.assertFalse(use(player, true), "Switching Fang stacks bypassed the shared dash/slash cooldown");
+                helper.assertFalse(use(arena, player, false), "Switching Fang stacks bypassed the player's dash cooldown");
                 helper.assertTrue(replacement.getDamageValue() == 0, "Rejected cooldown use consumed durability");
             });
-            helper.runAfterDelay(202, () -> {
-                helper.assertFalse(player.getCooldowns().isOnCooldown(ApexRegistries.APEX_FANG.get()), "Shared cooldown never expired after ten seconds");
-                helper.assertTrue(use(player, false), "Dash could not be used again after its original cooldown expired");
-                arena.succeed(helper);
+            helper.runAfterDelay(39, () -> {
+                helper.assertTrue(arena.level.getGameTime() - activated == 39, "Fixture must exercise the exact 39-tick boundary");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.PREDATOR_DASH) == 1,
+                        "Dash must have exactly one tick left after 39 ticks");
+                helper.assertFalse(use(arena, player, false), "Dash was accepted one tick before its two-second deadline");
+                helper.assertTrue(player.getMainHandItem().getDamageValue() == 0, "Rejected 39-tick use consumed durability");
+            });
+            helper.runAfterDelay(40, () -> {
+                helper.assertTrue(arena.level.getGameTime() - activated == 40, "Fixture must exercise the exact 40-tick boundary");
+                player.setYRot(90); // Return across the same enemies with a new, independently bounded dash.
+                helper.assertTrue(use(arena, player, false), "Native item use rejected Dash at exactly 40 ticks");
+                helper.assertTrue(player.getMainHandItem().getDamageValue() == 4, "Accepted dash did not pay durability exactly once");
+                helper.runAfterDelay(12, () -> {
+                    near(helper, first.getHealth(), 976, "Each of two dashes must hit the first enemy exactly once");
+                    near(helper, second.getHealth(), 976, "Each of two dashes must hit the second enemy exactly once");
+                    PredatorWeaponAbilities.clear(player);
+                    arena.succeed(helper);
+                });
             });
         });
     }
@@ -130,7 +149,7 @@ public final class FangGameTests {
         var covered = arena.mob(EntityType.VINDICATOR, 9.5, 8.5);
         for (int y = 0; y < 4; y++) for (int z = 6; z <= 10; z++) arena.level.setBlock(arena.block(7, y, z), Blocks.STONE.defaultBlockState(), 2);
         helper.runAfterDelay(4, () -> {
-            helper.assertTrue(use(player, false), "Dash could not begin on its clear side of the wall");
+            helper.assertTrue(use(arena, player, false), "Dash could not begin on its clear side of the wall");
             helper.runAfterDelay(16, () -> {
                 helper.assertTrue(player.getBoundingBox().maxX <= arena.block(7, 0, 8).getX() + .01,
                         "Dash crossed the wall with its real player body");
@@ -152,7 +171,7 @@ public final class FangGameTests {
         var second = arena.mob(EntityType.VINDICATOR, 8.5, 8.5);
         helper.runAfterDelay(4, () -> {
             Vec3 start = player.position();
-            helper.assertTrue(use(player, false), "Correction fixture failed to start its grounded dash");
+            helper.assertTrue(use(arena, player, false), "Correction fixture failed to start its grounded dash");
             helper.runAfterDelay(2, () -> {
                 helper.assertTrue(PredatorWeaponAbilities.isActive(player.getUUID()), "Dash ended before the owner position correction");
                 // Models a delayed owner movement position, without forging onGround or bypassing real travel.
@@ -191,7 +210,7 @@ public final class FangGameTests {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, TickEvent.PlayerTickEvent.class, correction);
         arena.onClose(() -> MinecraftForge.EVENT_BUS.unregister(correction));
         helper.runAfterDelay(4, () -> {
-            helper.assertTrue(use(player, false), "Gap fixture failed to begin on its initially intact floor");
+            helper.assertTrue(use(arena, player, false), "Gap fixture failed to begin on its initially intact floor");
             helper.runAfterDelay(16, () -> {
                 helper.assertTrue(corrected[0], "Fixture never exercised a live catch-up step");
                 helper.assertTrue(player.getX() > arena.point(6.6, 0, 8.5).x
@@ -214,7 +233,7 @@ public final class FangGameTests {
         for (int x = 7; x < 16; x++) for (int z = 0; z < 16; z++) arena.level.setBlock(arena.block(x, -1, z), Blocks.AIR.defaultBlockState(), 2);
         helper.runAfterDelay(4, () -> {
             Vec3 start = player.position();
-            helper.assertTrue(use(player, false), "Dash could not begin on supported ground before the cliff");
+            helper.assertTrue(use(arena, player, false), "Dash could not begin on supported ground before the cliff");
             helper.runAfterDelay(20, () -> {
                 double distance = player.position().subtract(start).horizontalDistance();
                 helper.assertTrue(distance > 2.9 && distance < 3.35,
@@ -232,7 +251,7 @@ public final class FangGameTests {
     }
 
     @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
-    public static void slashHitsMultipleEnemiesOnceWithinNineBlocksAndRespectsCoverAndSharedCooldown(GameTestHelper helper) {
+    public static void slashHitsMultipleEnemiesOnceWithinNineBlocksAndRespectsCoverWithoutBlockingDash(GameTestHelper helper) {
         ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
         ProgressionGameTestArena rangeArena = new ProgressionGameTestArena(helper);
         ServerPlayer player = arena.player(false, 3.5, 8.5);
@@ -249,8 +268,8 @@ public final class FangGameTests {
         for (int y = 0; y < 4; y++) for (int z = 6; z <= 10; z++) arena.level.setBlock(arena.block(10, y, z), Blocks.STONE.defaultBlockState(), 2);
         helper.runAfterDelay(4, () -> {
             Vec3 position = player.position();
-            helper.assertTrue(use(player, true), "Real crouching Fang use failed to launch its predator slash");
-            helper.assertTrue(use(rangePlayer, true), "Clear-range slash fixture failed to activate");
+            helper.assertTrue(use(arena, player, true), "Real crouching Fang use failed to launch its predator slash");
+            helper.assertTrue(use(rangeArena, rangePlayer, true), "Clear-range slash fixture failed to activate");
             helper.assertTrue(fang.getDamageValue() == 6, "Slash did not consume six durability once");
             helper.runAfterDelay(16, () -> {
                 near(helper, first.getHealth(), 990, "First slash target");
@@ -261,13 +280,128 @@ public final class FangGameTests {
                 near(helper, nearLimit.getHealth(), 990, "Clear slash must reach an enemy 8.75 blocks ahead");
                 near(helper, beyondLimit.getHealth(), 1000, "Uncovered enemy 9.75 blocks ahead must remain outside slash range");
                 helper.assertTrue(player.position().distanceTo(position) < .15, "Ranged slash unexpectedly dashed its owner");
-                helper.assertFalse(use(player, false), "Slash cooldown failed to block the alternate dash ability");
-                helper.assertTrue(fang.getDamageValue() == 6, "Rejected alternate ability added durability wear");
                 helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Slash remained active beyond its ten-tick wave");
+                helper.assertTrue(use(arena, player, false), "Slash's ten-second deadline must not block a ready Dash");
+                helper.assertTrue(fang.getDamageValue() == 10, "Independent Dash did not consume exactly four more durability");
+                PredatorWeaponAbilities.clear(player);
+                PredatorWeaponAbilities.clear(rangePlayer);
                 rangeArena.close();
                 arena.succeed(helper);
             });
         });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 225)
+    public static void slashRetainsTwoHundredTicksAndNeverExtendsTheIndependentDashDeadline(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        equip(player);
+        helper.runAfterDelay(4, () -> {
+            long activated = arena.level.getGameTime();
+            helper.assertTrue(use(arena, player, true), "Initial native Slash use was rejected");
+            helper.runAfterDelay(12, () -> {
+                ItemStack replacement = equip(player);
+                helper.assertFalse(use(arena, player, true), "Another Fang stack bypassed Slash's per-player deadline");
+                helper.assertTrue(replacement.getDamageValue() == 0, "Rejected Slash wore the replacement Fang");
+                helper.assertTrue(use(arena, player, false), "Ready Dash was blocked by Slash's remaining ten-second cooldown");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.PREDATOR_DASH) == 40,
+                        "Dash must use its own fresh forty-tick deadline");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.APEX_SLASH) == 188,
+                        "Dash changed the already running Slash deadline");
+            });
+            helper.runAfterDelay(51, () -> {
+                helper.assertFalse(use(arena, player, false), "Dash was usable 39 ticks after its activation during Slash cooldown");
+            });
+            helper.runAfterDelay(52, () -> {
+                player.setYRot(90);
+                helper.assertTrue(use(arena, player, false), "Dash was still blocked at its own forty-tick deadline");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.APEX_SLASH) == 148,
+                        "Reusing Dash extended or shortened Slash's original deadline");
+            });
+            helper.runAfterDelay(199, () -> {
+                helper.assertTrue(arena.level.getGameTime() - activated == 199, "Fixture must exercise Slash's exact 199-tick boundary");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.APEX_SLASH) == 1,
+                        "Slash's deadline changed from its original 200 ticks");
+                int wear = player.getMainHandItem().getDamageValue();
+                helper.assertFalse(use(arena, player, true), "Slash was accepted one tick before its ten-second deadline");
+                helper.assertTrue(player.getMainHandItem().getDamageValue() == wear, "Rejected Slash consumed durability");
+            });
+            helper.runAfterDelay(200, () -> {
+                helper.assertTrue(arena.level.getGameTime() - activated == 200, "Fixture must exercise Slash's exact 200-tick boundary");
+                helper.assertTrue(use(arena, player, true), "Native Slash use was rejected at exactly 200 ticks");
+                PredatorWeaponAbilities.clear(player);
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 85)
+    public static void vanillaHotbarPacketsFollowSelectedAbilityWithoutPerTickRestarts(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        List<ClientboundCooldownPacket> packets = new ArrayList<>();
+        ItemCooldowns clientCooldowns = new ItemCooldowns();
+        ServerPlayer player = arena.player(false, 3.5, 8.5, packet -> {
+            if (!(packet instanceof ClientboundCooldownPacket cooldown) || cooldown.getItem() != ApexRegistries.APEX_FANG.get()) return;
+            packets.add(cooldown);
+            // This is exactly the vanilla client packet handler's operation on ItemCooldowns.
+            if (cooldown.getDuration() == 0) clientCooldowns.removeCooldown(cooldown.getItem());
+            else clientCooldowns.addCooldown(cooldown.getItem(), cooldown.getDuration());
+        });
+        helper.onEachTick(clientCooldowns::tick);
+        equip(player);
+        int[] quietCount = {-1};
+        helper.runAfterDelay(4, () -> {
+            helper.assertTrue(use(arena, player, false), "Native Dash did not start for hotbar packet verification");
+            helper.assertTrue(lastDuration(packets) == 40 && clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()),
+                    "Dash did not start the vanilla forty-tick client item overlay");
+            helper.runAfterDelay(8, () -> {
+                helper.assertTrue(packets.size() == 1, "Unchanged Dash cooldown was restarted or resent every tick");
+                player.setShiftKeyDown(true);
+            });
+            helper.runAfterDelay(10, () -> {
+                helper.assertTrue(lastDuration(packets) == 0 && !clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()),
+                        "Selecting ready Slash must clear the Dash overlay without clearing Dash's deadline");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.PREDATOR_DASH) == 30,
+                        "Changing selection bypassed Dash's server deadline");
+                player.setShiftKeyDown(false);
+            });
+            helper.runAfterDelay(12, () -> {
+                helper.assertTrue(clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()) && lastDuration(packets) <= 30,
+                        "Returning to Dash did not restore its remaining vanilla cooldown");
+                helper.assertTrue(use(arena, player, true), "Ready Slash was blocked by the previously selected Dash native gate");
+                helper.assertTrue(lastDuration(packets) == 200, "Slash did not use a full independent vanilla ten-second overlay");
+            });
+            helper.runAfterDelay(16, () -> quietCount[0] = packets.size());
+            helper.runAfterDelay(38, () -> {
+                helper.assertTrue(packets.size() == quietCount[0], "A stable Slash overlay generated a cooldown packet every tick");
+            });
+            helper.runAfterDelay(42, () -> {
+                helper.assertTrue(clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get())
+                                && lastDuration(packets) >= 169 && lastDuration(packets) <= 173,
+                        "The shorter server gate expiry erased Slash's still-active client overlay");
+                player.setShiftKeyDown(false);
+            });
+            helper.runAfterDelay(44, () -> {
+                helper.assertTrue(lastDuration(packets) == 0 && !clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()),
+                        "Ready Dash should display no cooldown while Slash is still cooling down");
+                player.setShiftKeyDown(true);
+            });
+            helper.runAfterDelay(46, () -> {
+                helper.assertTrue(clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()) && lastDuration(packets) >= 165,
+                        "Selecting Slash again failed to restore its remaining native overlay");
+                helper.assertTrue(packets.size() < 15, "Selected cooldown synchronization sent excessive packets");
+                PredatorWeaponAbilities.clear(player);
+                helper.assertTrue(lastDuration(packets) == 0 && !clientCooldowns.isOnCooldown(ApexRegistries.APEX_FANG.get()),
+                        "Lifecycle cleanup did not clear a client-only selected overlay");
+                helper.assertTrue(PredatorWeaponAbilities.cooldownRemaining(player, PredatorWeaponAbilities.Mode.APEX_SLASH) == 0,
+                        "Cleanup retained a stale per-player Slash deadline");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    private static int lastDuration(List<ClientboundCooldownPacket> packets) {
+        return packets.isEmpty() ? -1 : packets.get(packets.size() - 1).getDuration();
     }
 
     private static ItemStack equip(ServerPlayer player) {
@@ -276,9 +410,10 @@ public final class FangGameTests {
         return fang;
     }
 
-    private static boolean use(ServerPlayer player, boolean slash) {
+    private static boolean use(ProgressionGameTestArena arena, ServerPlayer player, boolean slash) {
+        arena.advancePlayer(player);
         player.setShiftKeyDown(slash);
-        return player.getMainHandItem().getItem().use(player.serverLevel(), player, InteractionHand.MAIN_HAND).getResult().consumesAction();
+        return player.gameMode.useItem(player, player.serverLevel(), player.getMainHandItem(), InteractionHand.MAIN_HAND).consumesAction();
     }
 
     private static double attribute(ServerPlayer player, ItemStack stack, Attribute attribute) {

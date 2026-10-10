@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-/** A conventional sword whose two right-click abilities share one item cooldown. */
+/** A conventional sword with independent server-owned dash and slash cooldowns. */
 public final class ApexFangItem extends SwordItem {
     public ApexFangItem(Properties properties) {
         // Sword modifier 10 + tier bonus 5 + player base damage 1 = 16.

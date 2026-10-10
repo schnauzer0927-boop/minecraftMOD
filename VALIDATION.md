@@ -1,86 +1,96 @@
-# Apex Predator 1.5.0 — 召喚・武器の検証
+# Apex Predator 1.5.1 — Blockbench編集と独立クールダウンの検証
 
-2026-10-10（UTC）、Minecraft 1.20.1 / Forge 47.4.10 / Java 17で実施しました。基準は1.4.0配布コミット `9ac1a4b` です。[1.4.0の検証記録](docs/VALIDATION-1.4.0.md)も保存しています。
+2026-10-11（日本時間）、Minecraft 1.20.1 / Forge 47.4.10 / Java 17.0.12で確認しました。基準は1.5.0コミット `296d0276ac33c04ad3d948d84f1527ca170cdf7b` です。[1.5.0の検証記録](docs/VALIDATION-1.5.0.md)を履歴として保存しています。
 
 ## 変更と維持
 
-Apex Beaconの100tick召喚儀式、Apex Fangの通常剣攻撃・Predator Dash・Apex Slash、作業台レシピ、専用アイテムモデル・テクスチャ、3つの進捗を追加しました。[素材と操作方法](docs/PROGRESSION.md)を参照してください。
+Apex本体とApex Fangの正式なBlockbench編集元、埋め込みPNG、専用書き出しCLI、編集手順を追加しました。Predator Dashだけを既定40tick（2秒）へ短縮し、Apex Slashの200tick（10秒）と独立させました。
 
-既存の戦闘AI・DamageTracker・フェーズと回復・APEX EXECUTION・円形判定とジャンプスラム・TaCZ任意連携・BossBar・BGM・ボスモデル・37アニメーションを維持しています。BGMの既定音量は0.85、通信プロトコルは3です。
+既存のボス形状・テクスチャ・37アニメーション、戦闘AI、DamageTracker、フェーズとPhase 3回復、APEX EXECUTION、円形判定とジャンプスラム、TaCZ任意連携、BossBar、召喚儀式、レシピ、ドロップ、BGMを引き継ぎます。BGMの既定音量0.85と通信プロトコル3は維持しています。
 
-## ビルドとサーバー
+## ビルドとテスト
 
 | 実行 | 結果 |
 | --- | --- |
-| `./gradlew build` | 成功、終了コード0、16秒 |
-| JUnit | 78件、失敗・エラー・スキップ0 |
-| `./gradlew runGameTestServer` | Forge Dedicated GameTest Server、必須86件すべて成功、正常終了 |
-| `./gradlew test runGameTestServer -PtaczDir=/workspace/.tools/optional-mods` | TaCZ 1.1.8-hotfix2あり、必須89件すべて成功、正常終了 |
+| `./gradlew build` | 成功、終了コード0、25秒 |
+| JUnit | 82件、失敗・エラー・スキップ0 |
+| 本体Blockbench Pythonテスト | 13件成功 |
+| Fang Blockbench Pythonテスト | 7件成功 |
+| `./gradlew runGameTestServer` | Forge Dedicated Server、必須88件すべて成功、正常終了 |
+| `./gradlew test runGameTestServer -PtaczDir=/workspace/.tools/optional-mods` | TaCZ 1.1.8-hotfix2あり、必須91件すべて成功、正常終了 |
 
-最終のTaCZあり・なしは同一の製品コードとテストで実行しました。既存63件の通常GameTestと72件のJUnitを変更せず、新規23件のGameTest・6件の資源JUnitを追加しました。TaCZありでは従来の実イベント3件も実行します。
+最終のTaCZあり・なしは同一の修正後コードで実行しました。従来のJUnit78件にBlockbench資源検証4件、GameTest86件に独立クールダウンと標準表示の試験2件を加えました。TaCZありでは既存の実イベント3件も実行します。既存の召喚・レシピ・ドロップ・通常剣攻撃・修理・エンチャント・壁と崖の試験も通過しています。
 
-## 新規GameTestが確認すること
+## Blockbenchの正式編集元
 
-登録されたアイテムの実`useOn`/`use`、RecipeManagerとCraftingMenu、通常のServerPlayer・Player移動処理、金床、ダメージとドロップを使用します。新規fixtureは256ブロック以上離し、製品の64ブロック召喚除外をそのまま検証します。終了・サーバー停止時に所有したエンティティ、ブロック、チャンク読み込み状態、試験専用Forgeリスナーを片付けます。
-
-- レシピ2件: 指定の3×3配置・実素材・実結果、素材不足の拒否、取り出し時の全9スロット消費。
-- ドロップ1件: Looting III装備プレイヤーがApexを倒し、実ItemEntityのCoreがちょうど1個。
-- Beacon12件: 99tick時点では未成立、100tick後の成功時だけ予約Beacon1個を消費、Creative不消費、持ち替えとインベントリ移動の継続、生存Apex・他儀式・高さ不足の拒否、床破壊・Beacon喪失・ログアウト・次元移動の取り消し、Forgeのスポーンキャンセル、追加エンティティのイベント中に床が破壊された場合の巻き戻しと支払い保護。
-- Fang8件: プレイヤーの合計攻撃力16・速度1.6・耐久3000、Netherite修理、普通の剣エンチャントと実金床、実通常攻撃の16ダメージと耐久1、Dash7ブロック・対象ごと1回・耐久4・共有200tickクールダウン、壁・崖で停止、Slash9ブロック・複数対象と対象ごと1回・耐久6・壁と距離境界、非敵対動物の除外、小さな所有者位置補正からの正常終了、補正中でも短い足場切れ目を越えないこと。
-
-テストソース: [ProgressionGameTests](src/main/java/dev/apexpredator/gametest/ProgressionGameTests.java)、[FangGameTests](src/main/java/dev/apexpredator/gametest/FangGameTests.java)、[資源検証](src/test/java/dev/apexpredator/assets/ProgressionAssetTest.java)。
-
-### 移動の実測と修正
-
-実Playerの移動では、ダッシュ後に垂直速度を0にすると、次の移動処理で足元に床があっても`onGround`が解除され、最初の0.875ブロックで終了していました。ダッシュ中だけ小さな下向き速度を保ち、通常の床との衝突で接地を確認します。
-
-実クライアントの位置パケットが遅れたときの差は、直前の確定位置と比較します。補正で大きな一歩になっても、足場を0.2ブロック以下の間隔で経路全体にわたり検査し、最初の足場切れ目で止めます。通常の重力・壁との衝突・接地条件を維持します。
-
-| 最終GameTest実測 | 結果 |
+| 編集元 | 実アプリで確認した構成 |
 | --- | --- |
-| 平坦地Dash / 小さな所有者位置補正 | 各7.000ブロック、8tick、敵2体に各1回 |
-| 壁 | 3.200ブロックで停止、壁の向こうの敵は無傷 |
-| 崖 / 補正経路の短い足場切れ目 | 各3.201ブロックで停止、接地・通常の重力を維持 |
-| 開けたSlash | 9.000ブロック、10tick |
-| 壁に向かうSlash | 5.400ブロックで停止、壁の向こうの敵は無傷 |
+| [apex.bbmodel](models/blockbench/apex.bbmodel) | GeckoLib Entity、28ボーン、333キューブ、37クリップ、5,316キーフレーム |
+| [apex_fang.bbmodel](models/blockbench/apex_fang.bbmodel) | Java Block/Item、56キューブ、18グループ、8表示設定 |
 
-## 実クライアント
+公式Blockbench **5.2.2 Linux Desktop**と公式GeckoLib Animation Utils **4.2.5**で、実際の読み込み・保存・Edit・Paint・Display・書き出しを確認しました。本体の512×512通常/発光PNG、Fangの128×128 PNGをプロジェクトへ埋め込み、外部の絶対パスへ依存しません。
 
-仮想画面と実キーボード・マウス入力で、複製した開発ワールドを使って確認しました。TaCZなしの初回と、TaCZありの最終版で`runClient`が起動し、Save and Quit → Quit Gameで正常終了しました。サーバー試験の擬似入力だけに頼らず、実所有者の位置パケットを伴う移動も確認しています。
+検証用コピーで本体のhead pivot・キューブ寸法・UV、Fangの刃先寸法・UV、Paintの1ピクセルを変更し、保存した `.bbmodel` から専用CLIで変更内容が出力されることを確認しました。旧生成器やランタイムJSONを読み直して元の形状へ戻す方式にはしていません。配布するゲーム用モデル・PNGへ検証用編集は反映していません。
 
-- TaCZなし: Fangの一人称・三人称・インベントリ表示、ツールチップ、実右クリックDash、Beaconの100tick成立と1個消費、BossBarと専用BGM。
-- TaCZあり最終版: 平坦地Dash7.000ブロック・8tickと途中のF3座標、壁で3.200ブロック・4tick停止、崖で3.201ブロック・4tick停止してY120を維持。
-- 実壁試験の手前の敵は20 → 8 HP（防具0、12ダメージを1回）、壁の向こうの敵は20 HPを維持。
-- スニークを0.3秒保持して右クリックすると実`APEX_SLASH`となり、10tick・波の距離9.000ブロック。8ブロック先の敵は20 → 10 HP、プレイヤーはその場に留まりました。橙色の斬撃弧と実被弾を撮影しています。
-- 最終版Beaconは同じ保存地点で100tick後に成立し1個消費。BossBar、通常MUSICのSUPPRESS、専用曲のRECORDS・音量0.85・ループ・実チャネル再生を確認し、交戦解除時のRELEASE/stopも確認しました。
-- `options.txt`、common設定、client設定は、それぞれの確認前の内容へSHA-256とバイト単位で復元。音量設定を維持し、最終common設定は`debug=false`です。
+Fangの発光は名前付き4グループから9キューブのForge fullbrightを再出力します。通常のBlockbench保存後も発光宣言と左右の一人称・三人称、GUI、ground、fixed、headの8表示設定を維持します。旧Python生成器は正式 `.bbmodel` がある状態での既定上書きを拒否します。
 
-実ゲーム画像: [Fang一人称](docs/visuals/apex-1.5-fang-first-person.png)・[三人称](docs/visuals/apex-1.5-fang-third-person.png)・[インベントリ](docs/visuals/apex-1.5-fang-inventory.png)・[Dash](docs/visuals/apex-1.5-predator-dash.png)・[壁](docs/visuals/apex-1.5-dash-wall.png)・[崖](docs/visuals/apex-1.5-dash-cliff.png)・[真のSlash](docs/visuals/apex-1.5-apex-slash.png)・[被弾](docs/visuals/apex-1.5-apex-slash-hit.png)・[召喚儀式](docs/visuals/apex-1.5-beacon-ritual.png)・[召喚成立](docs/visuals/apex-1.5-beacon-arrival.png)・[ゲーム内Apex](docs/visuals/apex-1.5-ingame.png)・[TaCZ付きタイトル](docs/visuals/apex-1.5-tacz-title.png)。
+### アニメーション時刻の保持
 
-## 既存ファイルの監査
+既存の `apex.animation.json` は変更していません。37クリップ全体の名前・長さ・ループ・全5,316キーフレームの時刻・値・easingを、Blockbenchで再保存したプロジェクトと照合しました。ファイルSHA-256は従来と同じ `0218e1e3c8ecaa6dea5cc8bf6913b2a29eeda67c2c5f422df9fab975a9d21744` です。
 
-1.4.0の106個の既存Java/資源ファイルとSHA-256を比較しました。変更はメインクラスへのクリエイティブタブ登録、登録クラスへの2アイテム追加、mod情報、英語・日本語の追加文言の5ファイルだけです。**保護対象101ファイルはバイト単位で一致**します。
+Blockbench標準のAnimation Exportはsnappingへ時刻を丸め、chargeの `0.0563` 秒などを変えてしまいます。専用 `export-animations` は保存済みプロジェクトの生の時刻から別ファイルへ出力し、この丸めを避けます。既存ランタイムアニメーションへの直接出力も拒否します。通常のgeometry/PNG書き出しはアニメーションを更新しません。
 
-配布jarも1.4.0の全166エントリと比較しました。変更はManifest・mods.toml・2言語ファイル・メインクラス・登録クラスの6エントリだけで、**他160エントリは完全一致**します。新規36エントリを加え、合計202エントリです。CRC正常・重複なし、GeckoLib/TaCZの依存クラスを同梱していません。
+詳細: [正式編集手順](models/blockbench/README.md)・[Fang編集と発光](docs/BLOCKBENCH-FANG.md)・[Blockbench実機記録と画像](docs/VALIDATION-1.5.1-blockbench.md)。
 
-既存アニメーションは37クリップ。ファイル全体のSHA-256は従来と同じ `0218e1e3c8ecaa6dea5cc8bf6913b2a29eeda67c2c5f422df9fab975a9d21744` です。
+## DashとSlashの判定
 
-## 配布jar
+Dashは2秒（40tick）、Slashは10秒（200tick）の個別期限をサーバー側でプレイヤーUUIDごとに管理します。別のFangへ持ち替えても期限は残り、片方の発動は他方の期限を変更しません。common config `apexFangDashCooldownTicks` は既定40、設定範囲1〜1200です。既存の能力実行中ロックは維持し、同時発動しません。
 
-- `build/libs/apexpredator-1.20.1-1.5.0.jar`
-- `dist/apexpredator-1.20.1-1.5.0.jar`
-- `dist/apexpredator-1.20.1-1.5.0.jar.sha256`
+標準ホットバーは通常時にDash、スニーク時にSlashの残り時間を表示します。バニラのサーバー用item gateは2期限の短い方を使い、最終受付は選択した能力の期限で判定します。標準 `ClientboundCooldownPacket` と `ItemCooldowns` を使用し、安定したカウントダウンを毎tick再送しません。短いサーバー用gateの終了が、選択中の長いSlash表示を消さないことも確認しています。
 
-サイズ: **4,381,770 bytes**。`build/libs`と`dist`は完全一致します。
+GameTestは実ServerPlayerとnative `ServerPlayerGameMode.useItem` を使い、**Dashの39tick拒否・40tick受付、Slashの199tick拒否・200tick受付**を厳密に確認します。拒否時の耐久不消費、持ち替え、独立期限、各対象への1回命中、標準表示の選択変更・終了・清掃も確認しています。移動距離7ブロック、Dashの8tick動作、Slashの9ブロック/10tick、ダメージ・耐久・衝突処理は変更していません。
 
-SHA-256: `04613fa9fb8fb346966c0f93cfc641775e44581d31c718dae45e1fca13232399`
+### fixtureの同一tick順序を修正
 
-**[jarを直接ダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.0/apexpredator-1.20.1-1.5.0.jar)**。公開済みの[Apex Predator 1.5.0 Release](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.0)にjarとSHA-256ファイルを添付しました。
+初回のTaCZあり試験では91件中90件が成功し、40tick後のDash再受付だけ失敗しました。GameTestは `onEachTick` と `runAfterDelay` を同じhash mapで実行し、同一tick内の順序を保証しません。開始はnative `doTick()` 後、再受付は `doTick()` 前になると、world時刻は40tick進んでもnativeクールダウンは39tickしか進まず、item gateが先に拒否していました。
 
-公開リンクから実際にダウンロードし、HTTP 200、`application/octet-stream`、`Content-Disposition: attachment`、上記サイズ・SHA-256とCRC正常を確認しました。GitHub側の資産digestも同じSHA-256です。[配布ジョブ](https://github.com/schnauzer0927-boop/minecraftMOD/actions/runs/38036564027)は、固定SHA・CRC・modバージョンを検証した同一jarを添付し、全手順が成功しました。
+fixtureにgameTime単位の実Player tickガードを追加し、通常tickとitem-useの前から同じ `advancePlayer` を呼びます。毎world tickにつき実 `player.doTick()` は1回だけです。物理処理・Forgeイベント・nativeクールダウンを維持し、39/40・199/200の条件を緩めず、クールダウンを手動解除せずに修正しました。製品の能力コードはこのfixture修正のために変更していません。その後、TaCZあり91件・なし88件の全件が成功しました。
 
-ソースと画面は`feature/apex-progression-1.5.0`に保存し、[Draft PR #1](https://github.com/schnauzer0927-boop/minecraftMOD/pull/1)を用意しました。Releaseのタグは`v1.5.0`、配布時点のコミットは`201cfff98931570253be651a6a0776f8dee8ce02`です。既存のmainと1.4.0ブランチを維持しています。
+テスト: [FangGameTests](src/main/java/dev/apexpredator/gametest/FangGameTests.java)・[fixture](src/main/java/dev/apexpredator/gametest/ProgressionGameTestArena.java)・[Blockbench資源JUnit](src/test/java/dev/apexpredator/assets/BlockbenchAssetTest.java)。操作と性能は[進行・武器ガイド](docs/PROGRESSION.md)を参照してください。
 
-GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。[導入とダウンロード](dist/README.md)を参照してください。
+## 実Minecraftクライアント
 
-生ログとjar監査結果はignoredの`build/progression150/`に保存しています。最終ログは`plain-server-callback-final.log`、`tacz-server-callback-final.log`、`final-build-native.log`、`jar-audit.json`です。GUIは`client/client-first.log`と`client/client-tacz.log`、実測と復元は`client/gui-verification.json`・`client/restoration.json`、実ダウンロードは`download-check/release-download.json`に分けて保存しています。画面確認はソフトウェア描画を使用し、BGM全曲のループ記録は[既存の検証](docs/VALIDATION-1.3.0-music-priority.md)を引き継ぎます。
+TaCZなし・ありで、それぞれ実 `runClient`、仮想画面へのキーボード/マウス入力、Save and Quit → Quit Gameを実施し、終了コード0を確認しました。複製した開発ワールドでSurvivalの能力・儀式を確認しています。
+
+- 両方でDashは40tick設定、8tickで7.000ブロック、足元Y120を維持。約0.9秒後の別Fangでの再入力は拒否、約2.4秒後は受付。
+- Slashは200tick設定、10tick・波9.000ブロック・プレイヤー移動0.000ブロック。Slash待機中もreadyのDashを使え、Dash再使用でSlash期限は延長しません。
+- Shiftによる標準表示の切替、Slashの早期拒否と10秒後の再使用、拒否時の耐久不消費を確認。
+- Fangの一人称左右・三人称左右と両手・インベントリ・ツールチップ・実ItemEntityを描画。Beaconは100tick後に1個消費して召喚し、BossBarと既存BGMが開始。
+- BGMはRECORDS、音量0.85、1インスタンス、実チャネル再生、通常音楽SUPPRESSを確認。プレイヤー死亡または交戦解除で停止し、通常音楽をRELEASE。
+- `options.txt` とcommon/client設定は確認前へバイト単位・SHA-256一致で復元し、`debug=false`を戻しました。
+
+[クライアント記録と全画像](docs/VALIDATION-1.5.1-client.md)に実測を記載しています。[Fang一人称](docs/visuals/apex-1.5.1-fang-first-person-right.png)・[三人称](docs/visuals/apex-1.5.1-fang-third-person-both.png)・[標準クールダウン](docs/visuals/apex-1.5.1-dash-cooldown.png)・[召喚](docs/visuals/apex-1.5.1-beacon-arrival.png)・[ゲーム内Apex](docs/visuals/apex-1.5.1-ingame.png)を参照してください。
+
+今回は実銃のGUI再射撃と変更していない曲の全長ループ試験は繰り返していません。TaCZの既存実イベント3件と[以前の全曲ループ検証](docs/VALIDATION-1.3.0-music-priority.md)を引き継ぎます。画面検証は仮想画面・ソフトウェア描画です。
+
+## 既存ファイルとjarの監査
+
+1.5.0の既存Java/資源130ファイルを比較し、122ファイルがバイト単位で一致しました。変更はconfig、Fang能力、Fangの説明コメント、GameTestとfixture、mod情報、英語・日本語の文言の8ファイルです。既存の戦闘AI・DamageTracker・Phase/回復・TaCZ・BGM・モデル・PNG・アニメーションは維持しています。
+
+配布jarは旧202エントリから203エントリになり、191エントリが完全一致、11エントリが変更、`PredatorWeaponAbilities$Cooldowns.class` の1エントリが追加、削除0です。変更はManifest・mod情報・文言・config・能力・GameTest関連に限定されます。CRCは正常で、`build/libs` と `dist` のjarは完全一致しました。
+
+## 最終jar
+
+- `build/libs/apexpredator-1.20.1-1.5.1.jar`
+- `dist/apexpredator-1.20.1-1.5.1.jar`
+- `dist/apexpredator-1.20.1-1.5.1.jar.sha256`
+
+サイズ: **4,389,041 bytes**。SHA-256: `1a22ecad06799cd8daed8f5dddaafa216bd26bf71dcbf3640abaadad2da7d4f9`。
+
+編集用ZIPは `dist/apexpredator-blockbench-1.5.1.zip`、**641,877 bytes**、SHA-256: `b8954c37f12e6451776d5b71d4edb82684154a70aa08e4ba4bf122266c8833b6` です。本体/Fangの編集元・専用CLI・手順を収録し、Minecraftへ入れるjarとは分けて配布します。
+
+予定の配布先: [1.5.1 jar](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-1.20.1-1.5.1.jar)。公開と最終jarの一致確認は配布工程で追記します。
+
+GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。[導入案内](dist/README.md)を参照してください。Blockbench編集ファイルはゲーム用jarとは別に配布します。
+
+生ログはignoredの `build/blockbench151/` に保存しています。最終サーバーログは `gametest-tacz-ordered.log` / `gametest-plain-ordered.log`、ビルドは `final-build.log`、Blockbench実機記録は `native/`、クライアント実測と設定復元は `client/` です。

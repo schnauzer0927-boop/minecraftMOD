@@ -3,7 +3,7 @@ loaderVersion="[47,)"
 license="MIT"
 [[mods]]
 modId="apexpredator"
-version="1.5.0"
+version="1.5.1"
 displayName="Apex Predator"
 authors="Apex Predator contributors"
 description='''An adaptive, telegraphed three-phase boss for melee and gun combat.'''

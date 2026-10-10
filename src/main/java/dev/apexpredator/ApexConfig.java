@@ -10,6 +10,7 @@ public final class ApexConfig {
     public static final ForgeConfigSpec.BooleanValue PHASE3_HEALING;
     public static final ForgeConfigSpec.DoubleValue PHASE3_ENTRY_HEAL, PHASE3_HEAL_PER_SECOND, PHASE3_HEAL_CAP;
     public static final ForgeConfigSpec.IntValue PHASE3_HEAL_DELAY_SECONDS;
+    public static final ForgeConfigSpec.IntValue APEX_FANG_DASH_COOLDOWN_TICKS;
     static {
         var b = new ForgeConfigSpec.Builder();
         MAXIMUM_HIT_DAMAGE = b.comment("Maximum incoming damage per hit. Same-projectile split hits share this budget. Normal armor still applies.").defineInRange("maximumHitDamage", 35.0, 1.0, 600.0);
@@ -24,6 +25,7 @@ public final class ApexConfig {
         PHASE3_HEAL_DELAY_SECONDS = b.comment("Seconds without actual health loss before the first passive heal. The final second is a visible warning; resumed recovery always gives a fresh warning.").defineInRange("phase3HealDelaySeconds", 5, 0, 600);
         PHASE3_HEAL_PER_SECOND = b.comment("Passive health restored every 20 ticks. Recovery continues during ordinary combat and pauses during execution, stagger and phase changes.").defineInRange("phase3HealPerSecond", 4.0, 0.0, 600.0);
         PHASE3_HEAL_CAP = b.comment("Passive Phase 3 recovery cannot raise health above this value or maximum health. This cap does not apply to the once-only entry heal.").defineInRange("phase3HealCap", 300.0, 0.0, 600.0);
+        APEX_FANG_DASH_COOLDOWN_TICKS = b.comment("Predator Dash cooldown in ticks (20 ticks = 1 second). Apex Slash retains its independent 200-tick cooldown.").defineInRange("apexFangDashCooldownTicks", 40, 1, 1200);
         SPEC = b.build();
     }
     private ApexConfig() { }

@@ -29,7 +29,7 @@
   "tooltip.apexpredator.apex_fang": "Twin blades forged from the energy of Apex Core.",
   "tooltip.apexpredator.apex_fang.dash": "Right click: Predator Dash — 7 blocks, 12 damage",
   "tooltip.apexpredator.apex_fang.slash": "Sneak + right click: Apex Slash — 9 blocks, 10 damage",
-  "tooltip.apexpredator.apex_fang.cooldown": "Abilities share a 10-second cooldown.",
+  "tooltip.apexpredator.apex_fang.cooldown": "Independent cooldowns: Dash 2 seconds by default; Slash 10 seconds.",
   "message.apexpredator.beacon.started": "The beacon is calling Apex. The ritual takes 5 seconds.",
   "message.apexpredator.beacon.busy": "A summoning ritual is already underway.",
   "message.apexpredator.beacon.apex_nearby": "Apex is already nearby. The beacon cannot summon another.",

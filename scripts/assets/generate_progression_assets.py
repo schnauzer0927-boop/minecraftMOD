@@ -7,6 +7,9 @@ lighting or require an entity renderer. Model rotations use Minecraft 1.20.1's
 allowed 22.5/45 degree steps. Existing boss art is never read or changed.
 
 Run with Python 3 and Pillow. All pixel noise uses a fixed seed.
+Once an editable models/blockbench/apex_fang.bbmodel exists, that project is
+the Fang source of truth; its exported mesh and texture are preserved unless
+--legacy-fang is explicitly requested to recreate the old procedural mesh.
 """
 from __future__ import annotations
 
@@ -46,12 +49,14 @@ MATERIALS = {
 EMISSIVE = {"energy", "core", "eye"}
 LOCALIZED_FEEDBACK = {
     "en_us": {
+        "tooltip.apexpredator.apex_fang.cooldown": "Independent cooldowns: Dash 2 seconds by default; Slash 10 seconds.",
         "message.apexpredator.beacon.busy": "A summoning ritual is already underway.",
         "message.apexpredator.beacon.unsafe_ground": "Use the beacon on the top face of safe, solid ground outside water.",
         "message.apexpredator.beacon.invalid_item": "Keep the reserved Apex Beacon in your inventory until the ritual completes.",
         "advancement.apexpredator.apex_predator.title": "Apex Predator",
     },
     "ja_jp": {
+        "tooltip.apexpredator.apex_fang.cooldown": "クールダウンは独立：Dashは初期設定で2秒、Slashは10秒。",
         "message.apexpredator.beacon.busy": "すでに召喚儀式が進行中です。",
         "message.apexpredator.beacon.unsafe_ground": "水中を避け、安全で安定した地面の上面から起動してください。",
         "message.apexpredator.beacon.invalid_item": "儀式完了まで、使用したApex Beaconをインベントリに残してください。",
@@ -338,16 +343,21 @@ def update_feedback():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--language-only", action="store_true", help="Refresh ritual feedback without touching models/textures/data")
+    parser.add_argument("--legacy-fang", action="store_true", help="Explicitly recreate the obsolete procedural Fang mesh/atlas instead of preserving the Blockbench export")
     options = parser.parse_args()
     update_feedback()
     if options.language_only:
         return
     for name, model, seed in (("apex_beacon", apex_beacon(), 15001), ("apex_fang", apex_fang(), 15002)):
-        atlas(name, seed)
-        dump(ASSETS / "models/item" / f"{name}.json", model)
+        preserve_fang = name == "apex_fang" and (ROOT / "models/blockbench/apex_fang.bbmodel").is_file() and not options.legacy_fang
+        if preserve_fang:
+            print("apex_fang: preserving the official Blockbench-exported mesh and atlas")
+        else:
+            atlas(name, seed)
+            dump(ASSETS / "models/item" / f"{name}.json", model)
+            materials = Counter(e.get("forge_data", {}).get("block_light", 0) for e in model["elements"])
+            print(f"{name}: {len(model['elements'])} solid elements, {materials[15]} fullbright accents, {SIZE}px dedicated atlas")
         dump(DATA / "recipes" / f"{name}.json", RECIPES[name])
-        materials = Counter(e.get("forge_data", {}).get("block_light", 0) for e in model["elements"])
-        print(f"{name}: {len(model['elements'])} solid elements, {materials[15]} fullbright accents, {SIZE}px dedicated atlas")
     dump(DATA / "advancements/the_predator_awakens.json", advancement(
         "the_predator_awakens", "apex_beacon", {"summoned": {"trigger": "minecraft:impossible"}}, "task"))
     dump(DATA / "advancements/apex_predator.json", advancement(

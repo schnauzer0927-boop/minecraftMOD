@@ -1,12 +1,16 @@
 # APEX model authoring source
 
-`generate_apex_model.py` is the reproducible authoring source for the 1.3.0
+The official editable source is now [models/blockbench/apex.bbmodel](../../models/blockbench/apex.bbmodel). Follow the [Blockbench workflow](../../models/blockbench/README.md) to edit geometry, pivots, UVs and textures. The 37 runtime clips are preserved; geometry export does not overwrite animation data.
+
+The generator below is retained for initial generation and backup of the original 1.3 appearance. Once the official project exists, regenerating it requires the explicit `--legacy-overwrite-model` option. Back up human edits before choosing that option.
+
+`generate_apex_model.py` is the reproducible legacy generator for the 1.3.0
 head and joint remake, its two UV-matched textures, orthographic/head views,
 four-view turnaround and matching-camera 1.2-versus-1.3 comparisons.
 It uses Python 3, Pillow and NumPy. Run:
 
 ```sh
-python3 scripts/art/generate_apex_model.py
+python3 scripts/art/generate_apex_model.py --legacy-overwrite-model
 ```
 
 The game needs only the committed `geo/apex.geo.json`, `textures/entity/apex.png`

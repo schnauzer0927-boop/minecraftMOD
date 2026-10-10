@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /** Owned remote fixtures prevent the production 64-block summoning exclusion from seeing other tests. */
 final class ProgressionGameTestArena implements AutoCloseable {
@@ -40,6 +41,7 @@ final class ProgressionGameTestArena implements AutoCloseable {
     private static final Set<ProgressionGameTestArena> OPEN = Collections.newSetFromMap(new IdentityHashMap<>());
     private final List<Entity> owned = new ArrayList<>();
     private final List<ServerPlayer> players = new ArrayList<>();
+    private final Map<ServerPlayer, Long> playerTickAt = new IdentityHashMap<>();
     private final List<Runnable> cleanup = new ArrayList<>();
     private final Map<BlockPos, BlockState> previousBlocks = new HashMap<>();
     final ServerLevel level;
@@ -77,9 +79,20 @@ final class ProgressionGameTestArena implements AutoCloseable {
         helper.onEachTick(() -> {
             if (closed) return;
             for (ServerPlayer player : List.copyOf(players)) {
-                if (!player.isRemoved() && player.serverLevel() == level) player.doTick();
+                advancePlayer(player);
             }
         });
+    }
+
+    /** GameTest callbacks in the same tick are unordered. Observe native use after one real
+     * player tick, without advancing physics or ItemCooldowns twice in that world tick. */
+    void advancePlayer(ServerPlayer player) {
+        if (!players.contains(player)) throw new IllegalArgumentException("Player belongs to another arena");
+        if (closed || player.isRemoved() || player.serverLevel() != level) return;
+        long now = level.getGameTime();
+        if (playerTickAt.getOrDefault(player, Long.MIN_VALUE) == now) return;
+        playerTickAt.put(player, now);
+        player.doTick();
     }
 
     Vec3 point(double x, double y, double z) { return new Vec3(origin.getX() + x, origin.getY() + y, origin.getZ() + z); }
@@ -87,13 +100,17 @@ final class ProgressionGameTestArena implements AutoCloseable {
     AABB bounds() { return new AABB(origin).inflate(18); }
 
     ServerPlayer player(boolean creative, double x, double z) {
+        return player(creative, x, z, packet -> { });
+    }
+
+    ServerPlayer player(boolean creative, double x, double z, Consumer<Packet<?>> packetObserver) {
         ServerPlayer player = new ServerPlayer(level.getServer(), level,
                 new GameProfile(UUID.randomUUID(), "apxt" + NEXT.get() + "p" + players.size()));
         // Register an ordinary ServerPlayer in the world without running a nonexistent Netty login.
         // Only packet delivery is inert: native movement, survival, inventory and attributes remain intact.
         player.connection = new ServerGamePacketListenerImpl(level.getServer(), new Connection(PacketFlow.SERVERBOUND), player) {
-            @Override public void send(Packet<?> packet) { }
-            @Override public void send(Packet<?> packet, PacketSendListener listener) { }
+            @Override public void send(Packet<?> packet) { packetObserver.accept(packet); }
+            @Override public void send(Packet<?> packet, PacketSendListener listener) { packetObserver.accept(packet); }
         };
         players.add(player);
         player.setGameMode(creative ? GameType.CREATIVE : GameType.SURVIVAL);

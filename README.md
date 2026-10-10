@@ -4,13 +4,13 @@ Minecraft **1.20.1** / Forge **47.4.10** / Java **17** 向けの、プレイヤ�
 
 ## 導入・召喚
 
-ビルド済み MOD は **[Apex Predator 1.5.0 をダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.0/apexpredator-1.20.1-1.5.0.jar)** から取得できます。[Releaseページ](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.0)のAssetsにも同じjarを添付しています。
+ビルド済み MOD は **[Apex Predator 1.5.1 をダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-1.20.1-1.5.1.jar)** から取得できます。[Releaseページ](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.1)のAssetsにも同じjarを添付しています。
 
-[dist/apexpredator-1.20.1-1.5.0.jar](dist/apexpredator-1.20.1-1.5.0.jar) にも保存しています。GitHubのファイル画面では **Download raw file** または **Raw** を選びます。
+[dist/apexpredator-1.20.1-1.5.1.jar](dist/apexpredator-1.20.1-1.5.1.jar) にも保存しています。GitHubのファイル画面では **Download raw file** または **Raw** を選びます。
 
-1.5.0 は `build/libs/apexpredator-1.20.1-1.5.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
+1.5.1 は `build/libs/apexpredator-1.20.1-1.5.1.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
 
-1.5.0 はApex Beaconの5秒召喚儀式と、Apex Coreを4個使う近接武器Apex Fangを追加しました。Fangは攻撃力16・攻撃速度1.6・耐久3000、右クリックで7ブロックのPredator Dash、スニーク＋右クリックで9ブロックのApex Slashを使用します。両技は10秒のクールダウンを共有します。[レシピ・召喚条件・能力](docs/PROGRESSION.md)に詳しく記載しています。音量0.85の専用BGM、戦闘中の通常BGM抑止、既存の戦闘・モデル・アニメーションを引き継ぎます。
+1.5.1 はApex本体とApex Fangの正式なBlockbench編集元を追加し、Predator Dashのクールダウンを2秒へ変更しました。Apex Beaconの5秒召喚儀式と、Apex Coreを4個使う近接武器Apex Fangを引き継ぎます。Fangは攻撃力16・攻撃速度1.6・耐久3000、右クリックで7ブロックのPredator Dash、スニーク＋右クリックで9ブロックのApex Slashを使用します。Dashは2秒、Slashは10秒の個別クールダウンです。通常時はDash、スニーク中はSlashの残り時間を標準のホットバー表示で確認できます。[レシピ・召喚条件・能力](docs/PROGRESSION.md)に詳しく記載しています。音量0.85の専用BGM、戦闘中の通常BGM抑止、既存の戦闘・モデル・アニメーションを引き継ぎます。
 
 ```mcfunction
 /summon apexpredator
@@ -67,12 +67,13 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 | `phase3HealDelaySeconds` | 5秒。最後の実HP減少からの待機時間 |
 | `phase3HealPerSecond` | 4 HP。20 tickごとに回復 |
 | `phase3HealCap` | 300 HP。継続回復の上限（最大HPも超えない） |
+| `apexFangDashCooldownTicks` | 40 tick（2秒）。Dashだけに適用 |
 
 `debug=true` はフェーズ・戦闘状態・対象・最後の技・実被ダメージ/DPS を毎秒ログへ出します。円形攻撃の WarningCenter / DamageCenter / radius / playerDistance / YDifference / InsideHitbox、ジャンプの SlamTarget / ActualLanding / LandingError も表示します。攻撃時には `[APEX AREA DEBUG]` / `[APEX SLAM DEBUG]` を記録し、`/apex debug` でも近くの個体を確認できます。
 
 回復時計は既存の`DamageTracker`へ統合しています。20 tickのDPS窓から古い被弾を削除しても、最後の実ダメージ時刻は回復判定のため保持します。TaCZの弾丸による実HP減少も同じ経路で回復を停止し、銃声やPostイベントだけではダメージを二重計上しません。回復の詳細は [Phase 3自己回復](docs/PHASE3-HEALING.md) に記録しています。
 
-1.3.0で追加し1.5.0にも継承したモデルは、1.2.0の外観を基に、頭部を新規の細い装甲マスクへ作り直し、首・肩・肘・手首・腰・股関節・膝・足首へ内部軸と重なりカバーを追加しました。装甲と発光アトラスは 512×512。V 字の胸部外殻、複合前腕刃、後方へ流れる背部フィン、逆関節脚の方向性を維持しています。
+1.3.0で追加し1.5.1にも継承したモデルは、1.2.0の外観を基に、頭部を新規の細い装甲マスクへ作り直し、首・肩・肘・手首・腰・股関節・膝・足首へ内部軸と重なりカバーを追加しました。装甲と発光アトラスは 512×512。V 字の胸部外殻、複合前腕刃、後方へ流れる背部フィン、逆関節脚の方向性を維持しています。
 
 37 アニメーションを維持し、攻撃時刻・フェーズ・瞬殺防止・残像・Particle・SE・カメラ・TaCZ 連携は従来どおりです。円形攻撃とジャンプの位置合わせは以下のように修正しています。
 
@@ -105,7 +106,7 @@ TaCZ が存在する場合だけ、`GunFireEvent` と `EntityHurtByGunEvent.Post
 
 [正面](docs/visuals/apex-1.3-front.png)・[側面](docs/visuals/apex-1.3-side.png)・[背面](docs/visuals/apex-1.3-back.png)・[四方向プレビュー](docs/visuals/apex-1.3-turnaround.png)・[頭部比較](docs/visuals/apex-1.2-vs-1.3-head-comparison.png)・[実ゲーム全身](docs/visuals/apex-1.3-ingame.png)・[実ゲーム頭部](docs/visuals/apex-1.3-head-ingame.png)・[変更ファイル一覧](docs/CHANGES-1.3.0.md)を公開しています。
 
-モデル・アニメーション・エフェクト素材の構成と再生成方法は [scripts/art/README.md](scripts/art/README.md) に記載。`assets/apexpredator/sounds/` の専用 OGG と `sounds.json` はリソースパックで差し替えられます。
+正式なモデル編集元は [models/blockbench/apex.bbmodel](models/blockbench/apex.bbmodel) と [models/blockbench/apex_fang.bbmodel](models/blockbench/apex_fang.bbmodel) です。[Blockbench編集手順](models/blockbench/README.md)に従い、形状・pivot・UV・テクスチャを編集して再出力できます。既存37アニメーションは保持します。旧Python生成方式は初期生成・バックアップ用として [scripts/art/README.md](scripts/art/README.md) に記載。`assets/apexpredator/sounds/` の専用 OGG と `sounds.json` はリソースパックで差し替えられます。
 
 見た目の確認用に、権限レベル 2 の `/apex animate <animation>` を追加しました。`/summon apexpredator:apex ~ ~ ~ {NoAI:1b}` で召喚した個体に使用すると、戦闘で上書きされずに各クリップを確認できます。
 

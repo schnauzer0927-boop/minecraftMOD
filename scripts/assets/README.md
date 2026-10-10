@@ -73,6 +73,8 @@ asset generator preserves this imported music and its sound registration.
 
 ## Beacon and Fang assets (1.5.0)
 
+The official Fang editing source is [models/blockbench/apex_fang.bbmodel](../../models/blockbench/apex_fang.bbmodel); use the [Blockbench workflow](../../models/blockbench/README.md) to preserve human edits and Forge glow settings.
+
 Run `python3 scripts/assets/generate_progression_assets.py` to author the two
 128×128 item atlases, vanilla 3D item models, shaped recipes, advancements and
 additional English/Japanese translations. Python, Pillow and NumPy are authoring
@@ -85,3 +87,5 @@ ambient occlusion disabled. Armor keeps ordinary lighting; the item does not
 illuminate world blocks. Item coordinates, allowed rotations and UV bounds are
 checked before output. Offline model previews under ignored `build/progression`
 describe the authored geometry and are separate from real client screenshots.
+
+When the official Fang project exists, the old progression generator preserves its runtime model/texture. `--legacy-fang` explicitly restores the initial 1.5.0 weapon instead; back up edits before using it. `--language-only` updates translations without regenerating geometry.
