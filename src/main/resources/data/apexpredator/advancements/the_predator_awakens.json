@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "apexpredator:apex_beacon"
+    },
+    "title": {
+      "translate": "advancement.apexpredator.the_predator_awakens.title"
+    },
+    "description": {
+      "translate": "advancement.apexpredator.the_predator_awakens.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/block/crying_obsidian.png"
+  },
+  "criteria": {
+    "summoned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

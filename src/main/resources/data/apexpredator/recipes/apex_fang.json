@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "CNC",
+    "CSC",
+    "BNB"
+  ],
+  "key": {
+    "C": {
+      "item": "apexpredator:apex_core"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "S": {
+      "item": "minecraft:netherite_sword"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "apexpredator:apex_fang",
+    "count": 1
+  }
+}

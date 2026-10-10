@@ -1,0 +1,293 @@
+package dev.apexpredator.gametest;
+
+import dev.apexpredator.ApexPredator;
+import dev.apexpredator.registry.ApexRegistries;
+import dev.apexpredator.weapon.PredatorWeaponAbilities;
+import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.gametest.GameTestHolder;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
+
+import java.util.function.Consumer;
+
+/** Native sword damage/repair and real item-use abilities, including player travel and collision. */
+@GameTestHolder(ApexPredator.MOD_ID)
+@PrefixGameTestTemplate(false)
+public final class FangGameTests {
+    private FangGameTests() { }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 40)
+    public static void fangRetainsSwordAttributesDurabilityNetheriteRepairAndNormalEnchantments(GameTestHelper helper) {
+        try (ProgressionGameTestArena arena = new ProgressionGameTestArena(helper)) {
+            ServerPlayer player = arena.player(false, 3.5, 8.5);
+            ItemStack fang = new ItemStack(ApexRegistries.APEX_FANG.get());
+            helper.assertTrue(fang.getItem() instanceof SwordItem, "Fang must remain compatible with ordinary SwordItem behavior");
+            near(helper, attribute(player, fang, Attributes.ATTACK_DAMAGE), 16, "Total player attack damage");
+            near(helper, attribute(player, fang, Attributes.ATTACK_SPEED), 1.6, "Total player attack speed");
+            helper.assertTrue(fang.getMaxDamage() == 3000, "Fang lost its required 3000 durability");
+            helper.assertTrue(fang.getItem().isValidRepairItem(fang, new ItemStack(Items.NETHERITE_INGOT)), "Netherite cannot repair Fang");
+            helper.assertFalse(fang.getItem().isValidRepairItem(fang, new ItemStack(Items.IRON_INGOT)), "Wrong repair material is accepted");
+            for (var enchantment : new net.minecraft.world.item.enchantment.Enchantment[]{Enchantments.SHARPNESS,
+                    Enchantments.SWEEPING_EDGE, Enchantments.FIRE_ASPECT, Enchantments.MOB_LOOTING,
+                    Enchantments.UNBREAKING, Enchantments.MENDING}) {
+                helper.assertTrue(enchantment.canEnchant(fang), "Ordinary sword enchantment rejects Fang: " + enchantment.getDescriptionId());
+            }
+            fang.setDamageValue(1200);
+            AnvilMenu repair = new AnvilMenu(1, player.getInventory());
+            repair.getSlot(0).set(fang);
+            repair.getSlot(1).set(new ItemStack(Items.NETHERITE_INGOT));
+            repair.createResult();
+            ItemStack repaired = repair.getSlot(2).getItem();
+            helper.assertTrue(repaired.is(ApexRegistries.APEX_FANG.get()) && repaired.getDamageValue() < 1200,
+                    "Actual anvil did not repair Fang with Netherite");
+            AnvilMenu enchant = new AnvilMenu(2, player.getInventory());
+            enchant.getSlot(0).set(repaired.copy());
+            enchant.getSlot(1).set(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(Enchantments.SHARPNESS, 5)));
+            enchant.createResult();
+            ItemStack enchanted = enchant.getSlot(2).getItem();
+            helper.assertTrue(enchanted.is(ApexRegistries.APEX_FANG.get())
+                            && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, enchanted) == 5,
+                    "Actual anvil could not apply the ordinary sword enchanted book");
+            helper.succeed();
+        }
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void ordinaryPlayerAttackDealsSixteenAndUsesOneDurability(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        ItemStack fang = equip(player);
+        var victim = arena.mob(EntityType.VINDICATOR, 5.5, 8.5);
+        helper.runAfterDelay(20, () -> {
+            near(helper, player.getAttributeValue(Attributes.ATTACK_DAMAGE), 16, "Actual equipped player's damage");
+            near(helper, player.getAttributeValue(Attributes.ATTACK_SPEED), 1.6, "Actual equipped player's attack speed");
+            helper.assertTrue(player.getAttackStrengthScale(0) >= .99, "Fixture did not wait for vanilla attack recovery");
+            player.attack(victim);
+            near(helper, victim.getHealth(), 984, "Native unenchanted sword health loss");
+            helper.assertTrue(fang.getDamageValue() == 1, "Ordinary sword hit did not consume exactly one durability");
+            arena.succeed(helper);
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 240)
+    public static void dashTravelsSevenBlocksHitsEachEnemyOnceAndSharesItsFiniteCooldown(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        ItemStack fang = equip(player);
+        var first = arena.mob(EntityType.VINDICATOR, 5.5, 8.5);
+        var second = arena.mob(EntityType.VINDICATOR, 8.5, 8.5);
+        var neutral = arena.mob(EntityType.PIG, 6.5, 8.5);
+        helper.runAfterDelay(4, () -> {
+            Vec3 start = player.position();
+            helper.assertTrue(player.onGround(), "Dash actor must naturally stand on its supporting floor");
+            helper.assertTrue(use(player, false), "Real Fang right-click failed to activate the grounded dash");
+            helper.assertTrue(fang.getDamageValue() == 4, "Dash did not consume its four durability once");
+            helper.runAfterDelay(12, () -> {
+                double distance = player.position().subtract(start).horizontalDistance();
+                helper.assertTrue(distance > 6.75 && distance <= 7.05, "Actual dash travel diverged from seven blocks: " + distance);
+                near(helper, first.getHealth(), 988, "First enemy dash hit");
+                near(helper, second.getHealth(), 988, "Second enemy dash hit");
+                near(helper, neutral.getHealth(), 1000, "Dash must not damage a neutral animal");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Eight-tick dash remained active indefinitely");
+                ItemStack replacement = equip(player);
+                helper.assertFalse(use(player, true), "Switching Fang stacks bypassed the shared dash/slash cooldown");
+                helper.assertTrue(replacement.getDamageValue() == 0, "Rejected cooldown use consumed durability");
+            });
+            helper.runAfterDelay(202, () -> {
+                helper.assertFalse(player.getCooldowns().isOnCooldown(ApexRegistries.APEX_FANG.get()), "Shared cooldown never expired after ten seconds");
+                helper.assertTrue(use(player, false), "Dash could not be used again after its original cooldown expired");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void dashStopsAtASolidWallAndCannotHitTheEnemyBehindIt(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        equip(player);
+        var exposed = arena.mob(EntityType.VINDICATOR, 5.5, 8.5);
+        var covered = arena.mob(EntityType.VINDICATOR, 9.5, 8.5);
+        for (int y = 0; y < 4; y++) for (int z = 6; z <= 10; z++) arena.level.setBlock(arena.block(7, y, z), Blocks.STONE.defaultBlockState(), 2);
+        helper.runAfterDelay(4, () -> {
+            helper.assertTrue(use(player, false), "Dash could not begin on its clear side of the wall");
+            helper.runAfterDelay(16, () -> {
+                helper.assertTrue(player.getBoundingBox().maxX <= arena.block(7, 0, 8).getX() + .01,
+                        "Dash crossed the wall with its real player body");
+                helper.assertTrue(arena.level.noCollision(player, player.getBoundingBox()), "Dash ended inside the wall");
+                near(helper, exposed.getHealth(), 988, "Exposed enemy must receive one dash hit");
+                near(helper, covered.getHealth(), 1000, "Dash damage passed through the blocking wall");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Wall collision left the dash running");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void aSmallOwnerPositionCorrectionStillCompletesOneSevenBlockDash(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        ItemStack fang = equip(player);
+        var first = arena.mob(EntityType.VINDICATOR, 5.5, 8.5);
+        var second = arena.mob(EntityType.VINDICATOR, 8.5, 8.5);
+        helper.runAfterDelay(4, () -> {
+            Vec3 start = player.position();
+            helper.assertTrue(use(player, false), "Correction fixture failed to start its grounded dash");
+            helper.runAfterDelay(2, () -> {
+                helper.assertTrue(PredatorWeaponAbilities.isActive(player.getUUID()), "Dash ended before the owner position correction");
+                // Models a delayed owner movement position, without forging onGround or bypassing real travel.
+                player.setPos(player.getX() - 1.5, player.getY(), player.getZ());
+            });
+            helper.runAfterDelay(12, () -> {
+                near(helper, player.position().subtract(start).horizontalDistance(), 7,
+                        "Small owner packet correction incorrectly canceled the committed seven-block dash");
+                near(helper, first.getHealth(), 988, "Position correction repeated or lost the first enemy hit");
+                near(helper, second.getHealth(), 988, "Position correction lost the second enemy hit");
+                helper.assertTrue(fang.getDamageValue() == 4, "Correcting the owner position paid for the dash twice");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Corrected dash never completed");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void aCatchUpStepCannotSkipAShortUnsupportedGap(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        equip(player);
+        var covered = arena.mob(EntityType.VINDICATOR, 9.5, 8.5);
+        boolean[] corrected = {false};
+        Consumer<TickEvent.PlayerTickEvent> correction = event -> {
+            if (event.player != player || event.phase != TickEvent.Phase.END || corrected[0]
+                    || PredatorWeaponAbilities.activeTick(player.getUUID()) != 5) return;
+            corrected[0] = true;
+            // The next planned endpoint (8.75) is supported; its route crosses the newly missing block (7).
+            // A delayed owner position must not turn the correction into a jump across that gap.
+            for (int z = 0; z < 16; z++) arena.level.setBlock(arena.block(7, -1, z), Blocks.AIR.defaultBlockState(), 2);
+            player.setPos(arena.point(6.125, 0, 8.5).x, player.getY(), player.getZ());
+        };
+        // GameTest callback iteration is not ordered against the separate player travel callback.
+        // Observe the real post-travel event after the weapon's NORMAL-priority listener instead.
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, TickEvent.PlayerTickEvent.class, correction);
+        arena.onClose(() -> MinecraftForge.EVENT_BUS.unregister(correction));
+        helper.runAfterDelay(4, () -> {
+            helper.assertTrue(use(player, false), "Gap fixture failed to begin on its initially intact floor");
+            helper.runAfterDelay(16, () -> {
+                helper.assertTrue(corrected[0], "Fixture never exercised a live catch-up step");
+                helper.assertTrue(player.getX() > arena.point(6.6, 0, 8.5).x
+                                && player.getBoundingBox().maxX <= arena.block(7, 0, 8).getX() + .01,
+                        "Catch-up must move to the first unsupported edge and stop, even with supported ground beyond it: " + player.position());
+                helper.assertTrue(player.onGround() && Math.abs(player.getY() - arena.origin.getY()) < .05,
+                        "Catch-up across a short gap made the player airborne");
+                near(helper, covered.getHealth(), 1000, "Catch-up damaged an enemy beyond the unsupported gap");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Unsupported catch-up left the dash running");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void dashStopsBeforeACliffAndDoesNotLeaveFlightOrResidualMotion(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        equip(player);
+        for (int x = 7; x < 16; x++) for (int z = 0; z < 16; z++) arena.level.setBlock(arena.block(x, -1, z), Blocks.AIR.defaultBlockState(), 2);
+        helper.runAfterDelay(4, () -> {
+            Vec3 start = player.position();
+            helper.assertTrue(use(player, false), "Dash could not begin on supported ground before the cliff");
+            helper.runAfterDelay(20, () -> {
+                double distance = player.position().subtract(start).horizontalDistance();
+                helper.assertTrue(distance > 2.9 && distance < 3.35,
+                        "Cliff fixture must travel to the edge before stopping, instead of ending immediately: " + distance);
+                helper.assertTrue(player.getBoundingBox().maxX <= arena.block(7, 0, 8).getX() + .01,
+                        "Dash carried the player's footprint beyond the cliff edge");
+                helper.assertTrue(player.onGround() && Math.abs(player.getY() - arena.origin.getY()) < .05,
+                        "Cliff dash left the player airborne or falling");
+                helper.assertFalse(player.isNoGravity() || player.getAbilities().flying, "Dash granted persistent flight");
+                helper.assertTrue(player.getDeltaMovement().horizontalDistanceSqr() < .01, "Stopped dash left unsafe residual horizontal motion");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Cliff stop left the dash active indefinitely");
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    @GameTest(template = "empty", batch = "apexpredator_progression", timeoutTicks = 50)
+    public static void slashHitsMultipleEnemiesOnceWithinNineBlocksAndRespectsCoverAndSharedCooldown(GameTestHelper helper) {
+        ProgressionGameTestArena arena = new ProgressionGameTestArena(helper);
+        ProgressionGameTestArena rangeArena = new ProgressionGameTestArena(helper);
+        ServerPlayer player = arena.player(false, 3.5, 8.5);
+        ServerPlayer rangePlayer = rangeArena.player(false, 3.5, 8.5);
+        ItemStack fang = equip(player);
+        equip(rangePlayer);
+        var first = arena.mob(EntityType.VINDICATOR, 6.5, 8.5);
+        var second = arena.mob(EntityType.VINDICATOR, 9, 9);
+        var covered = arena.mob(EntityType.VINDICATOR, 11.5, 8.5);
+        var outside = arena.mob(EntityType.VINDICATOR, 13.5, 8.5);
+        var neutral = arena.mob(EntityType.PIG, 7.5, 8.5);
+        var nearLimit = rangeArena.mob(EntityType.VINDICATOR, 12.25, 8.5);
+        var beyondLimit = rangeArena.mob(EntityType.VINDICATOR, 13.25, 8.5);
+        for (int y = 0; y < 4; y++) for (int z = 6; z <= 10; z++) arena.level.setBlock(arena.block(10, y, z), Blocks.STONE.defaultBlockState(), 2);
+        helper.runAfterDelay(4, () -> {
+            Vec3 position = player.position();
+            helper.assertTrue(use(player, true), "Real crouching Fang use failed to launch its predator slash");
+            helper.assertTrue(use(rangePlayer, true), "Clear-range slash fixture failed to activate");
+            helper.assertTrue(fang.getDamageValue() == 6, "Slash did not consume six durability once");
+            helper.runAfterDelay(16, () -> {
+                near(helper, first.getHealth(), 990, "First slash target");
+                near(helper, second.getHealth(), 990, "Second slash target");
+                near(helper, covered.getHealth(), 1000, "Slash passed through a solid wall");
+                near(helper, outside.getHealth(), 1000, "Slash exceeded its nine-block range");
+                near(helper, neutral.getHealth(), 1000, "Slash damaged a neutral animal");
+                near(helper, nearLimit.getHealth(), 990, "Clear slash must reach an enemy 8.75 blocks ahead");
+                near(helper, beyondLimit.getHealth(), 1000, "Uncovered enemy 9.75 blocks ahead must remain outside slash range");
+                helper.assertTrue(player.position().distanceTo(position) < .15, "Ranged slash unexpectedly dashed its owner");
+                helper.assertFalse(use(player, false), "Slash cooldown failed to block the alternate dash ability");
+                helper.assertTrue(fang.getDamageValue() == 6, "Rejected alternate ability added durability wear");
+                helper.assertFalse(PredatorWeaponAbilities.isActive(player.getUUID()), "Slash remained active beyond its ten-tick wave");
+                rangeArena.close();
+                arena.succeed(helper);
+            });
+        });
+    }
+
+    private static ItemStack equip(ServerPlayer player) {
+        ItemStack fang = new ItemStack(ApexRegistries.APEX_FANG.get());
+        player.setItemInHand(InteractionHand.MAIN_HAND, fang);
+        return fang;
+    }
+
+    private static boolean use(ServerPlayer player, boolean slash) {
+        player.setShiftKeyDown(slash);
+        return player.getMainHandItem().getItem().use(player.serverLevel(), player, InteractionHand.MAIN_HAND).getResult().consumesAction();
+    }
+
+    private static double attribute(ServerPlayer player, ItemStack stack, Attribute attribute) {
+        return player.getAttribute(attribute).getBaseValue() + stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(attribute).stream()
+                .filter(modifier -> modifier.getOperation() == AttributeModifier.Operation.ADDITION)
+                .mapToDouble(AttributeModifier::getAmount).sum();
+    }
+
+    private static void near(GameTestHelper helper, double actual, double expected, String description) {
+        helper.assertTrue(Math.abs(actual - expected) < .001, description + ": expected=" + expected + " actual=" + actual);
+    }
+}

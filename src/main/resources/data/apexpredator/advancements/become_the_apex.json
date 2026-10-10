@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "apexpredator:apex_fang"
+    },
+    "title": {
+      "translate": "advancement.apexpredator.become_the_apex.title"
+    },
+    "description": {
+      "translate": "advancement.apexpredator.become_the_apex.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "fang_crafted": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "apexpredator:apex_fang"
+      }
+    }
+  },
+  "parent": "apexpredator:apex_predator"
+}
