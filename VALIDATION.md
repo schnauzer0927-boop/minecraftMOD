@@ -89,7 +89,11 @@ TaCZなし・ありで、それぞれ実 `runClient`、仮想画面へのキー�
 
 編集用ZIPは `dist/apexpredator-blockbench-1.5.1.zip`、**641,877 bytes**、SHA-256: `b8954c37f12e6451776d5b71d4edb82684154a70aa08e4ba4bf122266c8833b6` です。本体/Fangの編集元・専用CLI・手順を収録し、Minecraftへ入れるjarとは分けて配布します。
 
-予定の配布先: [1.5.1 jar](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-1.20.1-1.5.1.jar)。公開と最終jarの一致確認は配布工程で追記します。
+**公開済み: [1.5.1 jarをダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-1.20.1-1.5.1.jar) / [Blockbench編集用ZIP](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-blockbench-1.5.1.zip)**。両方を認証なしの公開リンクから実際に取得し、HTTP 200・`Content-Disposition: attachment`・上記サイズとSHA-256・CRC正常・`dist`との完全一致を確認しました。
+
+[Apex Predator 1.5.1 Release](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.1)へ両ファイルと各SHA-256を添付しました。[配布ジョブ](https://github.com/schnauzer0927-boop/minecraftMOD/actions/runs/38069256563)は固定SHA・サイズ・CRC・MODバージョンと編集元収録を検証し、全手順が成功しました。Releaseのタグ`v1.5.1`は配布コミット`f608dce47699eb9fbe46b5c5b52848eb58418091`を指します。
+
+再ビルドには[1.5.1ソース一式](https://github.com/schnauzer0927-boop/minecraftMOD/archive/refs/tags/v1.5.1.zip)を使用します。ソース・画面・配布ファイルは`feature/apex-blockbench-1.5.1`へ保存し、mainへはマージしていません。公開リンクの実ダウンロード記録は`build/blockbench151/download-check/release-download.json`です。
 
 GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。[導入案内](dist/README.md)を参照してください。Blockbench編集ファイルはゲーム用jarとは別に配布します。
 
