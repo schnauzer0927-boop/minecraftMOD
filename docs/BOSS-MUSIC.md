@@ -1,6 +1,6 @@
 # Apex Predator — The Stalking Motif
 
-ユーザー提供のSuno製作曲 **The Stalking Motif** を、Apexのボス戦BGMとして組み込みました。Minecraft 1.20.1 / Forge 47.4.10 / Java 17、MOD ID `apexpredator`、バージョン1.3.0を維持しています。改修前の基準は `3a131f97fef2f9cfb6a0cb1d2527f978ff95d4aa`、改修ブランチは `feature/apex-boss-bgm` です。
+ユーザー提供のSuno製作曲 **The Stalking Motif** を、Apexのボス戦BGMとして組み込みました。Minecraft 1.20.1 / Forge 47.4.10 / Java 17、MOD ID `apexpredator`、現在の配布バージョンは1.4.0です。BGM導入時の改修前基準は `3a131f97fef2f9cfb6a0cb1d2527f978ff95d4aa`、改修ブランチは `feature/apex-boss-bgm` です。
 
 ## 音源と登録
 
@@ -82,4 +82,4 @@ Javaの相対パスは `src/main/java/dev/apexpredator/`、音資源は`src/main
 
 `debug=true`のときだけ、BGM開始・初回チャネル再生確認・停止を`[APEX BGM DEBUG]`としてログへ記録します。instance、カテゴリ、音量、交戦ボス数、停止理由を表示し、毎tickの音楽ログは出しません。
 
-現在の音量更新の検証・完成jarのハッシュは [VALIDATION.md](../VALIDATION.md) に記録します。[初回BGM版の実クライアント検証](VALIDATION-1.3.0-music.md)と[追加前の回復検証](VALIDATION-1.3.0-healing.md)も保持しています。
+現在の配布版の検証・完成jarのハッシュは [VALIDATION.md](../VALIDATION.md) に記録します。[音量0.85・通常BGM抑止の実クライアント検証](VALIDATION-1.3.0-music-priority.md)、[初回BGM版の実クライアント検証](VALIDATION-1.3.0-music.md)と[追加前の回復検証](VALIDATION-1.3.0-healing.md)も保持しています。

@@ -4,9 +4,11 @@ Minecraft **1.20.1** / Forge **47.4.10** / Java **17** 向けの、プレイヤ�
 
 ## 導入・召喚
 
-ビルド済み MOD は [dist/apexpredator-1.20.1-1.3.0.jar](dist/apexpredator-1.20.1-1.3.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
+ビルド済み MOD は [dist/apexpredator-1.20.1-1.4.0.jar](dist/apexpredator-1.20.1-1.4.0.jar) にも置いています。GitHub 上ではファイルを開き **Download raw file** または **Raw** で保存できます。
 
-1.3.0 は `build/libs/apexpredator-1.20.1-1.3.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
+1.4.0 は `build/libs/apexpredator-1.20.1-1.4.0.jar` と **[GeckoLib 4.4.9 の Forge 1.20.1 版](https://cdn.modrinth.com/data/8BmcQJ2H/versions/RBA7lJaW/geckolib-forge-1.20.1-4.4.9.jar)** をクライアントとサーバーの `mods` に配置します。GeckoLib は必須、TaCZ は任意です。以前の Apex Predator jar と重複させないでください。
+
+1.4.0 は直前の1.3.0配布版からバージョン表記を更新しました。音量0.85の専用BGM、戦闘中の通常BGM抑止、既存の戦闘・モデル・アニメーションを引き継ぎます。
 
 ```mcfunction
 /summon apexpredator
