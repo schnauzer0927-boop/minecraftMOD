@@ -29,7 +29,7 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
         delay = 0;
         relative = true;
         attenuation = Attenuation.NONE;
-        volume = .22F;
+        volume = .45F;
         pitch = 1F;
         playbackSequence = ++sequence;
     }
@@ -87,7 +87,7 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
 
     private static void debug(String action, int id, int encounters, boolean playing, String reason) {
         if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info(
-                "[APEX BGM DEBUG] {} instance={} category=RECORDS volume=0.22 pitch=1.0 looping=true playing={} encounters={} reason={}",
+                "[APEX BGM DEBUG] {} instance={} category=RECORDS volume=0.45 pitch=1.0 looping=true playing={} encounters={} reason={}",
                 action, id, playing, encounters, reason);
     }
 
