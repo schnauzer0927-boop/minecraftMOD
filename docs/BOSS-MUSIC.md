@@ -1,6 +1,6 @@
 # Apex Predator — The Stalking Motif
 
-ユーザー提供のSuno製作曲 **The Stalking Motif** を、Apexのボス戦BGMとして組み込みました。Minecraft 1.20.1 / Forge 47.4.10 / Java 17、MOD ID `apexpredator`、現在の配布バージョンは1.4.0です。BGM導入時の改修前基準は `3a131f97fef2f9cfb6a0cb1d2527f978ff95d4aa`、改修ブランチは `feature/apex-boss-bgm` です。
+ユーザー提供のSuno製作曲 **The Stalking Motif** を、Apexのボス戦BGMとして組み込みました。Minecraft 1.20.1 / Forge 47.4.10 / Java 17、MOD ID `apexpredator`、現在の配布バージョンは1.5.0です。BGM導入時の改修前基準は `3a131f97fef2f9cfb6a0cb1d2527f978ff95d4aa`、改修ブランチは `feature/apex-boss-bgm` です。
 
 ## 音源と登録
 

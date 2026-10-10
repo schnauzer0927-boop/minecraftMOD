@@ -70,3 +70,18 @@ it never changes the audio gain when the stream loops. The reproducible conversi
 audit is written to ignored `build/music/audio-audit.json` and intermediates stay
 in ignored `build/music`, outside packaged resources. Running the combat or healing
 asset generator preserves this imported music and its sound registration.
+
+## Beacon and Fang assets (1.5.0)
+
+Run `python3 scripts/assets/generate_progression_assets.py` to author the two
+128×128 item atlases, vanilla 3D item models, shaped recipes, advancements and
+additional English/Japanese translations. Python, Pillow and NumPy are authoring
+dependencies; Minecraft requires none of them. The script preserves existing
+language entries and does not write boss geometry, animations, loot, sounds or
+combat resources.
+
+Orange model accents use Forge 1.20.1 `forge_data` with block/sky light 15 and
+ambient occlusion disabled. Armor keeps ordinary lighting; the item does not
+illuminate world blocks. Item coordinates, allowed rotations and UV bounds are
+checked before output. Offline model previews under ignored `build/progression`
+describe the authored geometry and are separate from real client screenshots.

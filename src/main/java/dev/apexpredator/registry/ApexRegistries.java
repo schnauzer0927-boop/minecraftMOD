@@ -3,9 +3,12 @@ package dev.apexpredator.registry;
 import dev.apexpredator.ApexPredator;
 import dev.apexpredator.entity.ApexEntity;
 import dev.apexpredator.entity.ApexBoltEntity;
+import dev.apexpredator.item.ApexBeaconItem;
+import dev.apexpredator.item.ApexFangItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,6 +23,10 @@ public final class ApexRegistries {
     public static final RegistryObject<EntityType<ApexBoltEntity>> APEX_BOLT = ENTITIES.register("apex_bolt", () -> EntityType.Builder.<ApexBoltEntity>of(ApexBoltEntity::new, MobCategory.MISC)
             .sized(.35F, .35F).clientTrackingRange(64).updateInterval(1).build("apexpredator:apex_bolt"));
     public static final RegistryObject<Item> APEX_CORE = ITEMS.register("apex_core", () -> new Item(new Item.Properties().fireResistant()));
+    public static final RegistryObject<Item> APEX_BEACON = ITEMS.register("apex_beacon", () -> new ApexBeaconItem(new Item.Properties()
+            .stacksTo(1).fireResistant().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> APEX_FANG = ITEMS.register("apex_fang", () -> new ApexFangItem(new Item.Properties()
+            .fireResistant().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> APEX_SPAWN_EGG = ITEMS.register("apex_spawn_egg", () -> new ForgeSpawnEggItem(APEX, 0x171B21, 0xFF781F, new Item.Properties()));
     private ApexRegistries() { }
     public static void attributes(EntityAttributeCreationEvent event) { event.put(APEX.get(), ApexEntity.createAttributes().build()); }

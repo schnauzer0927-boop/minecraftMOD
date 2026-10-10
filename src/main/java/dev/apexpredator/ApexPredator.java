@@ -31,5 +31,7 @@ public final class ApexPredator {
     private void creativeItems(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) event.accept(ApexRegistries.APEX_SPAWN_EGG);
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) event.accept(ApexRegistries.APEX_CORE);
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) event.accept(ApexRegistries.APEX_BEACON);
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) event.accept(ApexRegistries.APEX_FANG);
     }
 }
