@@ -75,6 +75,12 @@ Apex Beaconの100tick召喚儀式、Apex Fangの通常剣攻撃・Predator Dash�
 
 SHA-256: `04613fa9fb8fb346966c0f93cfc641775e44581d31c718dae45e1fca13232399`
 
+**[jarを直接ダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.0/apexpredator-1.20.1-1.5.0.jar)**。公開済みの[Apex Predator 1.5.0 Release](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.0)にjarとSHA-256ファイルを添付しました。
+
+公開リンクから実際にダウンロードし、HTTP 200、`application/octet-stream`、`Content-Disposition: attachment`、上記サイズ・SHA-256とCRC正常を確認しました。GitHub側の資産digestも同じSHA-256です。[配布ジョブ](https://github.com/schnauzer0927-boop/minecraftMOD/actions/runs/38036564027)は、固定SHA・CRC・modバージョンを検証した同一jarを添付し、全手順が成功しました。
+
+ソースと画面は`feature/apex-progression-1.5.0`に保存し、[Draft PR #1](https://github.com/schnauzer0927-boop/minecraftMOD/pull/1)を用意しました。Releaseのタグは`v1.5.0`、配布時点のコミットは`201cfff98931570253be651a6a0776f8dee8ce02`です。既存のmainと1.4.0ブランチを維持しています。
+
 GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。[導入とダウンロード](../dist/README.md)を参照してください。
 
-生ログとjar監査結果はignoredの`build/progression150/`に保存しています。最終ログは`plain-server-callback-final.log`、`tacz-server-callback-final.log`、`final-build-native.log`、`jar-audit.json`です。GUIは`client/client-first.log`と`client/client-tacz.log`、実測と復元は`client/gui-verification.json`・`client/restoration.json`に分けて保存しています。画面確認はソフトウェア描画を使用し、BGM全曲のループ記録は[既存の検証](VALIDATION-1.3.0-music-priority.md)を引き継ぎます。
+生ログとjar監査結果はignoredの`build/progression150/`に保存しています。最終ログは`plain-server-callback-final.log`、`tacz-server-callback-final.log`、`final-build-native.log`、`jar-audit.json`です。GUIは`client/client-first.log`と`client/client-tacz.log`、実測と復元は`client/gui-verification.json`・`client/restoration.json`、実ダウンロードは`download-check/release-download.json`に分けて保存しています。画面確認はソフトウェア描画を使用し、BGM全曲のループ記録は[既存の検証](VALIDATION-1.3.0-music-priority.md)を引き継ぎます。
