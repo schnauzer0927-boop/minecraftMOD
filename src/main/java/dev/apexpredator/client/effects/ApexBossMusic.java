@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 /** A single client-local stream shared by all current nearby player encounters. */
 final class ApexBossMusic extends AbstractTickableSoundInstance {
     private static final BossMusicPlaybackPolicy PLAYBACK = new BossMusicPlaybackPolicy();
+    private static final VanillaMusicSuppressionPolicy VANILLA_MUSIC = new VanillaMusicSuppressionPolicy();
     private static ApexBossMusic active;
     private static long ticks;
     private static boolean encounterPresent;
@@ -29,7 +30,7 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
         delay = 0;
         relative = true;
         attenuation = Attenuation.NONE;
-        volume = .45F;
+        volume = .85F;
         pitch = 1F;
         playbackSequence = ++sequence;
     }
@@ -41,7 +42,8 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
         boolean audible = minecraft.options.getSoundSourceVolume(SoundSource.MASTER) > 0
                 && minecraft.options.getSoundSourceVolume(SoundSource.RECORDS) > 0;
         int encounters = 0;
-        if (enabled && validPlayer && audible) {
+        // Vanilla background music stays suppressed during combat even when this BGM is muted.
+        if (validPlayer) {
             for (ApexEntity apex : minecraft.level.getEntitiesOfClass(ApexEntity.class,
                     minecraft.player.getBoundingBox().inflate(ApexMusicEncounter.LISTENER_RANGE))) {
                 if (apex.isMusicEncounterFor(minecraft.player)) encounters++;
@@ -49,6 +51,7 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
         }
         encounterCount = encounters;
         encounterPresent = encounters > 0;
+        updateVanillaMusic(minecraft, VANILLA_MUSIC.update(validPlayer, encounters));
         boolean soundActive = active != null && !active.isStopped() && minecraft.getSoundManager().isActive(active);
         if (soundActive && !active.confirmed) {
             active.confirmed = true;
@@ -87,16 +90,32 @@ final class ApexBossMusic extends AbstractTickableSoundInstance {
 
     private static void debug(String action, int id, int encounters, boolean playing, String reason) {
         if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info(
-                "[APEX BGM DEBUG] {} instance={} category=RECORDS volume=0.45 pitch=1.0 looping=true playing={} encounters={} reason={}",
+                "[APEX BGM DEBUG] {} instance={} category=RECORDS volume=0.85 pitch=1.0 looping=true playing={} encounters={} reason={}",
                 action, id, playing, encounters, reason);
     }
 
     static void clear() {
-        stopActive(Minecraft.getInstance(), "world_reset");
+        Minecraft minecraft = Minecraft.getInstance();
+        stopActive(minecraft, "world_reset");
+        updateVanillaMusic(minecraft, VANILLA_MUSIC.reset());
         PLAYBACK.reset();
         ticks = 0;
         encounterPresent = false;
         encounterCount = 0;
+    }
+
+    static boolean isVanillaMusicSuppressed() { return VANILLA_MUSIC.isSuppressed(); }
+
+    private static void updateVanillaMusic(Minecraft minecraft, VanillaMusicSuppressionPolicy.Action action) {
+        if (action == VanillaMusicSuppressionPolicy.Action.NONE) return;
+        // stopPlaying also changes the vanilla timer: call it only on battle boundaries.
+        // Clearing the manager on release retires any instance whose play request we blocked.
+        minecraft.getMusicManager().stopPlaying();
+        if (action == VanillaMusicSuppressionPolicy.Action.SUPPRESS) {
+            minecraft.getSoundManager().stop(null, SoundSource.MUSIC);
+        }
+        if (ApexConfig.DEBUG.get()) LogUtils.getLogger().info(
+                "[APEX BGM DEBUG] vanilla_music action={} encounters={}", action, encounterCount);
     }
 
     @Override public void tick() {

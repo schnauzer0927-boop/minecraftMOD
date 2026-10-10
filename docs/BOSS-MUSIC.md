@@ -40,9 +40,17 @@ python3 scripts/assets/import_boss_music.py
 
 `ApexBossMusic`はMinecraftの`AbstractTickableSoundInstance`です。`looping=true`、`delay=0`、`stream=true`によって、音声エンジンの`LoopingAudioStream`が曲の終端で同じストリームを繰り返します。曲の終了を毎tick監視して、新しい音源を再生する方式ではありません。
 
-カテゴリは **RECORDS**（日本語設定画面の「ジュークボックス／音符ブロック」）。デフォルト音量は **0.45**、ピッチは **1.0**、位置による減衰は無効です。ユーザーの増量依頼で初回BGM版の0.22から0.45へ変更しました。音声信号の振幅で約2.05倍（約+6.2 dB）です。旧BGMのフェーズ連動の音量・ピッチ変更は取り除き、ループやボス切り替えのたびに音量・ピッチが変わらないようにしました。マスターとRECORDSの両音量が適用されます。
+カテゴリは **RECORDS**（日本語設定画面の「ジュークボックス／音符ブロック」）。デフォルト音量は **0.85**、ピッチは **1.0**、位置による減衰は無効です。追加の増量依頼で前回の0.45から0.85へ変更しました（音声信号の振幅で約1.89倍、約+5.5 dB）。旧BGMのフェーズ連動の音量・ピッチ変更は取り除き、ループやボス切り替えのたびに音量・ピッチが変わらないようにしました。マスターとRECORDSの両音量が適用されます。
 
 起動時の非同期音声読み込みには20 tickの猶予を設けます。音声エンジン再読み込みなどでチャネルが失われた場合は、既存の要求を停止し、100 tickの間隔を置いて1本だけ再試行します。消音中の毎tick再生要求や音源の重複を防ぎます。ポーズ中に新しい未停止音源を作りません。
+
+## 戦闘中の通常BGM
+
+実際の交戦中は通常BGMの **MUSICカテゴリ**を抑止します。交戦開始時に`MusicManager.stopPlaying()`と`SoundManager.stop(null, MUSIC)`で既存の通常BGMを停止し、クライアントのForge `PlaySoundEvent`で新たなMUSICの再生要求を除外します。RECORDSのボスBGM・レコード、他カテゴリの効果音は対象外です。ゲームの音量設定を書き換えません。
+
+抑止状態は専用曲の有効設定・MASTER/RECORDS音量・チャネル復旧から独立しています。専用曲を消音しても交戦中は通常BGMが割り込みません。複数ボスが交戦中なら抑止を維持し、最後の交戦終了、ローカル死亡・離脱・ディメンション移動で解除します。
+
+解除時にMusicManagerへ制御を返し、通常の選曲・曲間待ち時間に従って再生します。`stopPlaying()`はバニラのタイマーも変更するため、開始・終了・ワールド変更の境界でだけ呼び、毎tick繰り返しません。
 
 ## 保持と互換性
 
@@ -60,12 +68,14 @@ CombatController、AttackManager、DamageTracker、PhaseManager、Phase 3自己�
 | `scripts/assets/generate_fx_assets.py` / 同README | BGM上書き防止・追加音定義保持 |
 | `client/effects/ApexBossMusic.java` | 単一RECORDSループと開始・停止 |
 | `client/effects/BossMusicPlaybackPolicy.java` | 重複防止、消音、音声チャネル再試行 |
+| `client/effects/ApexMusicEvents.java` / `VanillaMusicSuppressionPolicy.java` | 交戦中のMUSIC開始阻止と、独立した通常BGMの抑止状態 |
 | `combat/ApexMusicEncounter.java` | 戦闘対象とリスナーの条件 |
 | `entity/ApexEntity.java` | 戦闘対象UUIDの同期 |
 | `client/effects/ApexClientEffects.java` | 死亡・退出も含む音楽更新の呼び出し |
 | `ApexClientConfig.java` / `effect/ApexEffects.java` | 既存BGM設定の説明・プロトコル3 |
 | `gametest/BossMusicGameTests.java` | 実サーバーtickの戦闘同期試験 |
 | `BossMusicPlaybackPolicyTest.java` / `ApexMusicEncounterTest.java` / `BossMusicAssetTest.java` | ライフサイクル・条件・音資源のJUnit |
+| `VanillaMusicSuppressionPolicyTest.java` | 複数ボス、死亡・退出、消音・設定無効・音源復旧中の抑止維持 |
 | `README.md` / `VALIDATION.md` / `dist/README.md` | 導入・検証・配布記録 |
 
 Javaの相対パスは `src/main/java/dev/apexpredator/`、音資源は`src/main/resources/`、JUnitは`src/test/java/dev/apexpredator/`を起点とします。`sounds.json`とSoundEventは既存登録を利用し、登録ファイル自体は変更していません。
