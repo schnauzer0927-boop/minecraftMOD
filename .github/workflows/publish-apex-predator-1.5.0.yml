@@ -1,0 +1,63 @@
+name: Publish Apex Predator 1.5.0
+
+on:
+  push:
+    branches:
+      - feature/apex-progression-1.5.0
+    paths:
+      - .github/workflows/publish-apex-predator-1.5.0.yml
+      - docs/RELEASE-1.5.0.md
+      - dist/apexpredator-1.20.1-1.5.0.jar
+      - dist/apexpredator-1.20.1-1.5.0.jar.sha256
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apex-predator-1.5.0-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the validated distribution
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify the exact validated jar
+        working-directory: dist
+        run: |
+          sha256sum --check apexpredator-1.20.1-1.5.0.jar.sha256
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import zipfile
+          path = pathlib.Path('apexpredator-1.20.1-1.5.0.jar')
+          assert path.stat().st_size == 4381770
+          assert hashlib.sha256(path.read_bytes()).hexdigest() == '04613fa9fb8fb346966c0f93cfc641775e44581d31c718dae45e1fca13232399'
+          with zipfile.ZipFile(path) as jar:
+              assert jar.testzip() is None
+              assert 'version="1.5.0"' in jar.read('META-INF/mods.toml').decode()
+          PY
+
+      - name: Publish the jar and checksum as Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view v1.5.0 >/dev/null 2>&1; then
+            gh release upload v1.5.0 \
+              dist/apexpredator-1.20.1-1.5.0.jar \
+              dist/apexpredator-1.20.1-1.5.0.jar.sha256 --clobber
+            gh release edit v1.5.0 --draft=false --latest \
+              --title "Apex Predator 1.5.0" --notes-file docs/RELEASE-1.5.0.md
+          else
+            gh release create v1.5.0 \
+              dist/apexpredator-1.20.1-1.5.0.jar \
+              dist/apexpredator-1.20.1-1.5.0.jar.sha256 \
+              --target "$GITHUB_SHA" --latest \
+              --title "Apex Predator 1.5.0" --notes-file docs/RELEASE-1.5.0.md
+          fi
