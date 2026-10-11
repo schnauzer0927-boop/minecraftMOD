@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,6 +43,7 @@ class ApexAssetIntegrityTest {
     void articulatedRigHasCompleteAcyclicHierarchyAndFiniteGeometry() throws IOException {
         JsonObject geometry = geometry();
         Map<String, JsonObject> bones = bones(geometry);
+        assertEquals(28, bones.size(), "All original named animation bones must remain available");
         assertTrue(bones.keySet().containsAll(REQUIRED_BONES), "The articulated predator rig is incomplete");
         assertTrue(bones.containsKey("jaw") || bones.containsKey("face_plate"), "Missing movable face armor");
         assertFalse(bones.get("root").has("parent"), "Root must anchor the skeleton");
@@ -72,16 +76,16 @@ class ApexAssetIntegrityTest {
                 if (cube.has("pivot")) assertFiniteVector(cube.getAsJsonArray("pivot"), "cube pivot");
                 assertTrue(cube.has("uv"), "Armor cube has no texture coordinates");
                 validateUv(cube.get("uv"), size, textureWidth, textureHeight);
-                double originY = cube.getAsJsonArray("origin").get(1).getAsDouble();
-                lowest = Math.min(lowest, originY);
-                highest = Math.max(highest, originY + size.get(1).getAsDouble());
+                double[] vertical = transformedVerticalBounds(cube, entry.getKey(), bones);
+                lowest = Math.min(lowest, vertical[0]);
+                highest = Math.max(highest, vertical[1]);
                 cubes++;
             }
         }
-        assertTrue(cubes >= 40, "Dedicated armored model requires its silhouette geometry");
+        assertTrue(cubes >= 300 && cubes <= 500, "The reference rebuild uses a deliberate 300–500-cube budget, count=" + cubes);
         assertTrue(lowest <= 1 && lowest >= -1, "Feet must meet the ground at model origin");
-        assertTrue(highest >= 2.6 * 16 && highest <= 2.8 * 16,
-                "Nominal model crown must match the 2.6–2.8-block unscaled combat rig, height=" + highest / 16);
+        assertTrue(highest - lowest >= 2.6 * 16 && highest - lowest <= 2.8 * 16,
+                "Rotated model crown and claws must match the 2.6–2.8-block unscaled combat rig, height=" + (highest - lowest) / 16);
         assertTrue(description.get("visible_bounds_height").getAsDouble() >= 2.8,
                 "Animated blades and fins must remain inside render bounds");
     }
@@ -90,6 +94,7 @@ class ApexAssetIntegrityTest {
     void everyRequiredAnimationHasValidKeyframesAndExistingBoneTargets() throws IOException {
         Set<String> rig = bones(geometry()).keySet();
         JsonObject animations = json("animations/apex.animation.json").getAsJsonObject("animations");
+        assertEquals(37, animations.size(), "All original clips must remain, without duplicated replacement clips");
         for (String required : REQUIRED_ANIMATIONS) {
             String name = "animation.apex." + required;
             assertTrue(animations.has(name), "Missing " + name);
@@ -129,23 +134,48 @@ class ApexAssetIntegrityTest {
     }
 
     @Test
+    void approvedAnimationFileKeepsEveryAttackTimestampAndTheReviewedChargePose() throws IOException, NoSuchAlgorithmException {
+        try (InputStream stream = resource("animations/apex.animation.json")) {
+            assertEquals("c12bf23e69775ab74fa4af038fe0611391a312743bdc3c66bb9b07c771b54a16",
+                    HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(stream.readAllBytes())),
+                    "Keep all 37 approved clips, including only the reviewed charge/charge_prepare chest-neck X-angle correction");
+        }
+    }
+
+    @Test
     void emissiveMaskMatchesAtlasAndOnlyIlluminatesTexturedArmor() throws IOException {
         BufferedImage base = png("textures/entity/apex.png");
         BufferedImage glow = png("textures/entity/apex_glow.png");
+        BufferedImage healing = png("textures/entity/apex_healing_glow.png");
         JsonObject description = geometry().getAsJsonObject("description");
         assertEquals(description.get("texture_width").getAsInt(), base.getWidth(), "Atlas width differs from geometry");
         assertEquals(description.get("texture_height").getAsInt(), base.getHeight(), "Atlas height differs from geometry");
         assertEquals(base.getWidth(), glow.getWidth(), "Emissive and armor atlas widths differ");
         assertEquals(base.getHeight(), glow.getHeight(), "Emissive and armor atlas heights differ");
-        assertTrue(base.getWidth() >= 128 && base.getHeight() >= 128, "Armor must have a dedicated detailed atlas");
+        assertEquals(base.getWidth(), healing.getWidth(), "Healing core overlay must use the rebuilt atlas coordinates");
+        assertEquals(base.getHeight(), healing.getHeight(), "Healing core overlay must use the rebuilt atlas coordinates");
+        assertTrue(base.getWidth() >= 512 && base.getHeight() >= 512, "Reference armor requires at least a 512-pixel atlas");
         int glowingPixels = 0;
         int darkPixels = 0;
+        int opaquePixels = 0;
+        int healingPixels = 0;
+        Set<Integer> armorShades = new HashSet<>();
         for (int y = 0; y < base.getHeight(); y++) {
             for (int x = 0; x < base.getWidth(); x++) {
                 int armor = base.getRGB(x, y);
                 int emissive = glow.getRGB(x, y);
                 int armorAlpha = armor >>> 24;
                 int glowAlpha = emissive >>> 24;
+                if (armorAlpha > 0) {
+                    opaquePixels++;
+                    armorShades.add(armor & 0xffffff);
+                }
+                int heal = healing.getRGB(x, y);
+                if ((heal >>> 24) > 0) {
+                    assertTrue(armorAlpha > 0, "Healing overlay illuminates transparent texels at " + x + "," + y);
+                    assertTrue(((heal >>> 16) & 255) > (heal & 255), "Healing core must retain its orange energy color");
+                    healingPixels++;
+                }
                 if (glowAlpha > 0) {
                     assertTrue(armorAlpha > 0, "Emissive mask illuminates transparent texels at " + x + "," + y);
                     int red = (emissive >>> 16) & 255;
@@ -157,10 +187,11 @@ class ApexAssetIntegrityTest {
                 if (armorAlpha > 0 && ((armor >>> 16) & 255) < 100 && ((armor >>> 8) & 255) < 100 && (armor & 255) < 100) darkPixels++;
             }
         }
-        int pixels = base.getWidth() * base.getHeight();
         assertTrue(glowingPixels >= 32, "Eyes/core/blades have no meaningful emissive texture");
-        assertTrue(glowingPixels < pixels / 2, "Emissive mask must preserve dark armor contrast");
-        assertTrue(darkPixels > pixels / 4, "Missing dark gunmetal armor material");
+        assertTrue(glowingPixels < opaquePixels / 10, "Thin energy seams must leave at least 90% of armor unlit");
+        assertTrue(healingPixels > 0 && healingPixels < opaquePixels / 10, "Healing light must remain a small core/joint accent");
+        assertTrue(darkPixels > opaquePixels / 2, "Dark gunmetal must remain the main armor material");
+        assertTrue(armorShades.size() >= 40, "Metal requires edge highlights and plate shading, rather than a flat gray fill");
     }
 
     private static JsonObject geometry() throws IOException {
@@ -201,6 +232,44 @@ class ApexAssetIntegrityTest {
         assertNotNull(vector, "Missing " + description);
         assertEquals(3, vector.size(), description);
         for (JsonElement value : vector) assertTrue(Double.isFinite(value.getAsDouble()), description);
+    }
+
+    private static double[] transformedVerticalBounds(JsonObject cube, String owner, Map<String, JsonObject> bones) {
+        double minimum = Double.POSITIVE_INFINITY, maximum = Double.NEGATIVE_INFINITY;
+        JsonArray origin = cube.getAsJsonArray("origin"), size = cube.getAsJsonArray("size");
+        double inflate = cube.has("inflate") ? cube.get("inflate").getAsDouble() : 0;
+        for (int corner = 0; corner < 8; corner++) {
+            double[] point = new double[3];
+            for (int axis = 0; axis < 3; axis++) point[axis] = origin.get(axis).getAsDouble() - inflate
+                    + ((corner >> axis) & 1) * (size.get(axis).getAsDouble() + 2 * inflate);
+            if (cube.has("rotation")) rotateAround(point, cube.getAsJsonArray("pivot"), cube.getAsJsonArray("rotation"));
+            String name = owner;
+            while (name != null) {
+                JsonObject bone = bones.get(name);
+                if (bone.has("rotation")) rotateAround(point, bone.getAsJsonArray("pivot"), bone.getAsJsonArray("rotation"));
+                name = bone.has("parent") ? bone.get("parent").getAsString() : null;
+            }
+            minimum = Math.min(minimum, point[1]);
+            maximum = Math.max(maximum, point[1]);
+        }
+        return new double[]{minimum, maximum};
+    }
+
+    private static void rotateAround(double[] point, JsonArray pivot, JsonArray rotation) {
+        // Authored Bedrock coordinates match GeckoLib's Rz(-Z) * Ry(Y) * Rx(-X).
+        double[] center = new double[3];
+        for (int axis = 0; axis < 3; axis++) {
+            center[axis] = pivot == null ? 0 : pivot.get(axis).getAsDouble();
+            point[axis] -= center[axis];
+        }
+        double x = Math.toRadians(-rotation.get(0).getAsDouble());
+        double y = Math.toRadians(rotation.get(1).getAsDouble());
+        double z = Math.toRadians(-rotation.get(2).getAsDouble());
+        double px = point[0], py = Math.cos(x) * point[1] - Math.sin(x) * point[2], pz = Math.sin(x) * point[1] + Math.cos(x) * point[2];
+        double rx = Math.cos(y) * px + Math.sin(y) * pz, ry = py, rz = -Math.sin(y) * px + Math.cos(y) * pz;
+        point[0] = Math.cos(z) * rx - Math.sin(z) * ry + center[0];
+        point[1] = Math.sin(z) * rx + Math.cos(z) * ry + center[1];
+        point[2] = rz + center[2];
     }
 
     private static void assertFiniteNumbers(JsonElement element, String description) {

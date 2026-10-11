@@ -1,100 +1,90 @@
-# Apex Predator 1.5.1 — Blockbench編集と独立クールダウンの検証
+# Apex Predator 1.15.2 — HUNTERモデルの再構築と検証
 
-2026-10-11（日本時間）、Minecraft 1.20.1 / Forge 47.4.10 / Java 17.0.12で確認しました。基準は1.5.0コミット `296d0276ac33c04ad3d948d84f1527ca170cdf7b` です。[1.5.0の検証記録](docs/VALIDATION-1.5.0.md)を履歴として保存しています。
+2026年10月11日（日本時間）、Minecraft 1.20.1 / Forge 47.4.10 / Java 17.0.12。MODバージョンは依頼どおり **1.15.2** です。旧基準は1.5.1コミット `3ece45a6f9b6a317bd9c31b5732a3ac9258a0f7e`。[旧版の検証記録](docs/VALIDATION-1.5.1.md)を保存しています。
 
-## 変更と維持
+## 全身モデルと正式編集元
 
-Apex本体とApex Fangの正式なBlockbench編集元、埋め込みPNG、専用書き出しCLI、編集手順を追加しました。Predator Dashだけを既定40tick（2秒）へ短縮し、Apex Slashの200tick（10秒）と独立させました。
+今回のHUNTER設計図の正面・側面・背面・頭・前腕・脚・DASH各パネルを使い、全身のキューブ配置とUVを新規再構築しました。旧333キューブと同じボーン・同じ回転後8頂点を持つ新キューブは0個でした。
 
-既存のボス形状・テクスチャ・37アニメーション、戦闘AI、DamageTracker、フェーズとPhase 3回復、APEX EXECUTION、円形判定とジャンプスラム、TaCZ任意連携、BossBar、召喚儀式、レシピ、ドロップ、BGMを引き継ぎます。BGMの既定音量0.85と通信プロトコル3は維持しています。
+| 対象 | 最終構成 |
+| --- | --- |
+| [正式編集元](models/blockbench/apex.bbmodel) | GeckoLib Entity、498個の意味のある名前付きキューブ、28ボーン、37クリップ、5,316キーフレーム |
+| [実行用geometry](src/main/resources/assets/apexpredator/geo/apex.geo.json) | 編集元から専用CLIで書き出し、全寸法・回転・pivot・6面UVを一致検証 |
+| [通常装甲](src/main/resources/assets/apexpredator/textures/entity/apex.png) | 1024×1024、黒い内部・ガンメタル・銀の主装甲、陰影・エッジ・細い擦れ |
+| [発光](src/main/resources/assets/apexpredator/textures/entity/apex_glow.png) | 1024×1024、目・胸・首・腹部・関節・刃・背骨の細いオレンジ |
+| [回復時発光](src/main/resources/assets/apexpredator/textures/entity/apex_healing_glow.png) | 1024×1024、新UVと同じ位置のコア・関節。既存回復描画コードを維持 |
 
-## ビルドとテスト
+通常・発光・回復PNGの全バイトが埋め込み画像と一致し、発光と回復の画素が通常装甲の透明部分へ出ないことを確認しました。77枚の薄い先細り装甲には三角形のアルファと実際の斜辺geometryを組み合わせ、表裏で閉じた刃にしています。数値の全キューブ包絡は約2.729ブロックです。透明な角を含む包絡と、実際に見える輪郭の精度は区別しています。
+
+頭は銀色の細い中央楔・黒い頬・小さい顎・細いセンサー・多段後頭フィンへ変更。胸は5段のV字装甲、腹部は絞った内部機構、腕は長い3層の湾曲刃、背中は後方へ流れる刃、脚はdigitigradeと3本の前爪へ作り直しました。
+
+首・肩・肘・手首・腰・股関節・膝・足首に親子側の黒い軸、カバー、リング、重なり装甲を配置し、踵の後ろ爪も足裏フレームへ接続しています。28ボーン名と親子関係を維持し、肩・上腕・前腕・刃・手・太腿・下腿・足・左右背部刃の9組、**18か所のpivot**を調整しました。head/neck/face/eyeのpivotは維持しています。
+
+正式編集元がgeometry・PNGの出力元です。旧generatorやruntime JSONから編集後の形を作り直す方式は使いません。通常のビルドもgeneratorを実行しません。[編集・書き出し手順](models/blockbench/README.md)と[リグ検証の詳細](docs/VALIDATION-1.15.2-rig.md)に記載しています。
+
+## 設計図との比較と突進姿勢
+
+初稿を完成扱いにせず、実モデルの3方向を繰り返し表示して修正しました。棒状フィン、矩形刃、フィンの穴、頭頂アンテナ、小さい足、浮く後ろ爪を順に改善しています。[独立レビュー](docs/REFERENCE-DESIGN-1.15.2.md)に判断と修正を記録しました。
+
+- [正面](docs/visuals/apex-reference-match-front.png) / [側面](docs/visuals/apex-reference-match-side.png) / [背面](docs/visuals/apex-reference-match-back.png) / [頭部](docs/visuals/apex-reference-match-head.png) / [45度](docs/visuals/apex-reference-match-45deg.png)
+- [旧版との全身比較](docs/visuals/apex-reference-match-before-after.png) / [頭部の同角度・同距離比較](docs/visuals/apex-reference-match-head-comparison.png)
+- [既存12ポーズ](docs/visuals/apex-reference-match-animation-poses.png) / [突進角度補正の前後比較](docs/visuals/apex-reference-match-charge-comparison.png)
+
+これらは実行用geometry・UV・PNG・アニメーションから描いたソフトウェアレンダーです。設計図との比較にはチャットの添付画像を直接視認し、旧版との横並び比較には同じカメラで描いた実モデルを使用しました。BlockbenchとMinecraftの実画面は別の実機記録です。
+
+native確認で元の突進が設計図より直立していたため、依頼で許可された最小角度補正を行いました。
+
+| 対象 | 補正したX回転 | 維持 |
+| --- | --- | --- |
+| `charge_prepare`後半 | chest 28→40、neck −15→−20 | 開始値・全時刻・easing・他の変形 |
+| `charge` | chest 38→53、neck −22→−30 | 全時刻・easing・他の変形 |
+
+変更は**2クリップ・2ボーン・16個のX回転数値**だけです。全37クリップの名称・長さ・loop・全5,316時刻・easing、全position/scale/YZ回転、四肢の周期、残り35クリップの全値を維持しています。実行用ファイルの差分は16行だけで、攻撃発生tickとCombatControllerは変更していません。
+
+旧全時刻、許可したX回転以外の全変形、未変更35クリップの3つの署名を別々に固定し、補正の範囲外の変更を拒否するテストを追加しました。最終animation SHA-256は `c12bf23e69775ab74fa4af038fe0611391a312743bdc3c66bb9b07c771b54a16`。37クリップ全バイト未変更とは報告しません。四肢を含む原図DASHとの完全同一ポーズを主張せず、既存の動きを維持した低い上体への最小補正です。
+
+## ビルド・自動テスト
+
+すべて上記の補正を反映した最終アセットで実行しました。
 
 | 実行 | 結果 |
 | --- | --- |
-| `./gradlew build` | 成功、終了コード0、25秒 |
-| JUnit | 82件、失敗・エラー・スキップ0 |
-| 本体Blockbench Pythonテスト | 13件成功 |
-| Fang Blockbench Pythonテスト | 7件成功 |
-| `./gradlew runGameTestServer` | Forge Dedicated Server、必須88件すべて成功、正常終了 |
-| `./gradlew test runGameTestServer -PtaczDir=/workspace/.tools/optional-mods` | TaCZ 1.1.8-hotfix2あり、必須91件すべて成功、正常終了 |
+| `./gradlew build` | 成功、終了0、28秒 |
+| JUnit | 84件、失敗・エラー・スキップ0 |
+| 本体 / 新モデル / Fang Python | 15 + 6 + 7 = 28件、すべて成功 |
+| `./gradlew runGameTestServer` | Dedicated Server必須88件、すべて成功、正常終了0 |
+| `./gradlew test runGameTestServer -PtaczDir=/workspace/.tools/optional-mods` | TaCZ 1.1.8-hotfix2あり必須91件、すべて成功、正常終了0 |
 
-最終のTaCZあり・なしは同一の修正後コードで実行しました。従来のJUnit78件にBlockbench資源検証4件、GameTest86件に独立クールダウンと標準表示の試験2件を加えました。TaCZありでは既存の実イベント3件も実行します。既存の召喚・レシピ・ドロップ・通常剣攻撃・修理・エンチャント・壁と崖の試験も通過しています。
+既存AI・被ダメージ・フェーズ3回復・円形判定・固定slamTarget・専用BGM・儀式・レシピ・Coreドロップ・Fang攻撃・修理・エンチャント・独立Dash/Slash期限・壁と崖・TaCZ実イベント3件の試験を維持しています。今回の追加・更新試験は編集元とruntimeの全UV/寸法/回転/PNG、骨階層、密度、関節支持、37クリップの保護を対象とします。数値のモーション検証だけで、あらゆる見た目の隙間や干渉を保証したとは扱いません。
 
-## Blockbenchの正式編集元
+## 実BlockbenchとMinecraft
 
-| 編集元 | 実アプリで確認した構成 |
-| --- | --- |
-| [apex.bbmodel](models/blockbench/apex.bbmodel) | GeckoLib Entity、28ボーン、333キューブ、37クリップ、5,316キーフレーム |
-| [apex_fang.bbmodel](models/blockbench/apex_fang.bbmodel) | Java Block/Item、56キューブ、18グループ、8表示設定 |
+実Blockbench 5.2.2 / GeckoLib Animation Utils 4.2.5で、読み込み、再保存、shape/pivot/UV編集、3PNGのPaintと専用書き出しを確認しました。17クリップ×5時刻の85場面で全498キューブの実world matrixが有限でした。最終角度補正後も正式BBを再保存したコピーから、28骨/498キューブ/37クリップ/5,316フレーム/3PNGの一致checkが成功しました。
 
-公式Blockbench **5.2.2 Linux Desktop**と公式GeckoLib Animation Utils **4.2.5**で、実際の読み込み・保存・Edit・Paint・Display・書き出しを確認しました。本体の512×512通常/発光PNG、Fangの128×128 PNGをプロジェクトへ埋め込み、外部の絶対パスへ依存しません。
+[実エディター画面](docs/visuals/apex-reference-match-blockbench.png) / [補正後の実突進プレビュー](docs/visuals/apex-reference-match-charge-blockbench.png)。検証専用コピーの編集は正式geometry/PNGへ混入していません。標準Animation Exportの時刻丸めを避け、専用raw exportの別ファイルで確認しています。実アプリ保存の1.69e-15程度の数値丸めは正式resourceへ書き戻していません。
 
-検証用コピーで本体のhead pivot・キューブ寸法・UV、Fangの刃先寸法・UV、Paintの1ピクセルを変更し、保存した `.bbmodel` から専用CLIで変更内容が出力されることを確認しました。旧生成器やランタイムJSONを読み直して元の形状へ戻す方式にはしていません。配布するゲーム用モデル・PNGへ検証用編集は反映していません。
+実Minecraftの`runClient`をTaCZなし・ありの両方で実行し、Save and Quit → Quit Gameでいずれも正常終了0、BUILD SUCCESSFULでした。正面・側面・背面・45度に加え、idle / walk / run / sprint / charge / blade combo / slam / dodge / phase change / rage / deathを含む19クリップ名を確認しました。TaCZなしは29シーケンス116画像、ありは25シーケンス100画像です。既存の`/apex animate`による描画確認と、通常AIが選択する実戦の確認を区別しています。
 
-Fangの発光は名前付き4グループから9キューブのForge fullbrightを再出力します。通常のBlockbench保存後も発光宣言と左右の一人称・三人称、GUI、ground、fixed、headの8表示設定を維持します。旧Python生成器は正式 `.bbmodel` がある状態での既定上書きを拒否します。
+通常AIでPhase 1→2→3、Phase 3突入の191→251HP回復、毎秒4HPと300HP上限、APEX EXECUTION中の回復停止・終了後再開を観測しました。両クライアントで実ジャンプスラムのLandingErrorは0.000、警告とダメージ中心が一致しました。BossBar、1個のRECORDS BGM instance、通常BGM抑止、ボス死亡と同tickの停止・抑止解除も確認しました。TaCZの実銃イベント3件は別途Dedicated Server試験で検証しています。
 
-### アニメーション時刻の保持
+[実Minecraft画像](docs/visuals/apex-reference-match-ingame.png) / [charge](docs/visuals/apex-reference-match-native-charge.png) / [blade combo](docs/visuals/apex-reference-match-native-blade-combo.png) / [phase change](docs/visuals/apex-reference-match-native-phase-change.png) / [death](docs/visuals/apex-reference-match-native-death.png)。独立担当も代表36画像を実表示し、大きな関節離脱・刃の突き抜け・透明プレートの穴を認めませんでした。撮影時刻は同期・描画遅延を含み、連続全フレームの完全無貫通を主張するものではありません。
 
-既存の `apex.animation.json` は変更していません。37クリップ全体の名前・長さ・ループ・全5,316キーフレームの時刻・値・easingを、Blockbenchで再保存したプロジェクトと照合しました。ファイルSHA-256は従来と同じ `0218e1e3c8ecaa6dea5cc8bf6913b2a29eeda67c2c5f422df9fab975a9d21744` です。
+実機検証後はoptionsとcommon/client configの3ファイルを元のバイト列へ戻し、開始前後のSHA-256を一致確認しました。正式モデル・資産と全src/mainファイルも不変です。詳細は[実機確認記録](docs/VALIDATION-1.15.2-client.md)。画面検証は仮想画面・ソフトウェア描画で、ハードウェアGPUのFPS測定ではありません。
 
-Blockbench標準のAnimation Exportはsnappingへ時刻を丸め、chargeの `0.0563` 秒などを変えてしまいます。専用 `export-animations` は保存済みプロジェクトの生の時刻から別ファイルへ出力し、この丸めを避けます。既存ランタイムアニメーションへの直接出力も拒否します。通常のgeometry/PNG書き出しはアニメーションを更新しません。
+## 既存コードと配布jarの監査
 
-詳細: [正式編集手順](models/blockbench/README.md)・[Fang編集と発光](docs/BLOCKBENCH-FANG.md)・[Blockbench実機記録と画像](docs/VALIDATION-1.5.1-blockbench.md)。
+基準135ファイル中125ファイルは完全一致、10ファイルだけ変更、削除0。変更は本体編集元、モデル、3PNG、許可された16角度、mod情報、編集説明、資産テスト2ファイルです。**src/main/javaの全ファイルが完全一致**しており、AI、瞬殺防止、フェーズ3回復、TaCZ、BGM、攻撃判定、Beacon/Core/Fangは維持しています。
 
-## DashとSlashの判定
+旧jarと新jarはともに203エントリ。196エントリが全バイト同一、変更7エントリはManifest、mod情報、geometry、3PNG、限定animation補正だけ。全`.class`、データ、音源、Fang資源は同一です。追加・削除0、CRC正常、jar内の全assetsは最終ソース資源と一致しています。
 
-Dashは2秒（40tick）、Slashは10秒（200tick）の個別期限をサーバー側でプレイヤーUUIDごとに管理します。別のFangへ持ち替えても期限は残り、片方の発動は他方の期限を変更しません。common config `apexFangDashCooldownTicks` は既定40、設定範囲1〜1200です。既存の能力実行中ロックは維持し、同時発動しません。
+## 最終配布ファイル
 
-標準ホットバーは通常時にDash、スニーク時にSlashの残り時間を表示します。バニラのサーバー用item gateは2期限の短い方を使い、最終受付は選択した能力の期限で判定します。標準 `ClientboundCooldownPacket` と `ItemCooldowns` を使用し、安定したカウントダウンを毎tick再送しません。短いサーバー用gateの終了が、選択中の長いSlash表示を消さないことも確認しています。
+- `build/libs/apexpredator-1.20.1-1.15.2.jar`
+- `dist/apexpredator-1.20.1-1.15.2.jar`
+- `dist/apexpredator-1.20.1-1.15.2.jar.sha256`
 
-GameTestは実ServerPlayerとnative `ServerPlayerGameMode.useItem` を使い、**Dashの39tick拒否・40tick受付、Slashの199tick拒否・200tick受付**を厳密に確認します。拒否時の耐久不消費、持ち替え、独立期限、各対象への1回命中、標準表示の選択変更・終了・清掃も確認しています。移動距離7ブロック、Dashの8tick動作、Slashの9ブロック/10tick、ダメージ・耐久・衝突処理は変更していません。
+両jarは完全一致、**4,703,599 bytes**、SHA-256 `91dfd4dd7352a76c75bb3115f6efee778cf221f69c91822a9911e9dfe5e10042`。GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。
 
-### fixtureの同一tick順序を修正
+編集用`dist/apexpredator-blockbench-1.15.2.zip`は正式本体/Fangプロジェクト、3PNG、専用CLIと検証、手順、実モデル比較画像の28ファイルを収録しています。サイズ3,402,207 bytes、SHA-256 `30f3e1fa75f211627da2b2e7f6279f1efde0bce3c3d746cb3e9d736f1a86ece3`。独立2回の生成が同一で、単独展開先で28Pythonテスト、geometry/3PNG/Fangの出力、37クリップの全値、CRC、元ソース全バイト一致、保護先の上書き拒否を確認しました。Minecraftの`mods`に入れるのはjarで、編集用ZIPではありません。再ビルドには[タグのソース一式](https://github.com/schnauzer0927-boop/minecraftMOD/archive/refs/tags/v1.15.2.zip)が必要です。
 
-初回のTaCZあり試験では91件中90件が成功し、40tick後のDash再受付だけ失敗しました。GameTestは `onEachTick` と `runAfterDelay` を同じhash mapで実行し、同一tick内の順序を保証しません。開始はnative `doTick()` 後、再受付は `doTick()` 前になると、world時刻は40tick進んでもnativeクールダウンは39tickしか進まず、item gateが先に拒否していました。
-
-fixtureにgameTime単位の実Player tickガードを追加し、通常tickとitem-useの前から同じ `advancePlayer` を呼びます。毎world tickにつき実 `player.doTick()` は1回だけです。物理処理・Forgeイベント・nativeクールダウンを維持し、39/40・199/200の条件を緩めず、クールダウンを手動解除せずに修正しました。製品の能力コードはこのfixture修正のために変更していません。その後、TaCZあり91件・なし88件の全件が成功しました。
-
-テスト: [FangGameTests](src/main/java/dev/apexpredator/gametest/FangGameTests.java)・[fixture](src/main/java/dev/apexpredator/gametest/ProgressionGameTestArena.java)・[Blockbench資源JUnit](src/test/java/dev/apexpredator/assets/BlockbenchAssetTest.java)。操作と性能は[進行・武器ガイド](docs/PROGRESSION.md)を参照してください。
-
-## 実Minecraftクライアント
-
-TaCZなし・ありで、それぞれ実 `runClient`、仮想画面へのキーボード/マウス入力、Save and Quit → Quit Gameを実施し、終了コード0を確認しました。複製した開発ワールドでSurvivalの能力・儀式を確認しています。
-
-- 両方でDashは40tick設定、8tickで7.000ブロック、足元Y120を維持。約0.9秒後の別Fangでの再入力は拒否、約2.4秒後は受付。
-- Slashは200tick設定、10tick・波9.000ブロック・プレイヤー移動0.000ブロック。Slash待機中もreadyのDashを使え、Dash再使用でSlash期限は延長しません。
-- Shiftによる標準表示の切替、Slashの早期拒否と10秒後の再使用、拒否時の耐久不消費を確認。
-- Fangの一人称左右・三人称左右と両手・インベントリ・ツールチップ・実ItemEntityを描画。Beaconは100tick後に1個消費して召喚し、BossBarと既存BGMが開始。
-- BGMはRECORDS、音量0.85、1インスタンス、実チャネル再生、通常音楽SUPPRESSを確認。プレイヤー死亡または交戦解除で停止し、通常音楽をRELEASE。
-- `options.txt` とcommon/client設定は確認前へバイト単位・SHA-256一致で復元し、`debug=false`を戻しました。
-
-[クライアント記録と全画像](docs/VALIDATION-1.5.1-client.md)に実測を記載しています。[Fang一人称](docs/visuals/apex-1.5.1-fang-first-person-right.png)・[三人称](docs/visuals/apex-1.5.1-fang-third-person-both.png)・[標準クールダウン](docs/visuals/apex-1.5.1-dash-cooldown.png)・[召喚](docs/visuals/apex-1.5.1-beacon-arrival.png)・[ゲーム内Apex](docs/visuals/apex-1.5.1-ingame.png)を参照してください。
-
-今回は実銃のGUI再射撃と変更していない曲の全長ループ試験は繰り返していません。TaCZの既存実イベント3件と[以前の全曲ループ検証](docs/VALIDATION-1.3.0-music-priority.md)を引き継ぎます。画面検証は仮想画面・ソフトウェア描画です。
-
-## 既存ファイルとjarの監査
-
-1.5.0の既存Java/資源130ファイルを比較し、122ファイルがバイト単位で一致しました。変更はconfig、Fang能力、Fangの説明コメント、GameTestとfixture、mod情報、英語・日本語の文言の8ファイルです。既存の戦闘AI・DamageTracker・Phase/回復・TaCZ・BGM・モデル・PNG・アニメーションは維持しています。
-
-配布jarは旧202エントリから203エントリになり、191エントリが完全一致、11エントリが変更、`PredatorWeaponAbilities$Cooldowns.class` の1エントリが追加、削除0です。変更はManifest・mod情報・文言・config・能力・GameTest関連に限定されます。CRCは正常で、`build/libs` と `dist` のjarは完全一致しました。
-
-## 最終jar
-
-- `build/libs/apexpredator-1.20.1-1.5.1.jar`
-- `dist/apexpredator-1.20.1-1.5.1.jar`
-- `dist/apexpredator-1.20.1-1.5.1.jar.sha256`
-
-サイズ: **4,389,041 bytes**。SHA-256: `1a22ecad06799cd8daed8f5dddaafa216bd26bf71dcbf3640abaadad2da7d4f9`。
-
-編集用ZIPは `dist/apexpredator-blockbench-1.5.1.zip`、**641,877 bytes**、SHA-256: `b8954c37f12e6451776d5b71d4edb82684154a70aa08e4ba4bf122266c8833b6` です。本体/Fangの編集元・専用CLI・手順を収録し、Minecraftへ入れるjarとは分けて配布します。
-
-**公開済み: [1.5.1 jarをダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-1.20.1-1.5.1.jar) / [Blockbench編集用ZIP](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.5.1/apexpredator-blockbench-1.5.1.zip)**。両方を認証なしの公開リンクから実際に取得し、HTTP 200・`Content-Disposition: attachment`・上記サイズとSHA-256・CRC正常・`dist`との完全一致を確認しました。
-
-[Apex Predator 1.5.1 Release](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.5.1)へ両ファイルと各SHA-256を添付しました。[配布ジョブ](https://github.com/schnauzer0927-boop/minecraftMOD/actions/runs/38069256563)は固定SHA・サイズ・CRC・MODバージョンと編集元収録を検証し、全手順が成功しました。Releaseのタグ`v1.5.1`は配布コミット`f608dce47699eb9fbe46b5c5b52848eb58418091`を指します。
-
-再ビルドには[1.5.1ソース一式](https://github.com/schnauzer0927-boop/minecraftMOD/archive/refs/tags/v1.5.1.zip)を使用します。ソース・画面・配布ファイルは`feature/apex-blockbench-1.5.1`へ保存し、mainへはマージしていません。公開リンクの実ダウンロード記録は`build/blockbench151/download-check/release-download.json`です。
-
-GeckoLib 4.4.9 Forge版が必要、TaCZは任意です。[導入案内](dist/README.md)を参照してください。Blockbench編集ファイルはゲーム用jarとは別に配布します。
-
-生ログはignoredの `build/blockbench151/` に保存しています。最終サーバーログは `gametest-tacz-ordered.log` / `gametest-plain-ordered.log`、ビルドは `final-build.log`、Blockbench実機記録は `native/`、クライアント実測と設定復元は `client/` です。
+生ログ・基準ファイル・ハッシュ監査はignoredの`build/reference1152/`へ保存しています。ビルド`build-final-angles.log`、サーバー`gametest-plain-final.log` / `gametest-tacz-final.log`、リグ`rig-audit.json`、16値差分`charge-candidate/promotion-audit.json`、ソース/jar`source-jar-audit.json`、正式モデル`final-model-hashes.json`、実機`native/` / `client/`を参照してください。

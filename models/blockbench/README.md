@@ -1,24 +1,24 @@
-# Apex Predator 1.5.1 — Blockbenchでモデルを編集する
+# Apex Predator 1.15.2 — Blockbenchでモデルを編集する
 
 正式な編集元は [Apex本体](apex.bbmodel) と [Apex Fang](apex_fang.bbmodel) です。両ファイルにPNGを埋め込んでいるため、別のPCで直接開けます。MODは従来のGeckoLib geometry・アニメーションJSONとMinecraft Java item JSONを読みます。Blockbench自体やPythonはゲームの実行に必要ありません。
 
-本体にはBlockbench 5.xと公式 **GeckoLib Models & Animations / GeckoLib Animation Utils** プラグインが必要です。Fangは標準の **Java Block/Item** 形式で開けます。今回の初期状態は既存の形状・UV・テクスチャ・表示位置を引き継ぎ、37アニメーションの名前・攻撃時刻を維持しています。
+本体にはBlockbench 5.xと公式 **GeckoLib Models & Animations / GeckoLib Animation Utils** プラグインが必要です。Fangは標準の **Java Block/Item** 形式で開けます。1.15.2ではHUNTER設計図をもとにApex本体の形状・UV・テクスチャを全面再構築しました。既存28ボーンの名前・親子関係、37アニメーションの名前・攻撃時刻を維持しています。
 
 | 編集元 | 形式 | 構成 | テクスチャ |
 | --- | --- | --- | --- |
-| `apex.bbmodel` | GeckoLib Animated Model / Entity | 28ボーン、333キューブ、37クリップ | `apex.png` / `apex_glow.png`、512×512 |
+| `apex.bbmodel` | GeckoLib Animated Model / Entity | 28ボーン、498キューブ、37クリップ | `apex.png` / `apex_glow.png` / `apex_healing_glow.png`、1024×1024 |
 | `apex_fang.bbmodel` | Java Block/Item | 56キューブ、18グループ、8表示設定 | `apex_fang.png`、128×128 |
 
 以下のコマンドはリポジトリのルートで実行します。`.bbmodel`を編集・保存し、専用の書き出しツールでMODのresourceへ反映してから`./gradlew build`を実行します。旧Python生成スクリプトによる上書きを防ぐ仕組みも用意しています。
 
 ## Apex本体を編集する
 
-正式な編集元は `models/blockbench/apex.bbmodel` です。Blockbench 5以降に公式の **GeckoLib Models & Animations** プラグインを入れ、**GeckoLib Animated Model / Entity** として開いてください。自由形式へ変換する必要はありません。個別に編集できる333キューブ、既存の28ボーン、37アニメーションの5,316キーフレームを保存しています。ボーン名・親子関係・pivot・各面のUV・回転・タイムラインの時刻とeasingは既存リソースと照合しています。
+正式な編集元は `models/blockbench/apex.bbmodel` です。Blockbench 5以降に公式の **GeckoLib Models & Animations** プラグインを入れ、**GeckoLib Animated Model / Entity** として開いてください。自由形式へ変換する必要はありません。個別に編集できる498キューブ、既存の28ボーン、37アニメーションの5,316キーフレームを保存しています。ボーン名・親子関係とタイムラインの時刻・easingを維持しています。新しい形状に合わせたpivot、各面のUV・回転は、対応する実行用geometryと照合します。
 
-`apex.png` と `apex_glow.png` は、512×512のPNGをプロジェクト内に埋め込んであります。テクスチャ一覧で `apex.png` を選ぶと通常の装甲、`apex_glow.png` を選ぶと発光マスクを確認・Paint編集できます。Blockbenchの通常プレビューではGeckoLibのゲーム内発光レイヤーやフェーズ3回復用の追加発光を合成しません。Glow側が黒く/透明に見える装甲部分は正常です。発光マスクを選んだだけで材質やUVを別形式へ変換しないでください。
+`apex.png`・`apex_glow.png`・`apex_healing_glow.png`は、1024×1024のPNGをプロジェクト内に埋め込んであります。テクスチャ一覧で `apex.png` を選ぶと通常の装甲、`apex_glow.png` を選ぶと発光マスクを確認・Paint編集できます。回復用の`apex_healing_glow.png`も一覧からPaint編集できます。`--textures-dir`指定の専用書き出しは、埋め込まれた3枚すべてを出力します。Blockbenchの通常プレビューではGeckoLibのゲーム内発光レイヤーやフェーズ3回復用の追加発光を合成しません。Glow側が黒く/透明に見える装甲部分は正常です。発光マスクを選んだだけで材質やUVを別形式へ変換しないでください。
 
 1. `apex.bbmodel` を開き、Editでボーンを展開してキューブやpivotを編集します。例えば `head` / `face_plate`、`left_forearm` / `left_blade`、`back_spines` / `back_blade_left` / `back_blade_right` を個別に選べます。
-2. UVやPaintを変更する場合は、該当する通常/発光PNGを選びます。同じ512×512アトラス上の対応を維持してください。
+2. UVやPaintを変更する場合は、該当する通常/発光PNGを選びます。通常・発光・回復の3枚で同じ1024×1024アトラス上の対応を維持してください。
 3. `.bbmodel` を保存します。**Embed Textures** を有効にして埋め込みPNGを残してください。テクスチャはこの正式元に保存し、MOD側へ書き出すまでランタイムPNGを別編集しません。
 4. リポジトリのルートで次のコマンドを実行し、まず `build/blockbench/` へ確認用geometryとPNGを書き出します。Python 3標準ライブラリだけで実行できます。
 
@@ -48,10 +48,11 @@
 python3 scripts/blockbench/apex_body.py check \
   --geometry build/blockbench/apex.geo.json \
   --base-texture build/blockbench/textures/entity/apex.png \
-  --glow-texture build/blockbench/textures/entity/apex_glow.png
+  --glow-texture build/blockbench/textures/entity/apex_glow.png \
+  --healing-texture build/blockbench/textures/entity/apex_healing_glow.png
 ```
 
-Geometryの書き出しでは `apex.animation.json` を一切更新しません。今回の37クリップは変更していません。Blockbench標準のアニメーション書き出しはタイムラインのグリッドへ時刻を丸めます。例えばchargeにある `0.0563` 秒は、Blockbenchが許可する最大500のsnappingでも正確に表せません。そのため、標準メニューで `apex.animation.json` を上書きしないでください。プロジェクト内の元のキーフレーム時刻は保持しており、37クリップすべての全5,316キーフレームを検証しています。
+Geometryの書き出しでは `apex.animation.json` を一切更新しません。今回の37クリップは名前・全時刻・再生長・ループ・easingを維持しています。`charge_prepare` / `charge` の `chest` / `neck` のX回転だけ、計16値を低い突進姿勢に合わせて補正しました。残り35クリップと、対象2クリップの他のボーン・position・scale・Y/Z回転は変更していません。Blockbench標準のアニメーション書き出しはタイムラインのグリッドへ時刻を丸めます。例えばchargeにある `0.0563` 秒は、Blockbenchが許可する最大500のsnappingでも正確に表せません。そのため、標準メニューで `apex.animation.json` を上書きしないでください。プロジェクト内の元のキーフレーム時刻は保持しており、37クリップすべての全5,316キーフレームを検証しています。
 
 将来、pivot変更に伴うhead/neckなどの最小限の補正が必要になった場合は、BlockbenchのAnimateタブで値だけを補正して `.bbmodel` を保存し、次の明示的なコマンドで別の確認用ファイルへ出力します。このコマンドはグリッドへ丸めず、`.bbmodel` の生のキーフレーム時刻・値・easing・名前・長さを出力します。
 
@@ -72,7 +73,7 @@ python3 scripts/blockbench/apex_body.py export-animations \
 Pythonの検証は次のコマンドで実行できます。
 
 ```bash
-python3 -m unittest discover -s scripts/blockbench -p 'test_apex_body.py' -v
+python3 -m unittest discover -s scripts/blockbench -p 'test_apex_*.py' -v
 ```
 
 ## Apex Fangを編集する
@@ -92,4 +93,4 @@ python3 scripts/blockbench/apex_fang.py check
 
 ## 配布と検証
 
-編集ファイルはリポジトリの上記リンクから **Download raw file** で保存できます。1.5.1 Releaseの編集用ZIPにも、両プロジェクト・書き出しスクリプト・手順を収録します。Minecraftへ入れるのはRelease AssetsのMOD jarです。[検証記録](../../VALIDATION.md)と[配布案内](../../dist/README.md)を参照してください。
+編集ファイルはリポジトリの上記リンクから **Download raw file** で保存できます。1.15.2 Releaseの編集用ZIPにも、両プロジェクト・書き出しスクリプト・手順を収録します。Minecraftへ入れるのはRelease AssetsのMOD jarです。[検証記録](../../VALIDATION.md)と[配布案内](../../dist/README.md)を参照してください。

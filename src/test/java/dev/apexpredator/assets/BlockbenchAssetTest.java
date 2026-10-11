@@ -13,10 +13,12 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +41,8 @@ class BlockbenchAssetTest {
                 .get(0).getAsJsonObject().getAsJsonArray("bones");
         assertEquals(28, bones.size());
         assertEquals(bones.size(), hierarchy.groups.size());
-        assertEquals(333, project.getAsJsonArray("elements").size());
+        int cubeCount = project.getAsJsonArray("elements").size();
+        assertTrue(cubeCount >= 300 && cubeCount <= 500, "Reference rebuild must stay within its 300–500-cube geometry budget");
         Map<String, JsonObject> sourceGroups = new HashMap<>();
         for (JsonObject group : hierarchy.groups.values()) assertNull(sourceGroups.put(group.get("name").getAsString(), group));
         Set<String> boneNames = new HashSet<>();
@@ -60,6 +63,63 @@ class BlockbenchAssetTest {
             assertEquals(expectedCubes, hierarchy.cubeCounts.getOrDefault(uuid, 0), "Detached or missing armor in " + name);
         }
         assertEquals(boneNames, sourceGroups.keySet());
+    }
+
+    @Test
+    void everyEditableArmorCubeMatchesItsRuntimeShapeRotationPivotAndFaceUv() throws IOException {
+        JsonObject project = project("apex");
+        Hierarchy hierarchy = hierarchy(project);
+        Map<String, JsonObject> groupsByName = new HashMap<>();
+        hierarchy.groups.values().forEach(group -> groupsByName.put(group.get("name").getAsString(), group));
+        JsonArray bones = resourceJson("geo/apex.geo.json").getAsJsonArray("minecraft:geometry")
+                .get(0).getAsJsonObject().getAsJsonArray("bones");
+        Set<String> names = new HashSet<>();
+        int checked = 0;
+        for (JsonElement value : bones) {
+            JsonObject bone = value.getAsJsonObject();
+            String boneName = bone.get("name").getAsString();
+            List<JsonObject> editableCubes = hierarchy.armor.getOrDefault(groupsByName.get(boneName).get("uuid").getAsString(), List.of());
+            JsonArray cubes = bone.has("cubes") ? bone.getAsJsonArray("cubes") : new JsonArray();
+            assertEquals(cubes.size(), editableCubes.size(), boneName);
+            for (int index = 0; index < cubes.size(); index++) {
+                JsonObject cube = cubes.get(index).getAsJsonObject();
+                JsonObject editable = editableCubes.get(index);
+                String name = editable.get("name").getAsString();
+                assertTrue(names.add(name), "Duplicate editable armor name " + name);
+                assertFalse(name.matches("(?:cube|" + java.util.regex.Pattern.quote(boneName) + ")_?[0-9]+"),
+                        "Editable armor must describe its role, rather than using an anonymous bone/index name: " + name);
+                JsonArray origin = cube.getAsJsonArray("origin");
+                JsonArray size = cube.getAsJsonArray("size");
+                JsonArray from = editable.getAsJsonArray("from");
+                JsonArray to = editable.getAsJsonArray("to");
+                assertEquals(-(origin.get(0).getAsDouble() + size.get(0).getAsDouble()), from.get(0).getAsDouble(), 1e-9, name);
+                for (int axis = 0; axis < 3; axis++) {
+                    assertEquals(size.get(axis).getAsDouble(), to.get(axis).getAsDouble() - from.get(axis).getAsDouble(), 1e-9, name);
+                    if (axis > 0) assertEquals(origin.get(axis).getAsDouble(), from.get(axis).getAsDouble(), 1e-9, name);
+                }
+                vectorEquals(cube.has("pivot") ? cube.getAsJsonArray("pivot") : zeroVector(), editable.getAsJsonArray("origin"), new double[]{-1, 1, 1});
+                vectorEquals(cube.has("rotation") ? cube.getAsJsonArray("rotation") : zeroVector(), editable.getAsJsonArray("rotation"), new double[]{-1, -1, 1});
+                assertEquals(cube.has("inflate") ? cube.get("inflate").getAsDouble() : 0,
+                        editable.has("inflate") ? editable.get("inflate").getAsDouble() : 0, 1e-9, name);
+                assertTrue(cube.get("uv").isJsonObject(), "Reference armor uses explicit per-face UV: " + name);
+                JsonObject runtimeFaces = cube.getAsJsonObject("uv");
+                assertEquals(FACES, runtimeFaces.keySet(), "Missing runtime armor face in " + name);
+                for (String faceName : FACES) {
+                    JsonObject face = runtimeFaces.getAsJsonObject(faceName);
+                    JsonObject editorFace = editable.getAsJsonObject("faces").getAsJsonObject(faceName);
+                    JsonArray start = face.getAsJsonArray("uv");
+                    JsonArray extent = face.getAsJsonArray("uv_size");
+                    double[] expected = {start.get(0).getAsDouble(), start.get(1).getAsDouble(),
+                            start.get(0).getAsDouble() + extent.get(0).getAsDouble(), start.get(1).getAsDouble() + extent.get(1).getAsDouble()};
+                    if (faceName.equals("up") || faceName.equals("down")) expected = new double[]{expected[2], expected[3], expected[0], expected[1]};
+                    for (int axis = 0; axis < 4; axis++) assertEquals(expected[axis], editorFace.getAsJsonArray("uv").get(axis).getAsDouble(), 1e-9, name + "/" + faceName);
+                    assertEquals(face.has("uv_rotation") ? face.get("uv_rotation").getAsInt() : 0,
+                            editorFace.has("rotation") ? editorFace.get("rotation").getAsInt() : 0, name + "/" + faceName);
+                }
+                checked++;
+            }
+        }
+        assertEquals(project.getAsJsonArray("elements").size(), checked, "Every source cube must be tested against its runtime counterpart");
     }
 
     @Test
@@ -142,9 +202,10 @@ class BlockbenchAssetTest {
             assertFalse(meta.get("box_uv").getAsBoolean(), "Per-face armor atlas must not be rebuilt as automatic box UV");
             int width = project.getAsJsonObject("resolution").get("width").getAsInt();
             int height = project.getAsJsonObject("resolution").get("height").getAsInt();
-            Set<String> expected = name.equals("apex") ? Set.of("apex.png", "apex_glow.png") : Set.of("apex_fang.png");
+            Set<String> expected = name.equals("apex") ? Set.of("apex.png", "apex_glow.png", "apex_healing_glow.png") : Set.of("apex_fang.png");
             Map<String, JsonObject> textures = byName(project.getAsJsonArray("textures"));
-            assertEquals(expected, textures.keySet());
+            if (name.equals("apex")) assertTrue(textures.keySet().containsAll(expected), "The editable body must embed armor, emissive and healing overlays");
+            else assertEquals(expected, textures.keySet());
             for (String textureName : expected) {
                 JsonObject texture = textures.get(textureName);
                 String source = texture.get("source").getAsString();
@@ -224,26 +285,30 @@ class BlockbenchAssetTest {
         }
         Map<String, String> parents = new HashMap<>();
         Map<String, Integer> counts = new HashMap<>();
+        Map<String, List<JsonObject>> armor = new HashMap<>();
         Set<String> visited = new HashSet<>();
-        walk(project.getAsJsonArray("outliner"), null, groups, cubes, parents, counts, visited);
+        walk(project.getAsJsonArray("outliner"), null, groups, cubes, parents, counts, armor, visited);
         Set<String> expected = new HashSet<>(groups.keySet());
         expected.addAll(cubes.keySet());
         assertEquals(expected, visited, "Unreachable/detached editor parts");
-        return new Hierarchy(groups, parents, counts);
+        return new Hierarchy(groups, parents, counts, armor);
     }
 
     private static void walk(JsonArray nodes, String parent, Map<String, JsonObject> groups, Map<String, JsonObject> cubes,
-                             Map<String, String> parents, Map<String, Integer> counts, Set<String> visited) {
+                             Map<String, String> parents, Map<String, Integer> counts, Map<String, List<JsonObject>> armor, Set<String> visited) {
         for (JsonElement value : nodes) {
             String uuid = value.isJsonObject() ? value.getAsJsonObject().get("uuid").getAsString() : value.getAsString();
             assertTrue(visited.add(uuid), "Duplicate/cyclic outliner part " + uuid);
             if (parent != null) parents.put(uuid, parent);
             if (value.isJsonObject()) {
                 assertTrue(groups.containsKey(uuid), "Outliner references an absent group");
-                walk(value.getAsJsonObject().getAsJsonArray("children"), uuid, groups, cubes, parents, counts, visited);
+                walk(value.getAsJsonObject().getAsJsonArray("children"), uuid, groups, cubes, parents, counts, armor, visited);
             } else {
                 assertTrue(cubes.containsKey(uuid), "Outliner references an absent cube");
-                if (parent != null) counts.merge(parent, 1, Integer::sum);
+                if (parent != null) {
+                    counts.merge(parent, 1, Integer::sum);
+                    armor.computeIfAbsent(parent, ignored -> new ArrayList<>()).add(cubes.get(uuid));
+                }
             }
         }
     }
@@ -281,5 +346,6 @@ class BlockbenchAssetTest {
         return stream;
     }
 
-    private record Hierarchy(Map<String, JsonObject> groups, Map<String, String> parents, Map<String, Integer> cubeCounts) { }
+    private record Hierarchy(Map<String, JsonObject> groups, Map<String, String> parents, Map<String, Integer> cubeCounts,
+                             Map<String, List<JsonObject>> armor) { }
 }

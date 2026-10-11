@@ -473,12 +473,17 @@ def assert_equivalent(actual, expected, path="root", tolerance=1e-10):
         raise ValueError(f"{path}: {actual!r} != {expected!r}")
 
 
-def check(project, geometry, animations, base_texture=None, glow_texture=None):
+def check(project, geometry, animations, base_texture=None, glow_texture=None, healing_texture=None):
     exported = export_geometry(project)
     # JSON object ordering does not change a geometry, but bone/cube order is retained.
     assert_equivalent(exported, geometry)
     assert_equivalent(animation_timeline(project), runtime_timeline(animations))
-    for filename, reference in (("apex.png", base_texture), ("apex_glow.png", glow_texture)):
+    textures = [("apex.png", base_texture), ("apex_glow.png", glow_texture)]
+    # Existing two-atlas projects remain valid; only this known optional overlay
+    # is included when present, rather than exporting arbitrary editor textures.
+    if any(t.get("name") == "apex_healing_glow.png" for t in project.get("textures", [])):
+        textures.append(("apex_healing_glow.png", healing_texture))
+    for filename, reference in textures:
         raw = texture_bytes(project, filename)
         if reference and raw != Path(reference).read_bytes():
             raise ValueError(f"{filename}: embedded texture differs from runtime PNG")
@@ -496,9 +501,10 @@ def main():
     exporter = sub.add_parser("export", help="Export edited bbmodel geometry; never writes animation files")
     exporter.add_argument("--project", type=Path, default=PROJECT)
     exporter.add_argument("--output", type=Path, required=True)
-    exporter.add_argument("--textures-dir", type=Path, help="Explicitly export both embedded PNGs into textures-dir/entity/")
+    exporter.add_argument("--textures-dir", type=Path, help="Export embedded armor/glow PNGs and the optional healing mask into textures-dir/entity/")
     exporter.add_argument("--base-texture-output", type=Path)
     exporter.add_argument("--glow-texture-output", type=Path)
+    exporter.add_argument("--healing-texture-output", type=Path)
     animation_exporter = sub.add_parser("export-animations", help="Explicitly export raw animation timestamps to a separate review file (never the runtime file)")
     animation_exporter.add_argument("--project", type=Path, default=PROJECT)
     animation_exporter.add_argument("--output", type=Path, required=True)
@@ -508,6 +514,7 @@ def main():
     checker.add_argument("--animations", type=Path, default=ANIMATIONS)
     checker.add_argument("--base-texture", type=Path, default=ASSETS / "textures/entity/apex.png")
     checker.add_argument("--glow-texture", type=Path, default=ASSETS / "textures/entity/apex_glow.png")
+    checker.add_argument("--healing-texture", type=Path, default=ASSETS / "textures/entity/apex_healing_glow.png")
     importer = sub.add_parser("import-legacy", help="One-time migration only: refuses to overwrite an existing authoritative project")
     importer.add_argument("--geometry", type=Path, default=GEOMETRY)
     importer.add_argument("--animations", type=Path, default=ANIMATIONS)
@@ -526,7 +533,7 @@ def main():
         else:
             data = read_json(args.project)
             if args.command == "check":
-                print(json.dumps(check(data, read_json(args.geometry), read_json(args.animations), args.base_texture, args.glow_texture)))
+                print(json.dumps(check(data, read_json(args.geometry), read_json(args.animations), args.base_texture, args.glow_texture, args.healing_texture)))
             elif args.command == "export-animations":
                 protected = [ANIMATIONS.resolve(), GEOMETRY.resolve(), args.project.resolve()]
                 if args.output.resolve() in protected:
@@ -536,13 +543,16 @@ def main():
             else:
                 geometry = export_geometry(data)
                 if args.textures_dir:
-                    if args.base_texture_output or args.glow_texture_output:
+                    if args.base_texture_output or args.glow_texture_output or args.healing_texture_output:
                         raise ValueError("Use either --textures-dir or individual texture outputs")
                     args.base_texture_output = args.textures_dir / "entity/apex.png"
                     args.glow_texture_output = args.textures_dir / "entity/apex_glow.png"
+                    if any(t.get("name") == "apex_healing_glow.png" for t in data.get("textures", [])):
+                        args.healing_texture_output = args.textures_dir / "entity/apex_healing_glow.png"
                 # Resolve and validate requested textures before writing any output.
                 textures = [(output, texture_bytes(data, name)) for name, output in
-                            (("apex.png", args.base_texture_output), ("apex_glow.png", args.glow_texture_output)) if output]
+                            (("apex.png", args.base_texture_output), ("apex_glow.png", args.glow_texture_output),
+                             ("apex_healing_glow.png", args.healing_texture_output)) if output]
                 protected = [ANIMATIONS.resolve(), args.project.resolve()]
                 outputs = [args.output, *(output for output, _ in textures)]
                 if any(path.resolve() in protected for path in outputs):

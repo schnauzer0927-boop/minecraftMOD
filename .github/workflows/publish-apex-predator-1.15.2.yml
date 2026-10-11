@@ -1,0 +1,95 @@
+name: Publish Apex Predator 1.15.2
+
+on:
+  push:
+    branches:
+      - feature/apex-reference-1.15.2
+    paths:
+      - .github/workflows/publish-apex-predator-1.15.2.yml
+      - docs/RELEASE-1.15.2.md
+      - dist/apexpredator-1.20.1-1.15.2.jar
+      - dist/apexpredator-1.20.1-1.15.2.jar.sha256
+      - dist/apexpredator-blockbench-1.15.2.zip
+      - dist/apexpredator-blockbench-1.15.2.zip.sha256
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apex-predator-1.15.2-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the validated distribution
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify the exact validated jar and editor archive
+        working-directory: dist
+        run: |
+          sha256sum --check apexpredator-1.20.1-1.15.2.jar.sha256
+          sha256sum --check apexpredator-blockbench-1.15.2.zip.sha256
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import pathlib
+          import zipfile
+          artifacts = [
+              ('apexpredator-1.20.1-1.15.2.jar', 4703599, '91dfd4dd7352a76c75bb3115f6efee778cf221f69c91822a9911e9dfe5e10042'),
+              ('apexpredator-blockbench-1.15.2.zip', 3402207, '30f3e1fa75f211627da2b2e7f6279f1efde0bce3c3d746cb3e9d736f1a86ece3'),
+          ]
+          for name, size, digest in artifacts:
+              path = pathlib.Path(name)
+              assert path.stat().st_size == size
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+              with zipfile.ZipFile(path) as archive:
+                  assert archive.testzip() is None
+                  assert len(archive.namelist()) == len(set(archive.namelist()))
+                  if name.endswith('.jar'):
+                      assert 'version="1.15.2"' in archive.read('META-INF/mods.toml').decode()
+                      assert 'Implementation-Version: 1.15.2' in archive.read('META-INF/MANIFEST.MF').decode()
+                      geometry = json.loads(archive.read('assets/apexpredator/geo/apex.geo.json'))['minecraft:geometry'][0]
+                      assert len(geometry['bones']) == 28
+                      assert sum(len(bone.get('cubes', [])) for bone in geometry['bones']) == 498
+                      assert geometry['description']['texture_width'] == 1024
+                      assert geometry['description']['texture_height'] == 1024
+                      animation = archive.read('assets/apexpredator/animations/apex.animation.json')
+                      assert hashlib.sha256(animation).hexdigest() == 'c12bf23e69775ab74fa4af038fe0611391a312743bdc3c66bb9b07c771b54a16'
+                      assert len(json.loads(animation)['animations']) == 37
+                  else:
+                      assert 'models/blockbench/apex.bbmodel' in archive.namelist()
+                      assert 'models/blockbench/apex_fang.bbmodel' in archive.namelist()
+                      body = json.loads(archive.read('models/blockbench/apex.bbmodel'))
+                      assert len(body['elements']) == 498
+                      assert len(body['animations']) == 37
+                      assert {texture['name'] for texture in body['textures']} == {'apex.png', 'apex_glow.png', 'apex_healing_glow.png'}
+                      assert 'docs/visuals/apex-reference-match-ingame.png' in archive.namelist()
+          PY
+
+      - name: Publish the mod and editor sources as Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view v1.15.2 >/dev/null 2>&1; then
+            gh release upload v1.15.2 \
+              dist/apexpredator-1.20.1-1.15.2.jar \
+              dist/apexpredator-1.20.1-1.15.2.jar.sha256 \
+              dist/apexpredator-blockbench-1.15.2.zip \
+              dist/apexpredator-blockbench-1.15.2.zip.sha256 --clobber
+            gh release edit v1.15.2 --draft=false --latest \
+              --title "Apex Predator 1.15.2" --notes-file docs/RELEASE-1.15.2.md
+          else
+            gh release create v1.15.2 \
+              dist/apexpredator-1.20.1-1.15.2.jar \
+              dist/apexpredator-1.20.1-1.15.2.jar.sha256 \
+              dist/apexpredator-blockbench-1.15.2.zip \
+              dist/apexpredator-blockbench-1.15.2.zip.sha256 \
+              --target "$GITHUB_SHA" --latest \
+              --title "Apex Predator 1.15.2" --notes-file docs/RELEASE-1.15.2.md
+          fi

@@ -22,17 +22,26 @@ class ApexBodyProjectTest(unittest.TestCase):
         result = body.check(self.project, self.geometry, self.animations,
                             body.ASSETS / "textures/entity/apex.png",
                             body.ASSETS / "textures/entity/apex_glow.png")
-        self.assertEqual(result, {"bones": 28, "cubes": 333, "animations": 37, "keyframes": 5316})
+        cube_count = sum(len(b.get("cubes", [])) for b in self.geometry["minecraft:geometry"][0]["bones"])
+        self.assertEqual(result, {"bones": 28, "cubes": cube_count, "animations": 37, "keyframes": 5316})
+        self.assertGreaterEqual(cube_count, 300)
+        self.assertLessEqual(cube_count, 500)
+
+    @staticmethod
+    def cubes_for_bone(project, name):
+        """Use native outliner order, rather than depending on disposable cube names."""
+        elements, groups, _parents, children = body.project_nodes(project)
+        identifier = next(k for k, group in groups.items() if group["name"] == name)
+        return [elements[value] for value in children[identifier] if isinstance(value, str)]
 
     def test_official_bedrock_coordinate_conventions(self):
         original = self.geometry["minecraft:geometry"][0]["bones"]
         groups = {g["name"]: g for g in self.project["groups"]}
-        self.assertEqual(groups["left_shoulder"]["origin"], [-5.2, 31, 0])
-        self.assertEqual(groups["right_shoulder"]["origin"], [5.2, 31, 0])
-        cubes = {c["name"]: c for c in self.project["elements"]}
         for bone in original:
+            self.assertEqual(groups[bone["name"]]["origin"], body.pivot(bone["pivot"]))
+            cubes = self.cubes_for_bone(self.project, bone["name"])
             for index, source in enumerate(bone.get("cubes", [])):
-                target = cubes[f"{bone['name']}_{index + 1:03}"]
+                target = cubes[index]
                 self.assertAlmostEqual(target["from"][0], -(source["origin"][0] + source["size"][0]))
                 for axis, sign in enumerate((-1, -1, 1)):
                     self.assertAlmostEqual(target["rotation"][axis], sign * source.get("rotation", [0, 0, 0])[axis])
@@ -45,7 +54,7 @@ class ApexBodyProjectTest(unittest.TestCase):
         head = next(g for g in project["groups"] if g["name"] == "head")
         head["origin"] = [-0.4, 36.25, -0.7]
         head["rotation"] = [-7, 11, 3]
-        cube = next(c for c in project["elements"] if c["name"] == "head_001")
+        cube = self.cubes_for_bone(project, "head")[0]
         cube["to"][1] += 0.75
         cube["rotation"] = [-19, 5, 4]
         cube["faces"]["north"]["uv"] = [11, 13, 19, 21]
@@ -111,7 +120,7 @@ class ApexBodyProjectTest(unittest.TestCase):
             body.assert_equivalent(body.animation_timeline(project), body.runtime_timeline(self.animations))
 
     def test_portable_embedded_textures_are_exact_and_no_absolute_paths_are_needed(self):
-        for name in ("apex.png", "apex_glow.png"):
+        for name in ("apex.png", "apex_glow.png", "apex_healing_glow.png"):
             self.assertEqual(body.texture_bytes(self.project, name), (body.ASSETS / "textures/entity" / name).read_bytes())
         self.assertTrue(all("path" not in t and "relative_path" not in t for t in self.project["textures"]))
 
@@ -126,10 +135,57 @@ class ApexBodyProjectTest(unittest.TestCase):
             body.assert_equivalent(json.loads(output.read_text()), self.geometry)
             self.assertEqual((textures / "entity/apex.png").read_bytes(), body.texture_bytes(self.project, "apex.png"))
             self.assertEqual((textures / "entity/apex_glow.png").read_bytes(), body.texture_bytes(self.project, "apex_glow.png"))
+            self.assertEqual((textures / "entity/apex_healing_glow.png").read_bytes(), body.texture_bytes(self.project, "apex_healing_glow.png"))
             rejected = subprocess.run([sys.executable, str(Path(body.__file__)), "export", "--output", str(body.ANIMATIONS)],
                                       text=True, capture_output=True)
             self.assertNotEqual(rejected.returncode, 0)
         self.assertEqual(body.ANIMATIONS.read_bytes(), before)
+
+    def test_healing_overlay_is_optional_for_old_projects_and_exports_only_known_textures(self):
+        old_project = copy.deepcopy(self.project)
+        old_project["textures"] = [t for t in old_project["textures"] if t["name"] != "apex_healing_glow.png"]
+        body.check(old_project, self.geometry, self.animations)
+        # Unrelated user reference textures are not runtime overlays.
+        old_project["textures"].append({**copy.deepcopy(old_project["textures"][0]), "name": "personal-reference.png"})
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory)
+            project_path = scratch / "old-project.bbmodel"
+            body.write_json(project_path, old_project)
+            exported = subprocess.run([sys.executable, str(Path(body.__file__)), "export", "--project", str(project_path),
+                                       "--output", str(scratch / "apex.geo.json"), "--textures-dir", str(scratch / "textures")],
+                                      text=True, capture_output=True)
+            self.assertEqual(exported.returncode, 0, exported.stderr)
+            self.assertEqual({p.name for p in (scratch / "textures/entity").iterdir()}, {"apex.png", "apex_glow.png"})
+            explicit_missing = subprocess.run([sys.executable, str(Path(body.__file__)), "export", "--project", str(project_path),
+                                               "--output", str(scratch / "unused.geo.json"), "--healing-texture-output", str(scratch / "missing.png")],
+                                              text=True, capture_output=True)
+            self.assertNotEqual(explicit_missing.returncode, 0)
+            self.assertFalse((scratch / "unused.geo.json").exists(), "Missing optional PNG must fail before any output is written")
+
+    def test_healing_overlay_pixels_dimensions_and_protected_outputs_are_validated(self):
+        overlay = body.ASSETS / "textures/entity/apex_healing_glow.png"
+        body.check(self.project, self.geometry, self.animations, healing_texture=overlay)
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory)
+            altered = scratch / "altered.png"
+            altered.write_bytes(overlay.read_bytes() + b"different-editor-bytes")
+            with self.assertRaisesRegex(ValueError, "embedded texture differs"):
+                body.check(self.project, self.geometry, self.animations, healing_texture=altered)
+            malformed = copy.deepcopy(self.project)
+            texture = next(t for t in malformed["textures"] if t["name"] == "apex_healing_glow.png")
+            # A valid 128-pixel PNG is still unsuitable for the 512/1024 body UVs.
+            texture["source"] = body.embedded_texture(body.ASSETS / "textures/item/apex_fang.png", 2)["source"]
+            with self.assertRaisesRegex(ValueError, "apex_healing_glow.png: texture dimensions differ"):
+                body.check(malformed, self.geometry, self.animations)
+            for protected in (body.PROJECT, body.ANIMATIONS):
+                rejected = subprocess.run([sys.executable, str(Path(body.__file__)), "export", "--output", str(scratch / "blocked.geo.json"),
+                                           "--healing-texture-output", str(protected)], text=True, capture_output=True)
+                self.assertNotEqual(rejected.returncode, 0)
+                self.assertFalse((scratch / "blocked.geo.json").exists())
+            duplicate = subprocess.run([sys.executable, str(Path(body.__file__)), "export", "--output", str(scratch / "same.png"),
+                                       "--healing-texture-output", str(scratch / "same.png")], text=True, capture_output=True)
+            self.assertNotEqual(duplicate.returncode, 0)
+            self.assertFalse((scratch / "same.png").exists())
 
     def test_explicit_raw_animation_export_preserves_every_clip_value_and_timestamp(self):
         exported = body.export_animations(self.project)

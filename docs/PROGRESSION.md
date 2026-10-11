@@ -1,4 +1,4 @@
-# Apex Predator 1.5.1 — 召喚とApex Fang
+# Apex Predator 1.15.2 — 召喚とApex Fang
 
 Minecraft 1.20.1 / Forge 47.4.10 / Java 17向け。従来のAI、Phase 3回復、モデル・37アニメーション、音量0.85のボスBGMと戦闘中の通常MUSIC抑止を維持します。
 
