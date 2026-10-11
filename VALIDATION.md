@@ -88,3 +88,12 @@ native確認で元の突進が設計図より直立していたため、依頼�
 編集用`dist/apexpredator-blockbench-1.15.2.zip`は正式本体/Fangプロジェクト、3PNG、専用CLIと検証、手順、実モデル比較画像の28ファイルを収録しています。サイズ3,402,207 bytes、SHA-256 `30f3e1fa75f211627da2b2e7f6279f1efde0bce3c3d746cb3e9d736f1a86ece3`。独立2回の生成が同一で、単独展開先で28Pythonテスト、geometry/3PNG/Fangの出力、37クリップの全値、CRC、元ソース全バイト一致、保護先の上書き拒否を確認しました。Minecraftの`mods`に入れるのはjarで、編集用ZIPではありません。再ビルドには[タグのソース一式](https://github.com/schnauzer0927-boop/minecraftMOD/archive/refs/tags/v1.15.2.zip)が必要です。
 
 生ログ・基準ファイル・ハッシュ監査はignoredの`build/reference1152/`へ保存しています。ビルド`build-final-angles.log`、サーバー`gametest-plain-final.log` / `gametest-tacz-final.log`、リグ`rig-audit.json`、16値差分`charge-candidate/promotion-audit.json`、ソース/jar`source-jar-audit.json`、正式モデル`final-model-hashes.json`、実機`native/` / `client/`を参照してください。
+
+## PC向け公開ダウンロードの検証
+
+[Apex Predator 1.15.2 Release](https://github.com/schnauzer0927-boop/minecraftMOD/releases/tag/v1.15.2)を公開しました。[公開workflow](https://github.com/schnauzer0927-boop/minecraftMOD/actions/runs/38115806181)は終了success、対象コミットは`1dce564f8fcc19f732028b1cbb31e9e77cfd972d`です。Releaseはdraft/prereleaseではなく、jar・編集ZIPと各SHA-256の4 Assetsがuploadedです。既存Releaseとmainは変更していません。
+
+- [Minecraft用jarをダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.15.2/apexpredator-1.20.1-1.15.2.jar)
+- [Blockbench編集用ZIPをダウンロード](https://github.com/schnauzer0927-boop/minecraftMOD/releases/download/v1.15.2/apexpredator-blockbench-1.15.2.zip)
+
+両リンクを認証情報なしで実際にGETし、HTTP 200、Content-Dispositionのattachmentと正しいファイル名を確認しました。取得したjar/ZIPは上記サイズ・SHA-256と完全一致し、distの全バイトとも一致、アーカイブCRC正常でした。タグのソースZIPもHTTP 200、タグ上の検証文書は公開時のローカル文書と全バイト一致しました。結果はignoredの`build/reference1152/download-check/public-download-verification.json`と`public-run.json` / `public-release.json`へ保存しています。
