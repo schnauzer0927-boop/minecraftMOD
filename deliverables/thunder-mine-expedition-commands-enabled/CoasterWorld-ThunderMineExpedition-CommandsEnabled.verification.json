@@ -1,0 +1,13 @@
+{
+  "source_sha256": "2d2c60d2d9f8e578616aa4b3c0367a630992f010cdb9da0b95905d26c44030d4",
+  "zip_sha256": "1fc09c7c4950823b91d8c97d1b8f60271e6c020398ff5a7303932c5f69f76f9b",
+  "size_bytes": 4340509,
+  "changed_files": [
+    "Coaster World - Thunder Mine Expedition/level.dat"
+  ],
+  "changed_nbt_field": "Data.allowCommands",
+  "new_value": 1,
+  "other_nbt_values_unchanged": true,
+  "other_world_files_unchanged": true,
+  "zip_crc_valid": true
+}
