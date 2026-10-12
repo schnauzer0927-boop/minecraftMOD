@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "route_fingerprint": "586fc3b3bffbf9a71ba332f96145adf245bb219bf88a8ff24771792727491797",
+  "cart_uuid": "a7826a81-9ae0-4d9d-91b0-f6932c9f46db",
+  "evidence_paths": [
+    "evidence/integrated-1.1.0-full-rider-pass.log",
+    "evidence/integrated-1.1.0-full-rider-pass.json",
+    "evidence/integrated-1.0.1-return-and-full-rider-pass.log",
+    "evidence/release-1.1.0/normal-save-server-proof.json",
+    "evidence/release-1.1.0/normal-save-server.log",
+    "evidence/helper-1.1.0-build.log",
+    "evidence/music-original-synthesis.json",
+    "evidence/geometry-final-tests.log",
+    "evidence/ride-1.1.0-start.png",
+    "evidence/ride-1.1.0-cavern.png"
+  ],
+  "world_level_dat_sha256": "708288ea55ff3ebb844c637451ea7839be5f516ccc783b84e7abe1d0927cd376",
+  "native_course_receipt_sha256": "aefbf37f737530b936910d1984f987db02d25924a55e14067491b9a4d2e52b1e",
+  "helper_jar_sha256": "9cf099f3bbd6bfc57f143fa5c75ace25b12a986ca8eddca1b6dd805e12017ed1",
+  "helper_version": "1.1.0",
+  "singleplayer_native_rider_passed": true,
+  "bgm_tracks_resolved_playing": 3,
+  "bgm_dismount_fade_passed": true,
+  "human_listening_tested": false,
+  "runtime": true,
+  "full_lap": true,
+  "station_stop": true,
+  "normal_save": true,
+  "reloaded_rerun": true,
+  "world_prepared": true,
+  "native_cart_stationary": true,
+  "scenery_clearance_check": true
+}

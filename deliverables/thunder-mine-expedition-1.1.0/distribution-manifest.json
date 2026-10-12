@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "world_folder": "Coaster World - Thunder Mine Expedition",
+  "minecraft": "1.21.1",
+  "loader": "NeoForge",
+  "loader_version": "21.1.228",
+  "java": 21,
+  "route_fingerprint": "586fc3b3bffbf9a71ba332f96145adf245bb219bf88a8ff24771792727491797",
+  "native_cart_uuid": "a7826a81-9ae0-4d9d-91b0-f6932c9f46db",
+  "third_party_jars_bundled": false,
+  "world_file_sha256": {
+    "DIM-1/data/neoforge_data_attachments.dat": "95486bd4cbd73d4d98f343e42a5792ef5315214015acca508842844d73247562",
+    "DIM-1/data/raids.dat": "b6e0ef8a60c11825b287dc71e826a8bca96e7b1ec77a2b30fe416d167466bcaa",
+    "DIM-1/data/sable_sub_level_force_load_tickets.dat": "5105f1578ae279f091856dd93c5572cc919619b7c485f1fcb00466e5abdbb287",
+    "DIM1/data/neoforge_data_attachments.dat": "95486bd4cbd73d4d98f343e42a5792ef5315214015acca508842844d73247562",
+    "DIM1/data/raids_end.dat": "b6e0ef8a60c11825b287dc71e826a8bca96e7b1ec77a2b30fe416d167466bcaa",
+    "DIM1/data/sable_sub_level_force_load_tickets.dat": "5105f1578ae279f091856dd93c5572cc919619b7c485f1fcb00466e5abdbb287",
+    "data/chunks.dat": "902cee3d283d375c55d2a6cce3442b1a265b0004db1b5fc661cc5908bd239830",
+    "data/neoforge_data_attachments.dat": "95486bd4cbd73d4d98f343e42a5792ef5315214015acca508842844d73247562",
+    "data/raids.dat": "b6e0ef8a60c11825b287dc71e826a8bca96e7b1ec77a2b30fe416d167466bcaa",
+    "data/sable_sub_level_force_load_tickets.dat": "5105f1578ae279f091856dd93c5572cc919619b7c485f1fcb00466e5abdbb287",
+    "data/sable_sub_level_occupancy.dat": "2ad931c73016dfc64508c45a89f4304cfe936af53cb10673decdac432c862e5c",
+    "data/sable_tracking_points.dat": "e8adccc6f718a15168df5866c185aeb263d8df419798a25a7889e0e1661f253c",
+    "data/simulatedcoasters_coaster_paths.dat": "b6fc3a6f630bd63a4d1993e098a062daee36268b1b3557b26db261454deeac13",
+    "data/thunder_mine_native_course.dat": "aefbf37f737530b936910d1984f987db02d25924a55e14067491b9a4d2e52b1e",
+    "data/thunder_mine_scenery_v1.dat": "1b4795cc3fc88dfacdeb894dc7ada4bce3af40cefcb1c7ea233e583373b0bcb0",
+    "entities/r.-1.-1.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "entities/r.-1.0.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "entities/r.0.-1.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "entities/r.0.0.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "entities/r.40002.40002.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "level.dat": "708288ea55ff3ebb844c637451ea7839be5f516ccc783b84e7abe1d0927cd376",
+    "poi/r.-1.-1.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "poi/r.-1.0.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "poi/r.0.-1.mca": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "poi/r.0.0.mca": "f31fe027ebe5c95d79148ae3baf8979f30544fffe3b3e7318aaf4a639abfb42c",
+    "region/r.-1.-1.mca": "31cbe990fd9ffa7178623731376bef8b788c9cd2e531e0365e898d1a83dfd1f5",
+    "region/r.-1.0.mca": "ac022fe3cf2d218c1905578ab42d72ec1f85b62552bdf6be39d1a80fc3098224",
+    "region/r.0.-1.mca": "8aeebd56df53561e52f94425a970b67c7f5a78ac07f37b3308acc5764aa35b17",
+    "region/r.0.0.mca": "865321dcaeaf65777410d2b2ddc810ab6aec18be4a95fcfe74c3c42fd0edbd7c",
+    "serverconfig/readme.txt": "b1022ab932f8f0ea0cf78d9f312e95b85a4f96f59ca430e63f9a435e512d1186",
+    "sublevels/r.-1.-1.slvlr": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+    "sublevels/r.-1.0.slvlr": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+    "sublevels/r.0.-1.slvlr": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+    "sublevels/r.0.0.0.slvls": "604b0dac2f4b3724856deb1875d8176a0918ec4c7487d5149f2cdad02aaf012c",
+    "sublevels/r.0.0.slvlr": "8d6a56c3bf34cca118f04e13cd114f9f856ef6023b206c2d61cadb69fa41169c"
+  },
+  "source_files": 100,
+  "artifacts": [
+    {
+      "filename": "CoasterWorld-ThunderMineExpedition.zip",
+      "size_bytes": 4460140,
+      "sha256": "e501cc19cbc472fcefa494663f85e907afd42ab3d57fb87f27f848d601e53e9d"
+    },
+    {
+      "filename": "ThunderMineExpedition-Source.zip",
+      "size_bytes": 3177661,
+      "sha256": "eabc600e2fb10b9beb1b0a80e3fda11ec69a701fd649134287da2f3371c8f2a8"
+    },
+    {
+      "filename": "thunder-mine-tools-1.1.0.jar",
+      "size_bytes": 1726357,
+      "sha256": "9cf099f3bbd6bfc57f143fa5c75ace25b12a986ca8eddca1b6dd805e12017ed1"
+    },
+    {
+      "filename": "README.md",
+      "size_bytes": 3458,
+      "sha256": "a99b62ea62e5f8194fb33073fa4ed677bac411de3f7ce9b26311f97a794bbe09"
+    },
+    {
+      "filename": "TEST_RESULTS.md",
+      "size_bytes": 3158,
+      "sha256": "248dc3e6e1aa13bfd9945e6833938e3adcfa5ab42454dd05e9034b5bc4ef8cc7"
+    },
+    {
+      "filename": "commissioning.json",
+      "size_bytes": 1351,
+      "sha256": "15a6c87160545d7eec12de3d609f59511e099f28e79ca1c239f56dd4a14c7b17"
+    },
+    {
+      "filename": "docs/BGM_GUIDE.md",
+      "size_bytes": 5792,
+      "sha256": "ef265671fc7d582f4e2d7b44f99bf8acd9324bb9e1d0af95346a7afcdba68fda"
+    },
+    {
+      "filename": "docs/CLIENT_SETUP.md",
+      "size_bytes": 2674,
+      "sha256": "c0dce5f6f6ae03cda128340cc95831e102d07dd0dc9f4b1ce8b13b1fcc60866e"
+    },
+    {
+      "filename": "docs/COASTER_API.md",
+      "size_bytes": 12949,
+      "sha256": "d5dd3cc267c8eb8720cd4882396b4e627660e4ef135dcec8a3c29753b8b33558"
+    },
+    {
+      "filename": "docs/INSTALL.md",
+      "size_bytes": 5097,
+      "sha256": "494056b1437ede8efa3a07751b825beb382447fdc0eb334d36d31caf2f124782"
+    },
+    {
+      "filename": "docs/MIDRIDE_RESUME_TEST.md",
+      "size_bytes": 4089,
+      "sha256": "181b454b51e9281c67c8d47a8bb5ec088e1cc0036850c84a99704d229c6c2982"
+    },
+    {
+      "filename": "docs/MINE_NATIVE_RIDE.md",
+      "size_bytes": 8625,
+      "sha256": "bc35c58b56147d448f8ca87e704047c5b99eda6cf7089ac67ee68898fa7623e0"
+    },
+    {
+      "filename": "docs/MINE_PRODUCTION_SERVER.md",
+      "size_bytes": 2683,
+      "sha256": "50978b56e05646bc8273f5f6a59a45b0e4773323c0131c30be8d10102f30a1e0"
+    },
+    {
+      "filename": "docs/MOD_AUDIT.md",
+      "size_bytes": 10464,
+      "sha256": "8f00b04a38fd2badf569d12455f1fd820363e94544fbd2e14d4c96c2ca468702"
+    },
+    {
+      "filename": "docs/MOD_LIST.md",
+      "size_bytes": 3543,
+      "sha256": "76ae0cdeaadd8afd03362c903e67e502c6114f21b57481a2ea6c27fe2e75f750"
+    },
+    {
+      "filename": "docs/MUSIC_SCORE.md",
+      "size_bytes": 2993,
+      "sha256": "a225824191d42d7b3abb2cbdaf9d699472ac68ba8e8b1f660fbd347b239bc4b0"
+    },
+    {
+      "filename": "docs/NATIVE_PRODUCTION_SERVER.md",
+      "size_bytes": 3012,
+      "sha256": "5c0c88d2f98264f79b32a11955dfea1dfd21587547115bddb74bf1cbf5a6980e"
+    },
+    {
+      "filename": "docs/NATIVE_SEAT_OFFSETS.md",
+      "size_bytes": 3133,
+      "sha256": "0599a4c0997bcf3e56231d4c99862e3285a5ebf178990de5257c8c0573d86efe"
+    },
+    {
+      "filename": "docs/NATIVE_TEST_CONTROLLER.md",
+      "size_bytes": 7672,
+      "sha256": "b7213d2e71c8dd5802d55268ad978d4aa94545704225c233fa894365971c4993"
+    },
+    {
+      "filename": "docs/NATIVE_TEST_PROCEDURE.md",
+      "size_bytes": 3922,
+      "sha256": "3125c9f68d089e9562fa4f9f460670af67d836f722a263098598da6e7e557c13"
+    },
+    {
+      "filename": "docs/PATCH_1.0.1.md",
+      "size_bytes": 9779,
+      "sha256": "84c8025cb032a51150c08aadf7e0f2b8ab2c9405b6f8becb7adb309667ccff2d"
+    },
+    {
+      "filename": "docs/RELEASE_PROVENANCE.md",
+      "size_bytes": 3370,
+      "sha256": "708918cc9618a3d1f3e70803ee4b248b75915df62e61478ccbc18a32f90355bd"
+    },
+    {
+      "filename": "docs/SABLE_API.md",
+      "size_bytes": 10982,
+      "sha256": "3ea77f0eada78b883cc020754cf8750aec0fcfd510be02ce3fb489b0879694ba"
+    },
+    {
+      "filename": "docs/SCENERY_DESIGN.md",
+      "size_bytes": 5410,
+      "sha256": "c6f0439a3ac0d4a2b017a6a6718e9811818491223e86a8bf6b746685438c193b"
+    },
+    {
+      "filename": "docs/TOOLCHAIN_SETUP.md",
+      "size_bytes": 3749,
+      "sha256": "bb6ec7646dbf5dfb091773765ec130a279995aa715aadbc931a93e736f7c3cf2"
+    },
+    {
+      "filename": "ThunderMine-1.1.0-InstallPack.zip",
+      "size_bytes": 6186602,
+      "sha256": "8edc327ec9ddcdb958cfb9614a94cd7387789ddb4812d7c3a0552a137da162fd"
+    }
+  ],
+  "commissioning_sha256": "15a6c87160545d7eec12de3d609f59511e099f28e79ca1c239f56dd4a14c7b17",
+  "helper_version": "1.1.0",
+  "install_pack_world_folder": "Coaster World - Thunder Mine Expedition 1.1.0"
+}
