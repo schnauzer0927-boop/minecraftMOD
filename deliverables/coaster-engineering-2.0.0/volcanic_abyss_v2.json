@@ -1,0 +1,519 @@
+{
+  "id": "volcanic_abyss_v2",
+  "formatVersion": 1,
+  "stages": [
+    {
+      "id": "exploration",
+      "controlPoint": 0,
+      "music": "exploration",
+      "gain": 1
+    },
+    {
+      "id": "ruins",
+      "controlPoint": 13,
+      "music": "ruins_chase",
+      "gain": 1
+    },
+    {
+      "id": "monster",
+      "controlPoint": 24,
+      "music": "monster_encounter",
+      "gain": 0.82
+    },
+    {
+      "id": "monster_escape",
+      "controlPoint": 26,
+      "music": "eruption_escape",
+      "gain": 1
+    },
+    {
+      "id": "eruption",
+      "controlPoint": 29,
+      "music": "eruption_escape",
+      "gain": 1
+    },
+    {
+      "id": "precipice",
+      "controlPoint": 42,
+      "music": "monster_encounter",
+      "gain": 0.68
+    },
+    {
+      "id": "final_escape",
+      "controlPoint": 45,
+      "music": "finale",
+      "gain": 1
+    },
+    {
+      "id": "return",
+      "controlPoint": 55,
+      "music": "finale",
+      "gain": 0.7
+    }
+  ],
+  "events": [
+    {
+      "id": "research_gate_open",
+      "controlPoint": 1,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "DOOR_OPEN",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "lake_illuminate",
+      "controlPoint": 2,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LIGHTS",
+      "retrigger": true,
+      "parameters": {
+        "rig": "lake",
+        "active": true
+      }
+    },
+    {
+      "id": "city_alarm",
+      "controlPoint": 13,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ALARM",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "city_lights",
+      "controlPoint": 13,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LIGHTS",
+      "retrigger": true,
+      "parameters": {
+        "rig": "city",
+        "active": true
+      }
+    },
+    {
+      "id": "city_rockfall",
+      "controlPoint": 17,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ROCKFALL",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "nest_gaze",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "GAZE",
+      "retrigger": true,
+      "parameters": {
+        "ticks": 100
+      }
+    },
+    {
+      "id": "nest_darkness",
+      "controlPoint": 24,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LIGHTS",
+      "retrigger": true,
+      "parameters": {
+        "rig": "nest",
+        "active": false
+      }
+    },
+    {
+      "id": "monster_pause",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "STOP",
+      "retrigger": true,
+      "parameters": {
+        "ticks": 60
+      }
+    },
+    {
+      "id": "monster_silence",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "SILENCE",
+      "retrigger": true,
+      "parameters": {
+        "ticks": 42
+      }
+    },
+    {
+      "id": "monster_appearance",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "MONSTER_SHOW",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "monster_eyes",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 6,
+      "type": "LIGHTS",
+      "retrigger": true,
+      "parameters": {
+        "rig": "nest",
+        "active": true
+      }
+    },
+    {
+      "id": "monster_roar",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 10,
+      "type": "ROAR",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "monster_attack",
+      "controlPoint": 25,
+      "condition": "ALWAYS",
+      "delayTicks": 60,
+      "type": "MONSTER_ATTACK",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "escape_launch",
+      "controlPoint": 26,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LAUNCH",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "hide_monster",
+      "controlPoint": 28,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "MONSTER_HIDE",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "heart_warning",
+      "controlPoint": 29,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ALARM",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "heart_lights",
+      "controlPoint": 29,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LIGHTS",
+      "retrigger": true,
+      "parameters": {
+        "rig": "heart",
+        "active": true
+      }
+    },
+    {
+      "id": "eruption_one",
+      "controlPoint": 31,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ERUPTION",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "falling_debris",
+      "controlPoint": 35,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ROCKFALL",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "precipice_pause",
+      "controlPoint": 42,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "STOP",
+      "retrigger": true,
+      "parameters": {
+        "ticks": 35
+      }
+    },
+    {
+      "id": "drop_quiet",
+      "controlPoint": 42,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "SILENCE",
+      "retrigger": true,
+      "parameters": {
+        "ticks": 28
+      }
+    },
+    {
+      "id": "final_acceleration",
+      "controlPoint": 45,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "LAUNCH",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "eruption_finale",
+      "controlPoint": 46,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "ERUPTION",
+      "retrigger": true,
+      "parameters": {}
+    },
+    {
+      "id": "research_gate_close",
+      "controlPoint": 60,
+      "condition": "ALWAYS",
+      "delayTicks": 0,
+      "type": "DOOR_CLOSE",
+      "retrigger": true,
+      "parameters": {}
+    }
+  ],
+  "lightRigs": [
+    {
+      "id": "lake",
+      "positions": [
+        [
+          -85,
+          112,
+          -30
+        ],
+        [
+          -112,
+          108,
+          -15
+        ],
+        [
+          -62,
+          110,
+          -45
+        ]
+      ],
+      "idleLevel": 10,
+      "activeLevel": 15
+    },
+    {
+      "id": "city",
+      "positions": [
+        [
+          55,
+          128,
+          -20
+        ],
+        [
+          20,
+          122,
+          -55
+        ],
+        [
+          88,
+          124,
+          5
+        ]
+      ],
+      "idleLevel": 9,
+      "activeLevel": 14
+    },
+    {
+      "id": "nest",
+      "positions": [
+        [
+          36,
+          89,
+          127
+        ],
+        [
+          30,
+          89,
+          136
+        ],
+        [
+          38,
+          84,
+          136
+        ]
+      ],
+      "idleLevel": 7,
+      "activeLevel": 15
+    },
+    {
+      "id": "heart",
+      "positions": [
+        [
+          -80,
+          111,
+          100
+        ],
+        [
+          -115,
+          115,
+          100
+        ],
+        [
+          -65,
+          112,
+          125
+        ]
+      ],
+      "idleLevel": 10,
+      "activeLevel": 15
+    }
+  ],
+  "doorBlocks": [
+    [
+      -18,
+      95,
+      -144
+    ],
+    [
+      -18,
+      96,
+      -144
+    ],
+    [
+      -18,
+      97,
+      -144
+    ],
+    [
+      -18,
+      98,
+      -144
+    ],
+    [
+      -17,
+      95,
+      -144
+    ],
+    [
+      -17,
+      96,
+      -144
+    ],
+    [
+      -17,
+      97,
+      -144
+    ],
+    [
+      -17,
+      98,
+      -144
+    ],
+    [
+      -16,
+      95,
+      -144
+    ],
+    [
+      -16,
+      96,
+      -144
+    ],
+    [
+      -16,
+      97,
+      -144
+    ],
+    [
+      -16,
+      98,
+      -144
+    ],
+    [
+      -15,
+      95,
+      -144
+    ],
+    [
+      -15,
+      96,
+      -144
+    ],
+    [
+      -15,
+      97,
+      -144
+    ],
+    [
+      -15,
+      98,
+      -144
+    ]
+  ],
+  "motionSections": [
+    {
+      "stage": "EXPLORE",
+      "maximumAcceleration": 0.012,
+      "maximumBraking": 0.024,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "RUINS",
+      "maximumAcceleration": 0.02,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "MONSTER",
+      "maximumAcceleration": 0.014,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "ESCAPE_MONSTER",
+      "maximumAcceleration": 0.025,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "ERUPTION",
+      "maximumAcceleration": 0.021,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "DROP",
+      "maximumAcceleration": 0.024,
+      "maximumBraking": 0.032,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "FINAL_ESCAPE",
+      "maximumAcceleration": 0.025,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    },
+    {
+      "stage": "RETURN",
+      "maximumAcceleration": 0.015,
+      "maximumBraking": 0.03,
+      "speedMultiplier": 1
+    }
+  ]
+}
