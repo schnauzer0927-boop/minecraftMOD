@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "route_fingerprint": "586fc3b3bffbf9a71ba332f96145adf245bb219bf88a8ff24771792727491797",
+  "cart_uuid": "a7826a81-9ae0-4d9d-91b0-f6932c9f46db",
+  "evidence_paths": [
+    "evidence/native-main-release-console.log",
+    "evidence/helper-1.0.0-release-build.log",
+    "evidence/native-main/full-scenery-first-evidence.json",
+    "evidence/geometry-final-tests.log"
+  ],
+  "world_level_dat_sha256": "473a373e425c3b3129c1972522210d3aa0c40da22e3b7dc15f70082755109ff3",
+  "native_course_receipt_sha256": "aefbf37f737530b936910d1984f987db02d25924a55e14067491b9a4d2e52b1e",
+  "helper_jar_sha256": "ed9c8555821b1a63a417506c82668d448837395f34c39e8b2e56fc708bc6ad6e",
+  "zip_singleplayer_tested": false,
+  "midride_resume_passed": false,
+  "release_status": "tested_world_with_documented_limits",
+  "runtime": true,
+  "full_lap": true,
+  "station_stop": true,
+  "normal_save": true,
+  "reloaded_rerun": true,
+  "world_prepared": true,
+  "native_cart_stationary": true,
+  "scenery_clearance_check": true
+}
