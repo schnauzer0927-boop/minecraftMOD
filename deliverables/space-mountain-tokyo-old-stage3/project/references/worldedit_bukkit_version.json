@@ -1,0 +1,55 @@
+{
+  "key": "bukkit_version",
+  "request_url": "https://api.modrinth.com/v2/version/ecqqLKUO",
+  "final_url": "https://api.modrinth.com/v2/version/ecqqLKUO",
+  "method": "GET",
+  "status": 200,
+  "content_type": "application/json",
+  "content_length": null,
+  "retrieved_at": "2026-10-13T15:36:07.671623+00:00",
+  "data": {
+    "game_versions": [
+      "1.20.2",
+      "1.20.3",
+      "1.20.4",
+      "1.20.5",
+      "1.20.6",
+      "1.21",
+      "1.21.1"
+    ],
+    "loaders": [
+      "bukkit",
+      "paper",
+      "spigot"
+    ],
+    "environment": "unknown",
+    "id": "ecqqLKUO",
+    "project_id": "1u6JkXh5",
+    "author_id": "WGCkmIeT",
+    "featured": false,
+    "name": "WorldEdit 7.3.8 (Bukkit for 1.20.2-1.21.1)",
+    "version_number": "7.3.8",
+    "changelog": "7.3.8\n- [Bukkit] Update 1.21.1 adapter for Spigot breakage",
+    "changelog_url": null,
+    "date_published": "2024-10-21T11:02:30.754694Z",
+    "downloads": 32264,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "mlXANLgB",
+        "hashes": {
+          "sha512": "ca8c25d1c2d894b7c3293617875abf23af1cb1c0a6a4e142ee514e7d06536a67d91664009ce8f54902c8f4fd05e32f8235f43cf52bfbd0a6c5622d6bef4f1c6e",
+          "sha1": "75ac9e214a3dd8ebd53b7cb1e6f27d9a4d0479f0"
+        },
+        "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/ecqqLKUO/worldedit-bukkit-7.3.8.jar",
+        "filename": "worldedit-bukkit-7.3.8.jar",
+        "primary": true,
+        "size": 5926715,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  }
+}

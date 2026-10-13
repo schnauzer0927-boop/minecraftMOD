@@ -1,0 +1,10 @@
+{
+  "key": "mod_download_head",
+  "request_url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/WTAFvuRx/worldedit-mod-7.3.8.jar",
+  "final_url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/WTAFvuRx/worldedit-mod-7.3.8.jar",
+  "method": "HEAD",
+  "status": 200,
+  "content_type": "application/java-archive",
+  "content_length": "6222854",
+  "retrieved_at": "2026-10-13T15:36:07.925571+00:00"
+}

@@ -1,0 +1,21 @@
+{
+  "stage": 3,
+  "station_floor_y": 4,
+  "station_ceiling_y": 20,
+  "station_lane_min_x": 106,
+  "station_lane_max_x": 114,
+  "station_min_x": 88,
+  "station_max_x": 132,
+  "station_min_z": 122,
+  "station_max_z": 143,
+  "queue_floor_y": 4,
+  "queue_ceiling_y": 12,
+  "queue_width_blocks": 5,
+  "normal_rail_width_blocks": 9,
+  "normal_rail_below_blocks": 2,
+  "normal_rail_above_blocks": 6,
+  "guide_interval_blocks": 3,
+  "historical_interior_verified": false,
+  "exterior_policy": "never overwrite any occupied Stage 2 voxel",
+  "user_keepout_file": "user_keepout.json"
+}

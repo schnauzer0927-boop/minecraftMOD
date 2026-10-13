@@ -1,0 +1,15 @@
+{
+  "source_file_sha256": {
+    "tools/runtime-test/prepare_verifier.py": "0d35499b992a2fee2e7f9de27999b2af8c0910c2327d9b5d05fb7d2db8fdd5cc",
+    "tools/runtime-test/SpaceMountainVerifier.java": "d466deb042ee57c3496e79265f306355c33c4c04f0e61aa4ceaf263719763df0",
+    "tools/runtime-test/neoforge.mods.toml": "b0dea91f4805c5fa026db77aa275e809f0f3b9bff6d04bb3da7b92b0948665a3"
+  },
+  "worldedit_sha512": "e039492df0b486e7ce76d0eaf8cb11eadad2e78220600b8498ab8eef4642a29e310a6bcb4378257553b3639c6d0bc1ebf0f73df3a7a677c6af6baf86716b0bc7",
+  "verifier_jar_sha256": "6d05508f1fc435bb5055eaf5b3001990625cdc4c5b63a6fca3f0f1c8501cc781",
+  "schematic_sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+  "old_environment_changes": false,
+  "runtime_library_source": "/workspace/thunder-mine-expedition/run-native-test-production/libraries",
+  "java_version": "21.0.12.1",
+  "tested_prepare_script_sha256": "ca9312c1a2222b0e215b2d15e4d43c173f185137b5d61a310ebb0505e9da641b",
+  "post_run_script_guard": "Remove prior report before retry, require new server report and matching approved hash; verifier MOD source unchanged."
+}

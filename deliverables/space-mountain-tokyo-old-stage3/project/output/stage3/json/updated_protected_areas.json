@@ -1,0 +1,1353 @@
+{
+  "schema_version": 2,
+  "stage": 3,
+  "coordinate_space": "project_relative_xyz",
+  "bounds_inclusive": true,
+  "applies_to": "Python generation only; no live WorldEdit region",
+  "retained_stage2_area_ids": [
+    "future_ride_core"
+  ],
+  "superseded_stage2_planning_ids": [
+    "south_station_approach",
+    "guide_*"
+  ],
+  "update_reason": "手動敷設前の仮駅予約を中央幅9へ具体化し、左右ホームを車両に届く位置へ追加。既存ワールドを変換・削除する処理ではない。",
+  "rail_blocks_generated": false,
+  "areas": [
+    {
+      "id": "future_ride_core",
+      "min": [
+        85,
+        5,
+        69
+      ],
+      "max": [
+        135,
+        31,
+        119
+      ],
+      "purpose": "後工程でユーザーがレールを敷く中央空間。実施設の構造ではなく設計予約。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "station_rail_lane",
+      "min": [
+        106,
+        5,
+        120
+      ],
+      "max": [
+        114,
+        15,
+        143
+      ],
+      "purpose": "中央幅9の車両・レール予定空間。左右ホームはこの外側。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_0",
+      "min": [
+        106,
+        4,
+        137
+      ],
+      "max": [
+        114,
+        12,
+        145
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_1",
+      "min": [
+        106,
+        4,
+        136
+      ],
+      "max": [
+        114,
+        12,
+        144
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_2",
+      "min": [
+        106,
+        4,
+        135
+      ],
+      "max": [
+        114,
+        12,
+        143
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_3",
+      "min": [
+        106,
+        4,
+        134
+      ],
+      "max": [
+        114,
+        12,
+        142
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_4",
+      "min": [
+        106,
+        4,
+        133
+      ],
+      "max": [
+        114,
+        12,
+        141
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_5",
+      "min": [
+        106,
+        4,
+        132
+      ],
+      "max": [
+        114,
+        12,
+        140
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_6",
+      "min": [
+        106,
+        4,
+        131
+      ],
+      "max": [
+        114,
+        12,
+        139
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_7",
+      "min": [
+        106,
+        4,
+        130
+      ],
+      "max": [
+        114,
+        12,
+        138
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_8",
+      "min": [
+        106,
+        4,
+        129
+      ],
+      "max": [
+        114,
+        12,
+        137
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_9",
+      "min": [
+        106,
+        4,
+        128
+      ],
+      "max": [
+        114,
+        12,
+        136
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_10",
+      "min": [
+        106,
+        4,
+        127
+      ],
+      "max": [
+        114,
+        12,
+        135
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_11",
+      "min": [
+        106,
+        4,
+        126
+      ],
+      "max": [
+        114,
+        12,
+        134
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_12",
+      "min": [
+        106,
+        4,
+        125
+      ],
+      "max": [
+        114,
+        12,
+        133
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_13",
+      "min": [
+        106,
+        4,
+        124
+      ],
+      "max": [
+        114,
+        12,
+        132
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_14",
+      "min": [
+        106,
+        4,
+        123
+      ],
+      "max": [
+        114,
+        12,
+        131
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_15",
+      "min": [
+        106,
+        4,
+        122
+      ],
+      "max": [
+        114,
+        12,
+        130
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_16",
+      "min": [
+        106,
+        4,
+        121
+      ],
+      "max": [
+        114,
+        12,
+        129
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_17",
+      "min": [
+        106,
+        4,
+        120
+      ],
+      "max": [
+        114,
+        12,
+        128
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_18",
+      "min": [
+        106,
+        4,
+        119
+      ],
+      "max": [
+        114,
+        12,
+        127
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_19",
+      "min": [
+        106,
+        4,
+        118
+      ],
+      "max": [
+        114,
+        12,
+        126
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_20",
+      "min": [
+        106,
+        4,
+        117
+      ],
+      "max": [
+        114,
+        12,
+        125
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_21",
+      "min": [
+        106,
+        5,
+        116
+      ],
+      "max": [
+        114,
+        13,
+        124
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_22",
+      "min": [
+        106,
+        5,
+        115
+      ],
+      "max": [
+        114,
+        13,
+        123
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_23",
+      "min": [
+        106,
+        5,
+        114
+      ],
+      "max": [
+        114,
+        13,
+        122
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_24",
+      "min": [
+        106,
+        5,
+        113
+      ],
+      "max": [
+        114,
+        13,
+        121
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_25",
+      "min": [
+        106,
+        6,
+        112
+      ],
+      "max": [
+        114,
+        14,
+        120
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_26",
+      "min": [
+        106,
+        6,
+        111
+      ],
+      "max": [
+        114,
+        14,
+        119
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_27",
+      "min": [
+        106,
+        6,
+        110
+      ],
+      "max": [
+        114,
+        14,
+        118
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_28",
+      "min": [
+        106,
+        7,
+        109
+      ],
+      "max": [
+        114,
+        15,
+        117
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_29",
+      "min": [
+        106,
+        7,
+        108
+      ],
+      "max": [
+        114,
+        15,
+        116
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_30",
+      "min": [
+        106,
+        7,
+        107
+      ],
+      "max": [
+        114,
+        15,
+        115
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_31",
+      "min": [
+        106,
+        7,
+        106
+      ],
+      "max": [
+        114,
+        15,
+        114
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_32",
+      "min": [
+        106,
+        8,
+        105
+      ],
+      "max": [
+        114,
+        16,
+        113
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_33",
+      "min": [
+        106,
+        8,
+        104
+      ],
+      "max": [
+        114,
+        16,
+        112
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_34",
+      "min": [
+        105,
+        8,
+        103
+      ],
+      "max": [
+        113,
+        16,
+        111
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_35",
+      "min": [
+        105,
+        9,
+        103
+      ],
+      "max": [
+        113,
+        17,
+        111
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_36",
+      "min": [
+        104,
+        9,
+        102
+      ],
+      "max": [
+        112,
+        17,
+        110
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_37",
+      "min": [
+        104,
+        10,
+        101
+      ],
+      "max": [
+        112,
+        18,
+        109
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_38",
+      "min": [
+        103,
+        10,
+        101
+      ],
+      "max": [
+        111,
+        18,
+        109
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_39",
+      "min": [
+        103,
+        11,
+        100
+      ],
+      "max": [
+        111,
+        19,
+        108
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_40",
+      "min": [
+        102,
+        11,
+        99
+      ],
+      "max": [
+        110,
+        19,
+        107
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_41",
+      "min": [
+        101,
+        12,
+        98
+      ],
+      "max": [
+        109,
+        20,
+        106
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_42",
+      "min": [
+        101,
+        12,
+        97
+      ],
+      "max": [
+        109,
+        20,
+        105
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_43",
+      "min": [
+        100,
+        13,
+        96
+      ],
+      "max": [
+        108,
+        21,
+        104
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_44",
+      "min": [
+        99,
+        13,
+        95
+      ],
+      "max": [
+        107,
+        21,
+        103
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_45",
+      "min": [
+        99,
+        14,
+        94
+      ],
+      "max": [
+        107,
+        22,
+        102
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_46",
+      "min": [
+        98,
+        14,
+        94
+      ],
+      "max": [
+        106,
+        22,
+        102
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_47",
+      "min": [
+        98,
+        15,
+        93
+      ],
+      "max": [
+        106,
+        23,
+        101
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_48",
+      "min": [
+        97,
+        15,
+        92
+      ],
+      "max": [
+        105,
+        23,
+        100
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_49",
+      "min": [
+        97,
+        16,
+        92
+      ],
+      "max": [
+        105,
+        24,
+        100
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_50",
+      "min": [
+        96,
+        16,
+        91
+      ],
+      "max": [
+        104,
+        24,
+        99
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_51",
+      "min": [
+        96,
+        16,
+        90
+      ],
+      "max": [
+        104,
+        24,
+        98
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_52",
+      "min": [
+        97,
+        16,
+        89
+      ],
+      "max": [
+        105,
+        24,
+        97
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_53",
+      "min": [
+        97,
+        17,
+        88
+      ],
+      "max": [
+        105,
+        25,
+        96
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_54",
+      "min": [
+        98,
+        17,
+        87
+      ],
+      "max": [
+        106,
+        25,
+        95
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_55",
+      "min": [
+        98,
+        18,
+        86
+      ],
+      "max": [
+        106,
+        26,
+        94
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_56",
+      "min": [
+        98,
+        18,
+        85
+      ],
+      "max": [
+        106,
+        26,
+        93
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_57",
+      "min": [
+        98,
+        18,
+        84
+      ],
+      "max": [
+        106,
+        26,
+        92
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_58",
+      "min": [
+        99,
+        18,
+        83
+      ],
+      "max": [
+        107,
+        26,
+        91
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_59",
+      "min": [
+        99,
+        18,
+        82
+      ],
+      "max": [
+        107,
+        26,
+        90
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_60",
+      "min": [
+        99,
+        19,
+        81
+      ],
+      "max": [
+        107,
+        27,
+        89
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_61",
+      "min": [
+        100,
+        19,
+        80
+      ],
+      "max": [
+        108,
+        27,
+        88
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_62",
+      "min": [
+        100,
+        20,
+        79
+      ],
+      "max": [
+        108,
+        28,
+        87
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_63",
+      "min": [
+        101,
+        20,
+        78
+      ],
+      "max": [
+        109,
+        28,
+        86
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_64",
+      "min": [
+        101,
+        20,
+        77
+      ],
+      "max": [
+        109,
+        28,
+        85
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_65",
+      "min": [
+        102,
+        20,
+        78
+      ],
+      "max": [
+        110,
+        28,
+        86
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_66",
+      "min": [
+        103,
+        20,
+        78
+      ],
+      "max": [
+        111,
+        28,
+        86
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_67",
+      "min": [
+        103,
+        19,
+        79
+      ],
+      "max": [
+        111,
+        27,
+        87
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_68",
+      "min": [
+        104,
+        19,
+        79
+      ],
+      "max": [
+        112,
+        27,
+        87
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_69",
+      "min": [
+        105,
+        19,
+        80
+      ],
+      "max": [
+        113,
+        27,
+        88
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_70",
+      "min": [
+        106,
+        19,
+        80
+      ],
+      "max": [
+        114,
+        27,
+        88
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_71",
+      "min": [
+        106,
+        19,
+        81
+      ],
+      "max": [
+        114,
+        27,
+        89
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_72",
+      "min": [
+        107,
+        19,
+        81
+      ],
+      "max": [
+        115,
+        27,
+        89
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_73",
+      "min": [
+        108,
+        18,
+        82
+      ],
+      "max": [
+        116,
+        26,
+        90
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_74",
+      "min": [
+        109,
+        18,
+        82
+      ],
+      "max": [
+        117,
+        26,
+        90
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_75",
+      "min": [
+        110,
+        18,
+        83
+      ],
+      "max": [
+        118,
+        26,
+        91
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_76",
+      "min": [
+        110,
+        18,
+        84
+      ],
+      "max": [
+        118,
+        26,
+        92
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_77",
+      "min": [
+        111,
+        18,
+        84
+      ],
+      "max": [
+        119,
+        26,
+        92
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_78",
+      "min": [
+        112,
+        17,
+        85
+      ],
+      "max": [
+        120,
+        25,
+        93
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_79",
+      "min": [
+        113,
+        17,
+        85
+      ],
+      "max": [
+        121,
+        25,
+        93
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_80",
+      "min": [
+        113,
+        17,
+        86
+      ],
+      "max": [
+        121,
+        25,
+        94
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_81",
+      "min": [
+        114,
+        17,
+        86
+      ],
+      "max": [
+        122,
+        25,
+        94
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_82",
+      "min": [
+        115,
+        17,
+        87
+      ],
+      "max": [
+        123,
+        25,
+        95
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_83",
+      "min": [
+        116,
+        17,
+        87
+      ],
+      "max": [
+        124,
+        25,
+        95
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_84",
+      "min": [
+        116,
+        16,
+        88
+      ],
+      "max": [
+        124,
+        24,
+        96
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_85",
+      "min": [
+        117,
+        16,
+        88
+      ],
+      "max": [
+        125,
+        24,
+        96
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "stage3_departure_86",
+      "min": [
+        118,
+        16,
+        89
+      ],
+      "max": [
+        126,
+        24,
+        97
+      ],
+      "purpose": "発車口から暗所空間への予定通路。曲線・走行は手動敷設時に検証。",
+      "confidence": "creative_completion"
+    }
+  ]
+}

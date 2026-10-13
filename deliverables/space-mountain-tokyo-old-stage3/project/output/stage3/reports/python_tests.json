@@ -1,0 +1,10 @@
+{
+  "tests": 44,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "passed": true,
+  "platform": "Linux",
+  "windows_verified": false,
+  "actual_player_walk_verified": false
+}

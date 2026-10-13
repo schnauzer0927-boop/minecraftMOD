@@ -1,0 +1,506 @@
+[
+  {
+    "id": "official_tdr_attraction",
+    "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "attempted_at": "2026-10-13T16:23:09.603767+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 31448,
+    "sha256": "b925eddd171669586859c1ddc221fc6fce3f8dc6fa35fa2d4346a5f0c260ef6f",
+    "received_http_body": true,
+    "content_seen": false
+  },
+  {
+    "id": "official_tdr_celebration",
+    "url": "https://www.tokyodisneyresort.jp/treasure/spacemountain2024/",
+    "attempted_at": "2026-10-13T16:23:09.606923+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "error_type": "HTTPError",
+    "error": "HTTP Error 404: Not Found",
+    "origin_http_response_received": true
+  },
+  {
+    "id": "official_olc_20231211",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "attempted_at": "2026-10-13T16:23:09.610144+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "content_type": "application/pdf;charset=UTF-8",
+    "bytes": 459093,
+    "sha256": "69b5e5fa19a2ab1b287a024dd93223eb26f330bc2acff0f8c7b4eaa39be89831",
+    "received_http_body": true,
+    "content_seen": false
+  },
+  {
+    "id": "user_video_oembed",
+    "url": "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=-yoq7T-omJs&format=json",
+    "attempted_at": "2026-10-13T16:23:09.611312+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "error_type": "URLError",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "origin_http_response_received": false
+  },
+  {
+    "id": "user_video_thumbnail",
+    "url": "https://i.ytimg.com/vi/-yoq7T-omJs/hqdefault.jpg",
+    "attempted_at": "2026-10-13T16:23:09.611867+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "error_type": "URLError",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "origin_http_response_received": false
+  },
+  {
+    "id": "dudu_tree",
+    "url": "https://api.github.com/repos/dudu849/tokyo-disneyland/git/trees/main?recursive=1",
+    "attempted_at": "2026-10-13T16:23:09.615554+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://api.github.com/repos/dudu849/tokyo-disneyland/git/trees/main?recursive=1",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 15475,
+    "sha256": "8dcba0ecf3b015a4679de356769012eea1d5f080754e03aa9915b454b1a46369",
+    "metadata_file": "references/stage3/dudu_tree.json",
+    "potential_assets": [
+      "about.html",
+      "attractions/ride1.html",
+      "attractions/ride10.html",
+      "attractions/ride2.html",
+      "attractions/ride3.html",
+      "attractions/ride4.html",
+      "attractions/ride5.html",
+      "attractions/ride6.html",
+      "attractions/ride7.html",
+      "attractions/ride8.html",
+      "attractions/ride9.html",
+      "foods/food1.html",
+      "foods/food2.html",
+      "foods/food3.html",
+      "foods/food4.html",
+      "foods/food5.html",
+      "images/access.jpg",
+      "images/castleprojection.jpg",
+      "images/food1.jpg",
+      "images/food2.jpg",
+      "images/food3.jpg",
+      "images/food4.jpg",
+      "images/food5.jpg",
+      "images/guide.jpg",
+      "images/map.jpg",
+      "images/nightshow.jpg",
+      "images/parade.jpg",
+      "images/ride1.jpg",
+      "images/ride10.jpg",
+      "images/ride2.jpg",
+      "images/ride3.jpg",
+      "images/ride4.jpg",
+      "images/ride5.jpg",
+      "images/ride6.jpg",
+      "images/ride7.jpg",
+      "images/ride8.jpg",
+      "images/ride9.jpg",
+      "images/seasonal.jpg",
+      "images/seasonal.png",
+      "images/spot1.jpg",
+      "images/spot2.jpg",
+      "images/spot3.jpg",
+      "images/spot4.jpg",
+      "images/spot5.jpg",
+      "index.html",
+      "info/access.html",
+      "info/guide.html",
+      "info/map.html",
+      "shows/castleprojection.html",
+      "shows/nightshow.html",
+      "shows/parade.html",
+      "shows/seasonal.html",
+      "spots/spot1.html",
+      "spots/spot2.html",
+      "spots/spot3.html",
+      "spots/spot4.html",
+      "spots/spot5.html",
+      "video.html"
+    ]
+  },
+  {
+    "id": "github_search_0",
+    "url": "https://api.github.com/search/repositories?q=%22Space+Mountain%22+%22Tokyo%22+in%3Areadme&per_page=25",
+    "attempted_at": "2026-10-13T16:23:09.668895+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://api.github.com/search/repositories?q=%22Space+Mountain%22+%22Tokyo%22+in%3Areadme&per_page=25",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 41766,
+    "sha256": "2c1e911d3b6541ee7cb074a17e818f9e9c314e4b300020bc2f73ca645116e6e0",
+    "metadata_file": "references/stage3/github_search_0.json",
+    "total_count": 7,
+    "items": [
+      {
+        "repo": "ksizorCode/disneyland",
+        "description": "Disneland themes and atracctions",
+        "default_branch": "main",
+        "url": "https://github.com/ksizorCode/disneyland",
+        "license": null
+      },
+      {
+        "repo": "seawiid/home-assistant-themeparks-integration",
+        "description": "Fixed fork of danielsmith-eu's HA theme parks integration",
+        "default_branch": "main",
+        "url": "https://github.com/seawiid/home-assistant-themeparks-integration",
+        "license": null
+      },
+      {
+        "repo": "haxorthematrix/waitimes",
+        "description": "Disney World wait times display for Raspberry Pi with themed fonts and DALL-E generated images",
+        "default_branch": "main",
+        "url": "https://github.com/haxorthematrix/waitimes",
+        "license": null
+      },
+      {
+        "repo": "Shellieslambang882/shellieslambang882.github.io",
+        "description": "Unify AI coding tools on one local gateway to share models, providers, and API keys.",
+        "default_branch": "main",
+        "url": "https://github.com/Shellieslambang882/shellieslambang882.github.io",
+        "license": null
+      },
+      {
+        "repo": "michaelatetoomuch/michaelatetoomuch.github.io",
+        "description": "Japan 2026 Planning",
+        "default_branch": "main",
+        "url": "https://github.com/michaelatetoomuch/michaelatetoomuch.github.io",
+        "license": null
+      },
+      {
+        "repo": "paulreavis1216/paulreavis1216.github.io",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/paulreavis1216/paulreavis1216.github.io",
+        "license": null
+      },
+      {
+        "repo": "Cuty-AI/awesome-gpt-image-2-prompts",
+        "description": null,
+        "default_branch": "master",
+        "url": "https://github.com/Cuty-AI/awesome-gpt-image-2-prompts",
+        "license": null
+      }
+    ]
+  },
+  {
+    "id": "github_search_1",
+    "url": "https://api.github.com/search/repositories?q=%22%E6%9D%B1%E4%BA%AC%E3%83%87%E3%82%A3%E3%82%BA%E3%83%8B%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%22+in%3Areadme&per_page=25",
+    "attempted_at": "2026-10-13T16:23:09.671672+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://api.github.com/search/repositories?q=%22%E6%9D%B1%E4%BA%AC%E3%83%87%E3%82%A3%E3%82%BA%E3%83%8B%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%22+in%3Areadme&per_page=25",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 139406,
+    "sha256": "aec5df54d25195ccea08f0fbb3f83ce447fdd0ac218fd7f730a47040e0be8345",
+    "metadata_file": "references/stage3/github_search_1.json",
+    "total_count": 58,
+    "items": [
+      {
+        "repo": "tkys/multi_tokenize",
+        "description": "multi selecter tokenizer selecter in sudachi, ",
+        "default_branch": "main",
+        "url": "https://github.com/tkys/multi_tokenize",
+        "license": null
+      },
+      {
+        "repo": "yasny/tdl-wait-time",
+        "description": "東京ディズニーランド・ディズニーシーの待ち時間グラフ",
+        "default_branch": "master",
+        "url": "https://github.com/yasny/tdl-wait-time",
+        "license": {
+          "key": "mit",
+          "name": "MIT License",
+          "spdx_id": "MIT",
+          "url": "https://api.github.com/licenses/mit",
+          "node_id": "MDc6TGljZW5zZTEz"
+        }
+      },
+      {
+        "repo": "yasny/disney-wait-time-spider",
+        "description": "東京ディズニーランド・ディズニーシーの待ち時間取得スパイダー",
+        "default_branch": "master",
+        "url": "https://github.com/yasny/disney-wait-time-spider",
+        "license": {
+          "key": "mit",
+          "name": "MIT License",
+          "spdx_id": "MIT",
+          "url": "https://api.github.com/licenses/mit",
+          "node_id": "MDc6TGljZW5zZTEz"
+        }
+      },
+      {
+        "repo": "llenn7711/Tokyo-Disney-Resort-Live-Queue-Time-Discord-Bot",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/llenn7711/Tokyo-Disney-Resort-Live-Queue-Time-Discord-Bot",
+        "license": null
+      },
+      {
+        "repo": "takeyax/disney-wait-time",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/takeyax/disney-wait-time",
+        "license": null
+      },
+      {
+        "repo": "olety/Awesome-Japanese-Places",
+        "description": "Cool places to visit in Japan",
+        "default_branch": "master",
+        "url": "https://github.com/olety/Awesome-Japanese-Places",
+        "license": null
+      },
+      {
+        "repo": "takeyax/disney-wait-time2",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/takeyax/disney-wait-time2",
+        "license": null
+      },
+      {
+        "repo": "llenn7711/Tokyo-Disney-Resort-Live-Queue-Time",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/llenn7711/Tokyo-Disney-Resort-Live-Queue-Time",
+        "license": null
+      },
+      {
+        "repo": "Masahiro111/zipn",
+        "description": "このセリフメモは、東京ディズニーランドのアトモスで行われていた、「ジップンズーム・ガイドツアー」のセリフを文章として書き起こしたものです。このアトモスでは、キャストが頻繁にアドリブを混ぜて演じるため、正確な台本として書き起こすことは難しいのですが、大体のストーリーの流れを楽しんでいただけましたら幸いです。",
+        "default_branch": "master",
+        "url": "https://github.com/Masahiro111/zipn",
+        "license": null
+      },
+      {
+        "repo": "225c0442-collab/tdl-weather",
+        "description": null,
+        "default_branch": "master",
+        "url": "https://github.com/225c0442-collab/tdl-weather",
+        "license": null
+      },
+      {
+        "repo": "cpdl402/reach-for-the-stars-guide",
+        "description": "Tokyo Disneyland night show Reach for the Stars: Everlasting Dreams guide (personal page)",
+        "default_branch": "main",
+        "url": "https://github.com/cpdl402/reach-for-the-stars-guide",
+        "license": null
+      },
+      {
+        "repo": "KeitaWata/disney_app",
+        "description": "Apps to be used within Tokyo Disneyland",
+        "default_branch": "main",
+        "url": "https://github.com/KeitaWata/disney_app",
+        "license": null
+      },
+      {
+        "repo": "Misaki0922/disney-free-drink",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/Misaki0922/disney-free-drink",
+        "license": null
+      },
+      {
+        "repo": "ikymbiz/disneyapi",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/ikymbiz/disneyapi",
+        "license": null
+      },
+      {
+        "repo": "225c0442-collab/cafe-map",
+        "description": null,
+        "default_branch": "master",
+        "url": "https://github.com/225c0442-collab/cafe-map",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-4",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-4",
+        "license": null
+      },
+      {
+        "repo": "HirokiIshizuka/tdl-proxy",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/HirokiIshizuka/tdl-proxy",
+        "license": null
+      },
+      {
+        "repo": "hinaxts516-create/tdr-waiting",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/hinaxts516-create/tdr-waiting",
+        "license": null
+      },
+      {
+        "repo": "nr4g66npwy-commits/tdl-sim",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/nr4g66npwy-commits/tdl-sim",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-3",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-3",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-2",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-2",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-5",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-5",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-1",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-1",
+        "license": null
+      },
+      {
+        "repo": "Jibril2821/disney-wait-time",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/Jibril2821/disney-wait-time",
+        "license": null
+      }
+    ]
+  },
+  {
+    "id": "github_search_2",
+    "url": "https://api.github.com/search/repositories?q=%22%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3%22+in%3Areadme&per_page=25",
+    "attempted_at": "2026-10-13T16:23:10.235385+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://api.github.com/search/repositories?q=%22%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3%22+in%3Areadme&per_page=25",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 40159,
+    "sha256": "cf1e72d973a3e35440bc1927621be0877df34718e9bbe5e76970ee82784e3a10",
+    "metadata_file": "references/stage3/github_search_2.json",
+    "total_count": 7,
+    "items": [
+      {
+        "repo": "sorapanel7533/disney-map-quiz-1",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-1",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-3",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-3",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-4",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-4",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-5",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-5",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz",
+        "license": null
+      },
+      {
+        "repo": "sorapanel7533/disney-map-quiz-2",
+        "description": null,
+        "default_branch": "main",
+        "url": "https://github.com/sorapanel7533/disney-map-quiz-2",
+        "license": null
+      },
+      {
+        "repo": "kouki-takezawa/tokyo-disneysea-3d",
+        "description": "東京ディズニーシー3D再現(個人用) — OSM+国土地理院データ→Blender下書きと枠線モック",
+        "default_branch": "main",
+        "url": "https://github.com/kouki-takezawa/tokyo-disneysea-3d",
+        "license": null
+      }
+    ]
+  },
+  {
+    "id": "github_search_3",
+    "url": "https://api.github.com/search/repositories?q=%22Space+Mountain%22+%22queue%22+%22Tokyo%22+in%3Areadme&per_page=25",
+    "attempted_at": "2026-10-13T16:23:10.691121+00:00",
+    "method": "public HTTPS GET via existing environment route",
+    "auth_used": false,
+    "cookies_used": false,
+    "status": 200,
+    "final_url": "https://api.github.com/search/repositories?q=%22Space+Mountain%22+%22queue%22+%22Tokyo%22+in%3Areadme&per_page=25",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 11766,
+    "sha256": "141e09aef0707b8806f0e76ec277f0d3ca593d7005b5291488ac6a47cbd9cc23",
+    "metadata_file": "references/stage3/github_search_3.json",
+    "total_count": 2,
+    "items": [
+      {
+        "repo": "seawiid/home-assistant-themeparks-integration",
+        "description": "Fixed fork of danielsmith-eu's HA theme parks integration",
+        "default_branch": "main",
+        "url": "https://github.com/seawiid/home-assistant-themeparks-integration",
+        "license": null
+      },
+      {
+        "repo": "haxorthematrix/waitimes",
+        "description": "Disney World wait times display for Raspberry Pi with themed fonts and DALL-E generated images",
+        "default_branch": "main",
+        "url": "https://github.com/haxorthematrix/waitimes",
+        "license": null
+      }
+    ]
+  }
+]

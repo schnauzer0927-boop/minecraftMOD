@@ -1,0 +1,1996 @@
+{
+  "validation_method": "Minecraft_server_NeoForge_WorldEdit_paste_API",
+  "minecraft_version": "1.21.1",
+  "neoforge_version": "21.1.228",
+  "worldedit_version": "7.3.8",
+  "players_connected": 0,
+  "client_gameplay_verified": false,
+  "human_walk_verified": false,
+  "full_user_mod_environment_verified": false,
+  "online_mode": true,
+  "server_bound_ip": "127.0.0.1",
+  "world_name": "SpaceMountainStage3Verification",
+  "passed": true,
+  "schematic_path": "/workspace/SpaceMountainTokyoOld/runtime-test/inputs/tokyo_old_with_stage3.schem",
+  "schematic_sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+  "manifest_sha256": "3cdd6f9fea4b747a7a37b31808d614a23390a2d33dcbd1971ea167e50f231f2a",
+  "paste_anchor": [
+    0,
+    64,
+    0
+  ],
+  "clipboard_origin": [
+    0,
+    0,
+    0
+  ],
+  "paste_seconds": 6.287771154,
+  "ignore_air_blocks": true,
+  "non_air_blocks_checked": 119124,
+  "blockstate_mismatches": 0,
+  "blockstate_mismatch_examples": [],
+  "protected_air_cells_checked": 72603,
+  "protected_air_occupied": 0,
+  "walking_checkpoints": [
+    {
+      "relative_feet": [
+        69,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        118
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        119
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        120
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        121
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        122
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        123
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        124
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        125
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        69,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        70,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        70,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        70,
+        5,
+        127
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        70,
+        5,
+        128
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        71,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        71,
+        5,
+        128
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        72,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        72,
+        5,
+        128
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        72,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        73,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        73,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        74,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        74,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        75,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        75,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        130
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        131
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        132
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        76,
+        5,
+        133
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        77,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        77,
+        5,
+        133
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        77,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        117
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        118
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        119
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        120
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        121
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        122
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        123
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        124
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        125
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        78,
+        5,
+        135
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        79,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        79,
+        5,
+        135
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        79,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        80,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        80,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        80,
+        5,
+        137
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        81,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        81,
+        5,
+        137
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        81,
+        5,
+        138
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        126
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        127
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        128
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        129
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        130
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        138
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        82,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        83,
+        5,
+        130
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        83,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        84,
+        5,
+        130
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        84,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        130
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        131
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        132
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        133
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        85,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        86,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        86,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        86,
+        5,
+        140
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        86,
+        5,
+        141
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        86,
+        5,
+        142
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        87,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        87,
+        5,
+        142
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        88,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        88,
+        5,
+        142
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        88,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        89,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        89,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        90,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        90,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        90,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        91,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        91,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        92,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        92,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        93,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        93,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        94,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        94,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        95,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        95,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        96,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        96,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        97,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        97,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        98,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        98,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        98,
+        5,
+        145
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        98,
+        5,
+        146
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        98,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        99,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        99,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        100,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        100,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        101,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        101,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        101,
+        5,
+        148
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        101,
+        5,
+        149
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        149
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        150
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        151
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        152
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        102,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        103,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        103,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        104,
+        5,
+        134
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        104,
+        5,
+        135
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        104,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        104,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        105,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        106,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        1,
+        176
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        1,
+        177
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        1,
+        178
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        2,
+        175
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        3,
+        174
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        4,
+        173
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        154
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        155
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        156
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        157
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        158
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        159
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        160
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        161
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        162
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        163
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        164
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        165
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        166
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        167
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        168
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        169
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        170
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        171
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        107,
+        5,
+        172
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        1,
+        176
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        1,
+        177
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        1,
+        178
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        2,
+        175
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        3,
+        174
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        4,
+        173
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        148
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        149
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        150
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        151
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        152
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        153
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        154
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        155
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        156
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        157
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        158
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        159
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        160
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        161
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        162
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        163
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        164
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        165
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        166
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        167
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        168
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        169
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        170
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        171
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        115,
+        5,
+        172
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        116,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        116,
+        5,
+        146
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        116,
+        5,
+        147
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        117,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        117,
+        5,
+        145
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        117,
+        5,
+        146
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        118,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        118,
+        5,
+        145
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        119,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        119,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        119,
+        5,
+        144
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        119,
+        5,
+        145
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        120,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        120,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        121,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        121,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        122,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        122,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        123,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        123,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        124,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        124,
+        5,
+        141
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        124,
+        5,
+        142
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        124,
+        5,
+        143
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        136
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        137
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        138
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        139
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        140
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    },
+    {
+      "relative_feet": [
+        125,
+        5,
+        141
+      ],
+      "solid_collision_support": true,
+      "player_size_collision_clear": true
+    }
+  ],
+  "blocked_walking_checkpoints": 0,
+  "unsupported_walking_checkpoints": 0,
+  "world_save_requested": true,
+  "process_exit_code": 0,
+  "server_stopped": true,
+  "worldedit_actual_mod_version": "7.3.8+6939-7d32b45",
+  "walking_samples_source": "numerically_resolved_supported_feet_paths",
+  "worldedit_paste_verified": true,
+  "programmatic_server_block_checks_verified": true,
+  "authentication_service_connection_verified": false,
+  "authentication_note": "Online mode stayed enabled. No players connected; API public-key DNS lookup failed during startup, so client authentication was not tested.",
+  "saved_world": {
+    "level_dat_exists": true,
+    "overworld_region_files": 4,
+    "level_dat_sha256": "f52d12c048c7b408b8eeac5f88f430ef46b0e44627c4b9cd6118683384b01b98"
+  }
+}

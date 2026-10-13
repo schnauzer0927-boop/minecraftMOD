@@ -1,0 +1,10 @@
+{
+  "id": "official_olc_20220427",
+  "url": "https://www.olc.co.jp/ja/news/news_tdr/20220427_01/main/0/link/20220427_01.pdf",
+  "attempted_at": "2026-10-13T16:25:39.588034+00:00",
+  "method": "public HTTPS GET via existing environment route",
+  "auth_used": false,
+  "cookies_used": false,
+  "error": "HTTP Error 404: Not Found",
+  "error_type": "HTTPError"
+}

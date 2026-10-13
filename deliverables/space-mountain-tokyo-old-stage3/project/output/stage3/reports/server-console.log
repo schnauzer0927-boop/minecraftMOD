@@ -1,0 +1,99 @@
+[32m[16:53:42.858] [main/INFO] [Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeserver, --fml.neoForgeVersion, 21.1.228, --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430, nogui] 
+[m[32m[16:53:42.862] [main/INFO] [Launcher/MODLAUNCHER]: JVM identified as Debian OpenJDK 64-Bit Server VM 21.0.12.1+1-1-deb13u1-Debian 
+[m[32m[16:53:42.864] [main/INFO] [Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.12.1 by Debian; OS Linux arch amd64 version 6.18.44 
+[m[32m[16:53:43.078] [main/INFO] [loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgeserver 
+[m[32m[16:53:43.187] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/workspace/SpaceMountainTokyoOld/runtime-test/libraries/net/fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/sponge-mixin-0.15.2+mixin.0.8.7.jar%2373!/ Service=ModLauncher Env=SERVER 
+[m[32m[16:53:43.841] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "server-1.21.1-20240808.144430-srg.jar" [locator: production server provider +net.neoforged:neoforge:21.1.228:server] 
+[m[32m[16:53:43.888] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.228-universal.jar" [locator: PathBasedLocator[name=neoforge, paths=[libraries/net/neoforged/neoforge/21.1.228/neoforge-21.1.228-universal.jar]], reader: mod manifest] 
+[m[32m[16:53:43.899] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "space-mountain-verifier-1.0.0.jar" [locator: {mods folder locator at /workspace/SpaceMountainTokyoOld/runtime-test/mods}, reader: mod manifest] 
+[m[32m[16:53:43.906] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "worldedit-mod-7.3.8.jar" [locator: {mods folder locator at /workspace/SpaceMountainTokyoOld/runtime-test/mods}, reader: mod manifest] 
+[m[32m[16:53:44.123] [main/INFO] [loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection 
+[m[32m[16:53:44.124] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found gamelibrary file "mixinextras-neoforge-0.5.3.jar" [parent: neoforge-21.1.228-universal.jar, locator: jarinjar, reader: mod manifest] 
+[m[32m[16:53:44.125] [main/INFO] [loading.moddiscovery.ModDiscoverer/SCAN]: Found library file "net.neoforged.neoforge-coremods-21.1.228.jar" [parent: neoforge-21.1.228-universal.jar, locator: jarinjar, reader: mod manifest] 
+[m[32m[16:53:44.127] [main/INFO] [loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Independent Space Mountain Paste Verifier 1.0.0 (space_mountain_verifier)
+		Minecraft 1.21.1 (minecraft)
+		NeoForge 21.1.228 (neoforge)
+		WorldEdit 7.3.8+6939-7d32b45 (worldedit) 
+[m[32m[16:53:45.316] [main/INFO] [mixin/]: Compatibility level set to JAVA_17 
+[m[32m[16:53:45.329] [main/INFO] [LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeserver' with arguments [nogui] 
+[m[33m[16:53:45.402] [main/WARN] [mixin/]: Reference map 'worldedit-neoforge.mixins.refmap.json' for worldedit-neoforge.mixins.json could not be read. If this is a development environment you can ignore this message 
+[mWARN StatusConsoleListener Advanced terminal features are not available in this environment
+[16:53:46] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.3).
+[16:53:56] [modloading-worker-0/INFO] [ne.ne.ne.co.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.228, for MC 1.21.1
+[16:53:58] [modloading-worker-0/INFO] [co.sk.wo.ex.pl.PlatformManager/]: Got request to register class com.sk89q.worldedit.neoforge.NeoForgePlatform with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@12b8b9fc]
+[16:53:58] [modloading-worker-0/INFO] [co.sk.wo.ne.NeoForgeWorldEdit/]: WorldEdit for NeoForge (version 7.3.8+6939-7d32b45) is loaded
+[16:53:58] [main/INFO] [mojang/YggdrasilAuthenticationService]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[16:53:58] [Yggdrasil Key Fetcher/ERROR] [mojang/YggdrasilServicesKeyInfo]: Failed to request yggdrasil public key
+com.mojang.authlib.exceptions.MinecraftClientException: Failed to read from https://api.minecraftservices.com/publickeys due to api.minecraftservices.com
+	at MC-BOOTSTRAP/authlib@6.0.54/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:108) ~[authlib-6.0.54.jar%2398!/:?] {}
+	at MC-BOOTSTRAP/authlib@6.0.54/com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:57) ~[authlib-6.0.54.jar%2398!/:?] {}
+	at MC-BOOTSTRAP/authlib@6.0.54/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.fetch(YggdrasilServicesKeyInfo.java:114) ~[authlib-6.0.54.jar%2398!/:?] {}
+	at MC-BOOTSTRAP/authlib@6.0.54/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo$1.run(YggdrasilServicesKeyInfo.java:89) ~[authlib-6.0.54.jar%2398!/:?] {}
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[?:?] {}
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?] {}
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[?:?] {}
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?] {}
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?] {}
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?] {re:mixin}
+Caused by: java.net.UnknownHostException: api.minecraftservices.com
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?] {}
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?] {}
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?] {}
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?] {}
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?] {}
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:539) ~[?:?] {}
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:644) ~[?:?] {}
+	at java.base/sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:265) ~[?:?] {}
+	at java.base/sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:378) ~[?:?] {}
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:196) ~[?:?] {}
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1305) ~[?:?] {}
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1146) ~[?:?] {}
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1075) ~[?:?] {}
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:181) ~[?:?] {}
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1707) ~[?:?] {}
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1632) ~[?:?] {}
+	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:531) ~[?:?] {}
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:307) ~[?:?] {}
+	at MC-BOOTSTRAP/authlib@6.0.54/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:84) ~[authlib-6.0.54.jar%2398!/:?] {}
+	... 9 more
+[16:53:58] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/workspace/SpaceMountainTokyoOld/runtime-test/libraries/net/minecraft/server/1.21.1-20240808.144430/server-1.21.1-20240808.144430-srg.jar%23119!/assets/.mcassetsroot' uses unexpected schema
+[16:53:58] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/workspace/SpaceMountainTokyoOld/runtime-test/libraries/net/minecraft/server/1.21.1-20240808.144430/server-1.21.1-20240808.144430-srg.jar%23119!/data/.mcassetsroot' uses unexpected schema
+[16:53:59] [main/INFO] [minecraft/Main]: No existing world data, creating new world
+[16:53:59] [main/ERROR] [minecraft/DedicatedServerProperties]: No key layers in MapLike[{}]
+[16:54:00] [Worker-Main-1/INFO] [co.sk.wo.ex.pl.PlatformCommandManager/]: Registering commands with com.sk89q.worldedit.neoforge.NeoForgePlatform
+[16:54:01] [main/INFO] [minecraft/RecipeManager]: Loaded 1290 recipes
+[16:54:01] [main/INFO] [minecraft/AdvancementTree]: Loaded 1399 advancements
+[16:54:02] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.21.1
+[16:54:02] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[16:54:02] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[16:54:02] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[16:54:02] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25587
+[16:54:02] [Server thread/INFO] [minecraft/ServerConnectionListener]: Using epoll channel type
+[16:54:03] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "SpaceMountainStage3Verification"
+[16:54:04] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for dimension minecraft:overworld
+[16:54:04] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[16:54:05] [Server thread/INFO] [minecraft/LoggerChunkProgressListener]: Time elapsed: 493 ms
+[16:54:05] [Server thread/INFO] [minecraft/DedicatedServer]: Done (1.937s)! For help, type "help"
+[16:54:05] [Server thread/INFO] [ne.ne.ne.se.pe.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[16:54:14] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:overworld
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:the_end
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:the_nether
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (SpaceMountainStage3Verification): All chunks are saved
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+SPACE_MOUNTAIN_RUNTIME_VERIFICATION passed=true
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[16:54:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[16:54:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:overworld
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:the_end
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[SpaceMountainStage3Verification]'/minecraft:the_nether
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (SpaceMountainStage3Verification): All chunks are saved
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[16:54:21] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved

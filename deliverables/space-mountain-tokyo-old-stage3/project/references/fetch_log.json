@@ -1,0 +1,97 @@
+[
+  {
+    "name": "olc_20220427.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20220427_01/main/0/link/20220427_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20231211.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "tdr_attraction.html",
+    "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "search.html",
+    "url": "https://www.google.com/search?q=site%3Atokyodisneyresort.jp+%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3+2024+%E7%99%BD%E3%81%84",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20220427.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20220427_01/main/0/link/20220427_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20231211.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "tdr_attraction.html",
+    "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "commons_category.html",
+    "url": "https://commons.wikimedia.org/wiki/Category:Space_Mountain_(Tokyo_Disneyland)",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "wikipedia_ja.html",
+    "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20220427.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20220427_01/main/0/link/20220427_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20231211.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "tdr_attraction.html",
+    "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "commons_category.html",
+    "url": "https://commons.wikimedia.org/wiki/Category:Space_Mountain_(Tokyo_Disneyland)",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "wikipedia_ja.html",
+    "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "name": "olc_20220427_escalated.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20220427_01/main/0/link/20220427_01.pdf",
+    "error": "URLError: Tunnel connection failed: 403 Forbidden",
+    "context": "network permission granted; require_escalated shell approved; no HTTP response from origin",
+    "acquired": "2026-10-13"
+  },
+  {
+    "name": "github_dudu_ride5.jpg",
+    "url": "https://raw.githubusercontent.com/dudu849/tokyo-disneyland/main/images/ride5.jpg",
+    "final_url": "https://raw.githubusercontent.com/dudu849/tokyo-disneyland/main/images/ride5.jpg",
+    "status": 200,
+    "bytes": 122528,
+    "content_type": "image/jpeg",
+    "sha256": "c38efcc1834d63d240cdfea9f61b3d3475ff088404b03ff601419ef20766bd94",
+    "path": "/workspace/SpaceMountainTokyoOld/references/source_images/github_dudu_ride5.jpg",
+    "acquired": "2026-10-13"
+  },
+  {
+    "name": "dudu_commit.json",
+    "url": "https://api.github.com/repos/dudu849/tokyo-disneyland/commits/main",
+    "status": 200,
+    "commit": "5293e58df9dfb65a2921bcccbf0a219be6ed80fc",
+    "acquired": "2026-10-13"
+  }
+]

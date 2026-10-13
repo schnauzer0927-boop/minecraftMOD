@@ -1,0 +1,4036 @@
+{
+  "stage": 3,
+  "baseline_sha256": "a5e921aca4850bfe4c73eb6076fa505409affefae547766f4cd8cf4ed3833f7b",
+  "baseline_blocks": 108014,
+  "added_blocks": 11110,
+  "combined_blocks": 119124,
+  "rail_blocks": 0,
+  "historical_interior_verified": false,
+  "game_paste_verified": true,
+  "user_reported_stage2_silhouette_in_game": "概ね良好。ユーザー申告。Stage3のゲーム検証を意味しない。",
+  "exterior_voxels_changed": 0,
+  "groups": {
+    "queue": 2678,
+    "entrance": 1429,
+    "station_shell": 2548,
+    "station_platforms": 2309,
+    "station_wayfinding": 138,
+    "return": 1372,
+    "station_lighting": 169,
+    "station_control_room": 207,
+    "station_launch_frame": 260
+  },
+  "existing_voxel_writes_skipped": {
+    "entrance": 36,
+    "queue": 35,
+    "return": 10
+  },
+  "pedestrian_air_writes_skipped": {
+    "entrance": 83,
+    "queue": 286,
+    "return": 13,
+    "station_shell": 100
+  },
+  "rail_space_writes_skipped": {
+    "return": 24
+  },
+  "files": [
+    {
+      "path": "schem/stage3_entrance_interior.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          99,
+          1,
+          146
+        ],
+        "max": [
+          112,
+          14,
+          175
+        ]
+      },
+      "dimensions": [
+        14,
+        14,
+        30
+      ],
+      "offset": [
+        99,
+        1,
+        146
+      ],
+      "volume": 5880,
+      "non_air_blocks": 1429,
+      "air_blocks": 4451,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:blue_concrete": 1,
+        "minecraft:light_blue_concrete": 2,
+        "minecraft:light_blue_stained_glass": 3,
+        "minecraft:light_gray_concrete": 4,
+        "minecraft:polished_andesite": 5,
+        "minecraft:sea_lantern": 6,
+        "minecraft:smooth_quartz": 7,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 8,
+        "minecraft:white_concrete": 9
+      },
+      "palette_size": 10,
+      "file_bytes": 861,
+      "sha256": "e8e70b04da754a63edc96d069ce85013335edafc285e3cd8b71eb88c384137c6",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_entrance_interior.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          14,
+          14,
+          30
+        ],
+        "offset": [
+          99,
+          1,
+          146
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 5880,
+        "non_air_blocks": 1429,
+        "air_blocks": 4451,
+        "palette_size": 10,
+        "rails_present": false,
+        "file_bytes": 861,
+        "sha256": "e8e70b04da754a63edc96d069ce85013335edafc285e3cd8b71eb88c384137c6",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_queue.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          64,
+          2,
+          114
+        ],
+        "max": [
+          105,
+          14,
+          152
+        ]
+      },
+      "dimensions": [
+        42,
+        13,
+        39
+      ],
+      "offset": [
+        64,
+        2,
+        114
+      ],
+      "volume": 21294,
+      "non_air_blocks": 2678,
+      "air_blocks": 18616,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:blue_concrete": 1,
+        "minecraft:light_blue_concrete": 2,
+        "minecraft:light_blue_stained_glass": 3,
+        "minecraft:light_gray_concrete": 4,
+        "minecraft:polished_andesite": 5,
+        "minecraft:sea_lantern": 6,
+        "minecraft:smooth_quartz": 7,
+        "minecraft:tinted_glass": 8,
+        "minecraft:white_concrete": 9
+      },
+      "palette_size": 10,
+      "file_bytes": 1244,
+      "sha256": "5fa2befd38fa6b56e2a98a2db07a55247b7fc4c7a78780e706428c5c68b8d384",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_queue.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          42,
+          13,
+          39
+        ],
+        "offset": [
+          64,
+          2,
+          114
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 21294,
+        "non_air_blocks": 2678,
+        "air_blocks": 18616,
+        "palette_size": 10,
+        "rails_present": false,
+        "file_bytes": 1244,
+        "sha256": "5fa2befd38fa6b56e2a98a2db07a55247b7fc4c7a78780e706428c5c68b8d384",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_station.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          88,
+          2,
+          122
+        ],
+        "max": [
+          132,
+          20,
+          143
+        ]
+      },
+      "dimensions": [
+        45,
+        19,
+        22
+      ],
+      "offset": [
+        88,
+        2,
+        122
+      ],
+      "volume": 18810,
+      "non_air_blocks": 5631,
+      "air_blocks": 13179,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:blue_concrete": 1,
+        "minecraft:cyan_concrete": 2,
+        "minecraft:gray_concrete": 3,
+        "minecraft:light_blue_concrete": 4,
+        "minecraft:light_blue_stained_glass": 5,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 6,
+        "minecraft:light_gray_concrete": 7,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 8,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 9,
+        "minecraft:sea_lantern": 10,
+        "minecraft:smooth_quartz": 11,
+        "minecraft:smooth_stone": 12,
+        "minecraft:white_concrete": 13
+      },
+      "palette_size": 14,
+      "file_bytes": 1131,
+      "sha256": "d3766212c54baf6c804d6d51f2a551c5147b4fc9c6e66436ed5f97661119e024",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_station.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          45,
+          19,
+          22
+        ],
+        "offset": [
+          88,
+          2,
+          122
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 18810,
+        "non_air_blocks": 5631,
+        "air_blocks": 13179,
+        "palette_size": 14,
+        "rails_present": false,
+        "file_bytes": 1131,
+        "sha256": "d3766212c54baf6c804d6d51f2a551c5147b4fc9c6e66436ed5f97661119e024",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_return_path.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          113,
+          1,
+          134
+        ],
+        "max": [
+          127,
+          11,
+          175
+        ]
+      },
+      "dimensions": [
+        15,
+        11,
+        42
+      ],
+      "offset": [
+        113,
+        1,
+        134
+      ],
+      "volume": 6930,
+      "non_air_blocks": 1372,
+      "air_blocks": 5558,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:light_blue_concrete": 1,
+        "minecraft:light_blue_stained_glass": 2,
+        "minecraft:light_gray_concrete": 3,
+        "minecraft:polished_andesite": 4,
+        "minecraft:sea_lantern": 5,
+        "minecraft:smooth_quartz": 6,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 7,
+        "minecraft:white_concrete": 8
+      },
+      "palette_size": 9,
+      "file_bytes": 741,
+      "sha256": "ae381f3082aacc79a757d2a9e170a7242a75af174fbec9ce44259ec804024d39",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_return_path.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          15,
+          11,
+          42
+        ],
+        "offset": [
+          113,
+          1,
+          134
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 6930,
+        "non_air_blocks": 1372,
+        "air_blocks": 5558,
+        "palette_size": 9,
+        "rails_present": false,
+        "file_bytes": 741,
+        "sha256": "ae381f3082aacc79a757d2a9e170a7242a75af174fbec9ce44259ec804024d39",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_interior_combined.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          64,
+          1,
+          114
+        ],
+        "max": [
+          132,
+          20,
+          175
+        ]
+      },
+      "dimensions": [
+        69,
+        20,
+        62
+      ],
+      "offset": [
+        64,
+        1,
+        114
+      ],
+      "volume": 85560,
+      "non_air_blocks": 11110,
+      "air_blocks": 74450,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:blue_concrete": 1,
+        "minecraft:cyan_concrete": 2,
+        "minecraft:gray_concrete": 3,
+        "minecraft:light_blue_concrete": 4,
+        "minecraft:light_blue_stained_glass": 5,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 6,
+        "minecraft:light_gray_concrete": 7,
+        "minecraft:polished_andesite": 8,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 9,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 10,
+        "minecraft:sea_lantern": 11,
+        "minecraft:smooth_quartz": 12,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 13,
+        "minecraft:smooth_stone": 14,
+        "minecraft:tinted_glass": 15,
+        "minecraft:white_concrete": 16
+      },
+      "palette_size": 17,
+      "file_bytes": 3366,
+      "sha256": "5c5c313830e86836a932fef6d01319f3d05d171f4afb8b6309771a80336819d7",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_interior_combined.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          69,
+          20,
+          62
+        ],
+        "offset": [
+          64,
+          1,
+          114
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 85560,
+        "non_air_blocks": 11110,
+        "air_blocks": 74450,
+        "palette_size": 17,
+        "rails_present": false,
+        "file_bytes": 3366,
+        "sha256": "5c5c313830e86836a932fef6d01319f3d05d171f4afb8b6309771a80336819d7",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/tokyo_old_with_stage3.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          34,
+          0,
+          24
+        ],
+        "max": [
+          185,
+          78,
+          210
+        ]
+      },
+      "dimensions": [
+        152,
+        79,
+        187
+      ],
+      "offset": [
+        34,
+        0,
+        24
+      ],
+      "volume": 2245496,
+      "non_air_blocks": 119124,
+      "air_blocks": 2126372,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:blue_concrete": 1,
+        "minecraft:blue_stained_glass": 2,
+        "minecraft:cyan_concrete": 3,
+        "minecraft:dark_oak_leaves[persistent=true]": 4,
+        "minecraft:gray_concrete": 5,
+        "minecraft:iron_block": 6,
+        "minecraft:light_blue_concrete": 7,
+        "minecraft:light_blue_stained_glass": 8,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 9,
+        "minecraft:light_gray_concrete": 10,
+        "minecraft:polished_andesite": 11,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 12,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 13,
+        "minecraft:sea_lantern": 14,
+        "minecraft:smooth_quartz": 15,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 16,
+        "minecraft:smooth_stone": 17,
+        "minecraft:tinted_glass": 18,
+        "minecraft:white_concrete": 19
+      },
+      "palette_size": 20,
+      "file_bytes": 29967,
+      "sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/tokyo_old_with_stage3.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          152,
+          79,
+          187
+        ],
+        "offset": [
+          34,
+          0,
+          24
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 2245496,
+        "non_air_blocks": 119124,
+        "air_blocks": 2126372,
+        "palette_size": 20,
+        "rails_present": false,
+        "file_bytes": 29967,
+        "sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_station_platforms.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          88,
+          2,
+          122
+        ],
+        "max": [
+          131,
+          4,
+          143
+        ]
+      },
+      "dimensions": [
+        44,
+        3,
+        22
+      ],
+      "offset": [
+        88,
+        2,
+        122
+      ],
+      "volume": 2904,
+      "non_air_blocks": 2309,
+      "air_blocks": 595,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:gray_concrete": 1,
+        "minecraft:light_gray_concrete": 2,
+        "minecraft:smooth_quartz": 3,
+        "minecraft:smooth_stone": 4,
+        "minecraft:white_concrete": 5
+      },
+      "palette_size": 6,
+      "file_bytes": 465,
+      "sha256": "337b64ab98023fb8aab2337816655d9700eead5d59757dd8c7844f789f098592",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_station_platforms.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          44,
+          3,
+          22
+        ],
+        "offset": [
+          88,
+          2,
+          122
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 2904,
+        "non_air_blocks": 2309,
+        "air_blocks": 595,
+        "palette_size": 6,
+        "rails_present": false,
+        "file_bytes": 465,
+        "sha256": "337b64ab98023fb8aab2337816655d9700eead5d59757dd8c7844f789f098592",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    },
+    {
+      "path": "schem/stage3_guide_optional.schem",
+      "format": "Sponge schematic v2",
+      "data_version": 3955,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "clipboard_origin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": {
+        "min": [
+          100,
+          6,
+          81
+        ],
+        "max": [
+          122,
+          22,
+          141
+        ]
+      },
+      "dimensions": [
+        23,
+        17,
+        61
+      ],
+      "offset": [
+        100,
+        6,
+        81
+      ],
+      "volume": 23851,
+      "non_air_blocks": 34,
+      "air_blocks": 23817,
+      "palette": {
+        "minecraft:air": 0,
+        "minecraft:magenta_stained_glass": 1
+      },
+      "palette_size": 2,
+      "file_bytes": 421,
+      "sha256": "f65356b7b563ee2a8a30be3af946a3440b3786d9f5c677c3b1e33d11e2bd1bf4",
+      "validation": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_guide_optional.schem",
+        "valid": true,
+        "format": "Sponge schematic v2",
+        "data_version": 3955,
+        "dimensions": [
+          23,
+          17,
+          61
+        ],
+        "offset": [
+          100,
+          6,
+          81
+        ],
+        "clipboard_origin": [
+          0,
+          0,
+          0
+        ],
+        "volume": 23851,
+        "non_air_blocks": 34,
+        "air_blocks": 23817,
+        "palette_size": 2,
+        "rails_present": false,
+        "file_bytes": 421,
+        "sha256": "f65356b7b563ee2a8a30be3af946a3440b3786d9f5c677c3b1e33d11e2bd1bf4",
+        "validation_scope": "Independent gzip/NBT/VarInt/palette/offset validation; game paste not tested"
+      }
+    }
+  ],
+  "validation": {
+    "schema_version": 1,
+    "coordinate_space": "project_relative_xyz",
+    "validation_method": "sparse_voxel_maps_and_supported_feet_bfs",
+    "valid": true,
+    "errors": [],
+    "checks": {
+      "baseline_preservation": {
+        "passed": true,
+        "baseline_block_count": 108014,
+        "addition_block_count": 11110,
+        "overlap_count": 0,
+        "changed_baseline_count": 0,
+        "all_baseline_blocks_unchanged_in_merge": true,
+        "overlap_examples": [],
+        "changed_examples": []
+      },
+      "rail_free_palette": {
+        "passed": true,
+        "rail_block_count": 0,
+        "rail_examples": []
+      },
+      "additive_vanilla_blocks": {
+        "passed": true,
+        "invalid_or_air_block_count": 0,
+        "examples": []
+      },
+      "protected_volumes": {
+        "passed": true,
+        "area_count": 89,
+        "future_core_recorded": true,
+        "future_core_bounds": {
+          "id": "future_ride_core",
+          "min": [
+            85,
+            5,
+            69
+          ],
+          "max": [
+            135,
+            31,
+            119
+          ]
+        },
+        "addition_conflict_count": 0,
+        "examples": []
+      },
+      "station_lane": {
+        "passed": true,
+        "bounds": {
+          "id": "station_rail_lane",
+          "min": [
+            106,
+            5,
+            120
+          ],
+          "max": [
+            114,
+            15,
+            143
+          ],
+          "pedestrian_exclusion": "entire_xz_footprint"
+        },
+        "inclusive_span": [
+          9,
+          11,
+          24
+        ],
+        "minimum_width": 9,
+        "minimum_height": 11,
+        "recorded_in_protected_doc": true,
+        "addition_conflict_count": 0,
+        "combined_occupied_block_count": 0,
+        "examples": []
+      },
+      "supported_walking_routes": {
+        "passed": true,
+        "route_count": 2
+      }
+    },
+    "game_verified": false,
+    "worldedit_paste_verified": false,
+    "actual_player_walk_verified": false,
+    "historical_interior_verified": false,
+    "walking": {
+      "passed": true,
+      "method": "four_cardinal_neighbors; feet and head empty; full support; oriented stairs for +/-1",
+      "requires_jumping": false,
+      "jump_edges_allowed": false,
+      "station_lane_crossing_allowed": false,
+      "candidate_supported_foot_cells": 39758,
+      "forbidden_areas": [
+        {
+          "id": "station_rail_lane",
+          "min": [
+            106,
+            5,
+            120
+          ],
+          "max": [
+            114,
+            15,
+            143
+          ],
+          "pedestrian_exclusion": "entire_xz_footprint"
+        }
+      ],
+      "routes": [
+        {
+          "id": "entrance_to_boarding",
+          "passed": true,
+          "checkpoints": [
+            [
+              107,
+              1,
+              178
+            ],
+            [
+              107,
+              2,
+              175
+            ],
+            [
+              107,
+              3,
+              174
+            ],
+            [
+              107,
+              4,
+              173
+            ],
+            [
+              107,
+              5,
+              172
+            ],
+            [
+              107,
+              5,
+              171
+            ],
+            [
+              107,
+              5,
+              161
+            ],
+            [
+              107,
+              5,
+              153
+            ],
+            [
+              102,
+              5,
+              149
+            ],
+            [
+              102,
+              5,
+              149
+            ],
+            [
+              98,
+              5,
+              144
+            ],
+            [
+              86,
+              5,
+              139
+            ],
+            [
+              76,
+              5,
+              129
+            ],
+            [
+              69,
+              5,
+              122
+            ],
+            [
+              69,
+              5,
+              117
+            ],
+            [
+              78,
+              5,
+              117
+            ],
+            [
+              78,
+              5,
+              126
+            ],
+            [
+              82,
+              5,
+              130
+            ],
+            [
+              85,
+              5,
+              134
+            ],
+            [
+              94,
+              5,
+              134
+            ],
+            [
+              104,
+              5,
+              136
+            ]
+          ],
+          "segments": [
+            {
+              "from": [
+                107,
+                1,
+                178
+              ],
+              "to": [
+                107,
+                2,
+                175
+              ],
+              "reachable": true,
+              "searched_foot_cells": 40,
+              "step_count": 3,
+              "resolved_path": [
+                [
+                  107,
+                  1,
+                  178
+                ],
+                [
+                  107,
+                  1,
+                  177
+                ],
+                [
+                  107,
+                  1,
+                  176
+                ],
+                [
+                  107,
+                  2,
+                  175
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                2,
+                175
+              ],
+              "to": [
+                107,
+                3,
+                174
+              ],
+              "reachable": true,
+              "searched_foot_cells": 12,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  107,
+                  2,
+                  175
+                ],
+                [
+                  107,
+                  3,
+                  174
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                3,
+                174
+              ],
+              "to": [
+                107,
+                4,
+                173
+              ],
+              "reachable": true,
+              "searched_foot_cells": 12,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  107,
+                  3,
+                  174
+                ],
+                [
+                  107,
+                  4,
+                  173
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                4,
+                173
+              ],
+              "to": [
+                107,
+                5,
+                172
+              ],
+              "reachable": true,
+              "searched_foot_cells": 12,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  107,
+                  4,
+                  173
+                ],
+                [
+                  107,
+                  5,
+                  172
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                5,
+                172
+              ],
+              "to": [
+                107,
+                5,
+                171
+              ],
+              "reachable": true,
+              "searched_foot_cells": 12,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  107,
+                  5,
+                  172
+                ],
+                [
+                  107,
+                  5,
+                  171
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                5,
+                171
+              ],
+              "to": [
+                107,
+                5,
+                161
+              ],
+              "reachable": true,
+              "searched_foot_cells": 134,
+              "step_count": 10,
+              "resolved_path": [
+                [
+                  107,
+                  5,
+                  171
+                ],
+                [
+                  107,
+                  5,
+                  170
+                ],
+                [
+                  107,
+                  5,
+                  169
+                ],
+                [
+                  107,
+                  5,
+                  168
+                ],
+                [
+                  107,
+                  5,
+                  167
+                ],
+                [
+                  107,
+                  5,
+                  166
+                ],
+                [
+                  107,
+                  5,
+                  165
+                ],
+                [
+                  107,
+                  5,
+                  164
+                ],
+                [
+                  107,
+                  5,
+                  163
+                ],
+                [
+                  107,
+                  5,
+                  162
+                ],
+                [
+                  107,
+                  5,
+                  161
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                5,
+                161
+              ],
+              "to": [
+                107,
+                5,
+                153
+              ],
+              "reachable": true,
+              "searched_foot_cells": 82,
+              "step_count": 8,
+              "resolved_path": [
+                [
+                  107,
+                  5,
+                  161
+                ],
+                [
+                  107,
+                  5,
+                  160
+                ],
+                [
+                  107,
+                  5,
+                  159
+                ],
+                [
+                  107,
+                  5,
+                  158
+                ],
+                [
+                  107,
+                  5,
+                  157
+                ],
+                [
+                  107,
+                  5,
+                  156
+                ],
+                [
+                  107,
+                  5,
+                  155
+                ],
+                [
+                  107,
+                  5,
+                  154
+                ],
+                [
+                  107,
+                  5,
+                  153
+                ]
+              ]
+            },
+            {
+              "from": [
+                107,
+                5,
+                153
+              ],
+              "to": [
+                102,
+                5,
+                149
+              ],
+              "reachable": true,
+              "searched_foot_cells": 90,
+              "step_count": 9,
+              "resolved_path": [
+                [
+                  107,
+                  5,
+                  153
+                ],
+                [
+                  106,
+                  5,
+                  153
+                ],
+                [
+                  105,
+                  5,
+                  153
+                ],
+                [
+                  104,
+                  5,
+                  153
+                ],
+                [
+                  103,
+                  5,
+                  153
+                ],
+                [
+                  102,
+                  5,
+                  153
+                ],
+                [
+                  102,
+                  5,
+                  152
+                ],
+                [
+                  102,
+                  5,
+                  151
+                ],
+                [
+                  102,
+                  5,
+                  150
+                ],
+                [
+                  102,
+                  5,
+                  149
+                ]
+              ]
+            },
+            {
+              "from": [
+                102,
+                5,
+                149
+              ],
+              "to": [
+                102,
+                5,
+                149
+              ],
+              "reachable": true,
+              "searched_foot_cells": 1,
+              "step_count": 0,
+              "resolved_path": [
+                [
+                  102,
+                  5,
+                  149
+                ]
+              ]
+            },
+            {
+              "from": [
+                102,
+                5,
+                149
+              ],
+              "to": [
+                98,
+                5,
+                144
+              ],
+              "reachable": true,
+              "searched_foot_cells": 93,
+              "step_count": 9,
+              "resolved_path": [
+                [
+                  102,
+                  5,
+                  149
+                ],
+                [
+                  101,
+                  5,
+                  149
+                ],
+                [
+                  101,
+                  5,
+                  148
+                ],
+                [
+                  101,
+                  5,
+                  147
+                ],
+                [
+                  100,
+                  5,
+                  147
+                ],
+                [
+                  99,
+                  5,
+                  147
+                ],
+                [
+                  98,
+                  5,
+                  147
+                ],
+                [
+                  98,
+                  5,
+                  146
+                ],
+                [
+                  98,
+                  5,
+                  145
+                ],
+                [
+                  98,
+                  5,
+                  144
+                ]
+              ]
+            },
+            {
+              "from": [
+                98,
+                5,
+                144
+              ],
+              "to": [
+                86,
+                5,
+                139
+              ],
+              "reachable": true,
+              "searched_foot_cells": 322,
+              "step_count": 17,
+              "resolved_path": [
+                [
+                  98,
+                  5,
+                  144
+                ],
+                [
+                  97,
+                  5,
+                  144
+                ],
+                [
+                  96,
+                  5,
+                  144
+                ],
+                [
+                  95,
+                  5,
+                  144
+                ],
+                [
+                  94,
+                  5,
+                  144
+                ],
+                [
+                  93,
+                  5,
+                  144
+                ],
+                [
+                  92,
+                  5,
+                  144
+                ],
+                [
+                  91,
+                  5,
+                  144
+                ],
+                [
+                  90,
+                  5,
+                  144
+                ],
+                [
+                  90,
+                  5,
+                  143
+                ],
+                [
+                  89,
+                  5,
+                  143
+                ],
+                [
+                  88,
+                  5,
+                  143
+                ],
+                [
+                  88,
+                  5,
+                  142
+                ],
+                [
+                  87,
+                  5,
+                  142
+                ],
+                [
+                  86,
+                  5,
+                  142
+                ],
+                [
+                  86,
+                  5,
+                  141
+                ],
+                [
+                  86,
+                  5,
+                  140
+                ],
+                [
+                  86,
+                  5,
+                  139
+                ]
+              ]
+            },
+            {
+              "from": [
+                86,
+                5,
+                139
+              ],
+              "to": [
+                76,
+                5,
+                129
+              ],
+              "reachable": true,
+              "searched_foot_cells": 382,
+              "step_count": 20,
+              "resolved_path": [
+                [
+                  86,
+                  5,
+                  139
+                ],
+                [
+                  85,
+                  5,
+                  139
+                ],
+                [
+                  84,
+                  5,
+                  139
+                ],
+                [
+                  83,
+                  5,
+                  139
+                ],
+                [
+                  82,
+                  5,
+                  139
+                ],
+                [
+                  82,
+                  5,
+                  138
+                ],
+                [
+                  81,
+                  5,
+                  138
+                ],
+                [
+                  81,
+                  5,
+                  137
+                ],
+                [
+                  80,
+                  5,
+                  137
+                ],
+                [
+                  80,
+                  5,
+                  136
+                ],
+                [
+                  79,
+                  5,
+                  136
+                ],
+                [
+                  79,
+                  5,
+                  135
+                ],
+                [
+                  78,
+                  5,
+                  135
+                ],
+                [
+                  78,
+                  5,
+                  134
+                ],
+                [
+                  77,
+                  5,
+                  134
+                ],
+                [
+                  77,
+                  5,
+                  133
+                ],
+                [
+                  76,
+                  5,
+                  133
+                ],
+                [
+                  76,
+                  5,
+                  132
+                ],
+                [
+                  76,
+                  5,
+                  131
+                ],
+                [
+                  76,
+                  5,
+                  130
+                ],
+                [
+                  76,
+                  5,
+                  129
+                ]
+              ]
+            },
+            {
+              "from": [
+                76,
+                5,
+                129
+              ],
+              "to": [
+                69,
+                5,
+                122
+              ],
+              "reachable": true,
+              "searched_foot_cells": 240,
+              "step_count": 14,
+              "resolved_path": [
+                [
+                  76,
+                  5,
+                  129
+                ],
+                [
+                  75,
+                  5,
+                  129
+                ],
+                [
+                  74,
+                  5,
+                  129
+                ],
+                [
+                  73,
+                  5,
+                  129
+                ],
+                [
+                  72,
+                  5,
+                  129
+                ],
+                [
+                  72,
+                  5,
+                  128
+                ],
+                [
+                  71,
+                  5,
+                  128
+                ],
+                [
+                  70,
+                  5,
+                  128
+                ],
+                [
+                  70,
+                  5,
+                  127
+                ],
+                [
+                  70,
+                  5,
+                  126
+                ],
+                [
+                  69,
+                  5,
+                  126
+                ],
+                [
+                  69,
+                  5,
+                  125
+                ],
+                [
+                  69,
+                  5,
+                  124
+                ],
+                [
+                  69,
+                  5,
+                  123
+                ],
+                [
+                  69,
+                  5,
+                  122
+                ]
+              ]
+            },
+            {
+              "from": [
+                69,
+                5,
+                122
+              ],
+              "to": [
+                69,
+                5,
+                117
+              ],
+              "reachable": true,
+              "searched_foot_cells": 59,
+              "step_count": 5,
+              "resolved_path": [
+                [
+                  69,
+                  5,
+                  122
+                ],
+                [
+                  69,
+                  5,
+                  121
+                ],
+                [
+                  69,
+                  5,
+                  120
+                ],
+                [
+                  69,
+                  5,
+                  119
+                ],
+                [
+                  69,
+                  5,
+                  118
+                ],
+                [
+                  69,
+                  5,
+                  117
+                ]
+              ]
+            },
+            {
+              "from": [
+                69,
+                5,
+                117
+              ],
+              "to": [
+                78,
+                5,
+                117
+              ],
+              "reachable": true,
+              "searched_foot_cells": 92,
+              "step_count": 9,
+              "resolved_path": [
+                [
+                  69,
+                  5,
+                  117
+                ],
+                [
+                  70,
+                  5,
+                  117
+                ],
+                [
+                  71,
+                  5,
+                  117
+                ],
+                [
+                  72,
+                  5,
+                  117
+                ],
+                [
+                  73,
+                  5,
+                  117
+                ],
+                [
+                  74,
+                  5,
+                  117
+                ],
+                [
+                  75,
+                  5,
+                  117
+                ],
+                [
+                  76,
+                  5,
+                  117
+                ],
+                [
+                  77,
+                  5,
+                  117
+                ],
+                [
+                  78,
+                  5,
+                  117
+                ]
+              ]
+            },
+            {
+              "from": [
+                78,
+                5,
+                117
+              ],
+              "to": [
+                78,
+                5,
+                126
+              ],
+              "reachable": true,
+              "searched_foot_cells": 102,
+              "step_count": 9,
+              "resolved_path": [
+                [
+                  78,
+                  5,
+                  117
+                ],
+                [
+                  78,
+                  5,
+                  118
+                ],
+                [
+                  78,
+                  5,
+                  119
+                ],
+                [
+                  78,
+                  5,
+                  120
+                ],
+                [
+                  78,
+                  5,
+                  121
+                ],
+                [
+                  78,
+                  5,
+                  122
+                ],
+                [
+                  78,
+                  5,
+                  123
+                ],
+                [
+                  78,
+                  5,
+                  124
+                ],
+                [
+                  78,
+                  5,
+                  125
+                ],
+                [
+                  78,
+                  5,
+                  126
+                ]
+              ]
+            },
+            {
+              "from": [
+                78,
+                5,
+                126
+              ],
+              "to": [
+                82,
+                5,
+                130
+              ],
+              "reachable": true,
+              "searched_foot_cells": 125,
+              "step_count": 8,
+              "resolved_path": [
+                [
+                  78,
+                  5,
+                  126
+                ],
+                [
+                  79,
+                  5,
+                  126
+                ],
+                [
+                  80,
+                  5,
+                  126
+                ],
+                [
+                  81,
+                  5,
+                  126
+                ],
+                [
+                  82,
+                  5,
+                  126
+                ],
+                [
+                  82,
+                  5,
+                  127
+                ],
+                [
+                  82,
+                  5,
+                  128
+                ],
+                [
+                  82,
+                  5,
+                  129
+                ],
+                [
+                  82,
+                  5,
+                  130
+                ]
+              ]
+            },
+            {
+              "from": [
+                82,
+                5,
+                130
+              ],
+              "to": [
+                85,
+                5,
+                134
+              ],
+              "reachable": true,
+              "searched_foot_cells": 92,
+              "step_count": 7,
+              "resolved_path": [
+                [
+                  82,
+                  5,
+                  130
+                ],
+                [
+                  83,
+                  5,
+                  130
+                ],
+                [
+                  84,
+                  5,
+                  130
+                ],
+                [
+                  85,
+                  5,
+                  130
+                ],
+                [
+                  85,
+                  5,
+                  131
+                ],
+                [
+                  85,
+                  5,
+                  132
+                ],
+                [
+                  85,
+                  5,
+                  133
+                ],
+                [
+                  85,
+                  5,
+                  134
+                ]
+              ]
+            },
+            {
+              "from": [
+                85,
+                5,
+                134
+              ],
+              "to": [
+                94,
+                5,
+                134
+              ],
+              "reachable": true,
+              "searched_foot_cells": 145,
+              "step_count": 9,
+              "resolved_path": [
+                [
+                  85,
+                  5,
+                  134
+                ],
+                [
+                  86,
+                  5,
+                  134
+                ],
+                [
+                  87,
+                  5,
+                  134
+                ],
+                [
+                  88,
+                  5,
+                  134
+                ],
+                [
+                  89,
+                  5,
+                  134
+                ],
+                [
+                  90,
+                  5,
+                  134
+                ],
+                [
+                  91,
+                  5,
+                  134
+                ],
+                [
+                  92,
+                  5,
+                  134
+                ],
+                [
+                  93,
+                  5,
+                  134
+                ],
+                [
+                  94,
+                  5,
+                  134
+                ]
+              ]
+            },
+            {
+              "from": [
+                94,
+                5,
+                134
+              ],
+              "to": [
+                104,
+                5,
+                136
+              ],
+              "reachable": true,
+              "searched_foot_cells": 258,
+              "step_count": 12,
+              "resolved_path": [
+                [
+                  94,
+                  5,
+                  134
+                ],
+                [
+                  95,
+                  5,
+                  134
+                ],
+                [
+                  96,
+                  5,
+                  134
+                ],
+                [
+                  97,
+                  5,
+                  134
+                ],
+                [
+                  98,
+                  5,
+                  134
+                ],
+                [
+                  99,
+                  5,
+                  134
+                ],
+                [
+                  100,
+                  5,
+                  134
+                ],
+                [
+                  101,
+                  5,
+                  134
+                ],
+                [
+                  102,
+                  5,
+                  134
+                ],
+                [
+                  103,
+                  5,
+                  134
+                ],
+                [
+                  104,
+                  5,
+                  134
+                ],
+                [
+                  104,
+                  5,
+                  135
+                ],
+                [
+                  104,
+                  5,
+                  136
+                ]
+              ]
+            }
+          ],
+          "resolved_path": [
+            [
+              107,
+              1,
+              178
+            ],
+            [
+              107,
+              1,
+              177
+            ],
+            [
+              107,
+              1,
+              176
+            ],
+            [
+              107,
+              2,
+              175
+            ],
+            [
+              107,
+              3,
+              174
+            ],
+            [
+              107,
+              4,
+              173
+            ],
+            [
+              107,
+              5,
+              172
+            ],
+            [
+              107,
+              5,
+              171
+            ],
+            [
+              107,
+              5,
+              170
+            ],
+            [
+              107,
+              5,
+              169
+            ],
+            [
+              107,
+              5,
+              168
+            ],
+            [
+              107,
+              5,
+              167
+            ],
+            [
+              107,
+              5,
+              166
+            ],
+            [
+              107,
+              5,
+              165
+            ],
+            [
+              107,
+              5,
+              164
+            ],
+            [
+              107,
+              5,
+              163
+            ],
+            [
+              107,
+              5,
+              162
+            ],
+            [
+              107,
+              5,
+              161
+            ],
+            [
+              107,
+              5,
+              160
+            ],
+            [
+              107,
+              5,
+              159
+            ],
+            [
+              107,
+              5,
+              158
+            ],
+            [
+              107,
+              5,
+              157
+            ],
+            [
+              107,
+              5,
+              156
+            ],
+            [
+              107,
+              5,
+              155
+            ],
+            [
+              107,
+              5,
+              154
+            ],
+            [
+              107,
+              5,
+              153
+            ],
+            [
+              106,
+              5,
+              153
+            ],
+            [
+              105,
+              5,
+              153
+            ],
+            [
+              104,
+              5,
+              153
+            ],
+            [
+              103,
+              5,
+              153
+            ],
+            [
+              102,
+              5,
+              153
+            ],
+            [
+              102,
+              5,
+              152
+            ],
+            [
+              102,
+              5,
+              151
+            ],
+            [
+              102,
+              5,
+              150
+            ],
+            [
+              102,
+              5,
+              149
+            ],
+            [
+              101,
+              5,
+              149
+            ],
+            [
+              101,
+              5,
+              148
+            ],
+            [
+              101,
+              5,
+              147
+            ],
+            [
+              100,
+              5,
+              147
+            ],
+            [
+              99,
+              5,
+              147
+            ],
+            [
+              98,
+              5,
+              147
+            ],
+            [
+              98,
+              5,
+              146
+            ],
+            [
+              98,
+              5,
+              145
+            ],
+            [
+              98,
+              5,
+              144
+            ],
+            [
+              97,
+              5,
+              144
+            ],
+            [
+              96,
+              5,
+              144
+            ],
+            [
+              95,
+              5,
+              144
+            ],
+            [
+              94,
+              5,
+              144
+            ],
+            [
+              93,
+              5,
+              144
+            ],
+            [
+              92,
+              5,
+              144
+            ],
+            [
+              91,
+              5,
+              144
+            ],
+            [
+              90,
+              5,
+              144
+            ],
+            [
+              90,
+              5,
+              143
+            ],
+            [
+              89,
+              5,
+              143
+            ],
+            [
+              88,
+              5,
+              143
+            ],
+            [
+              88,
+              5,
+              142
+            ],
+            [
+              87,
+              5,
+              142
+            ],
+            [
+              86,
+              5,
+              142
+            ],
+            [
+              86,
+              5,
+              141
+            ],
+            [
+              86,
+              5,
+              140
+            ],
+            [
+              86,
+              5,
+              139
+            ],
+            [
+              85,
+              5,
+              139
+            ],
+            [
+              84,
+              5,
+              139
+            ],
+            [
+              83,
+              5,
+              139
+            ],
+            [
+              82,
+              5,
+              139
+            ],
+            [
+              82,
+              5,
+              138
+            ],
+            [
+              81,
+              5,
+              138
+            ],
+            [
+              81,
+              5,
+              137
+            ],
+            [
+              80,
+              5,
+              137
+            ],
+            [
+              80,
+              5,
+              136
+            ],
+            [
+              79,
+              5,
+              136
+            ],
+            [
+              79,
+              5,
+              135
+            ],
+            [
+              78,
+              5,
+              135
+            ],
+            [
+              78,
+              5,
+              134
+            ],
+            [
+              77,
+              5,
+              134
+            ],
+            [
+              77,
+              5,
+              133
+            ],
+            [
+              76,
+              5,
+              133
+            ],
+            [
+              76,
+              5,
+              132
+            ],
+            [
+              76,
+              5,
+              131
+            ],
+            [
+              76,
+              5,
+              130
+            ],
+            [
+              76,
+              5,
+              129
+            ],
+            [
+              75,
+              5,
+              129
+            ],
+            [
+              74,
+              5,
+              129
+            ],
+            [
+              73,
+              5,
+              129
+            ],
+            [
+              72,
+              5,
+              129
+            ],
+            [
+              72,
+              5,
+              128
+            ],
+            [
+              71,
+              5,
+              128
+            ],
+            [
+              70,
+              5,
+              128
+            ],
+            [
+              70,
+              5,
+              127
+            ],
+            [
+              70,
+              5,
+              126
+            ],
+            [
+              69,
+              5,
+              126
+            ],
+            [
+              69,
+              5,
+              125
+            ],
+            [
+              69,
+              5,
+              124
+            ],
+            [
+              69,
+              5,
+              123
+            ],
+            [
+              69,
+              5,
+              122
+            ],
+            [
+              69,
+              5,
+              121
+            ],
+            [
+              69,
+              5,
+              120
+            ],
+            [
+              69,
+              5,
+              119
+            ],
+            [
+              69,
+              5,
+              118
+            ],
+            [
+              69,
+              5,
+              117
+            ],
+            [
+              70,
+              5,
+              117
+            ],
+            [
+              71,
+              5,
+              117
+            ],
+            [
+              72,
+              5,
+              117
+            ],
+            [
+              73,
+              5,
+              117
+            ],
+            [
+              74,
+              5,
+              117
+            ],
+            [
+              75,
+              5,
+              117
+            ],
+            [
+              76,
+              5,
+              117
+            ],
+            [
+              77,
+              5,
+              117
+            ],
+            [
+              78,
+              5,
+              117
+            ],
+            [
+              78,
+              5,
+              118
+            ],
+            [
+              78,
+              5,
+              119
+            ],
+            [
+              78,
+              5,
+              120
+            ],
+            [
+              78,
+              5,
+              121
+            ],
+            [
+              78,
+              5,
+              122
+            ],
+            [
+              78,
+              5,
+              123
+            ],
+            [
+              78,
+              5,
+              124
+            ],
+            [
+              78,
+              5,
+              125
+            ],
+            [
+              78,
+              5,
+              126
+            ],
+            [
+              79,
+              5,
+              126
+            ],
+            [
+              80,
+              5,
+              126
+            ],
+            [
+              81,
+              5,
+              126
+            ],
+            [
+              82,
+              5,
+              126
+            ],
+            [
+              82,
+              5,
+              127
+            ],
+            [
+              82,
+              5,
+              128
+            ],
+            [
+              82,
+              5,
+              129
+            ],
+            [
+              82,
+              5,
+              130
+            ],
+            [
+              83,
+              5,
+              130
+            ],
+            [
+              84,
+              5,
+              130
+            ],
+            [
+              85,
+              5,
+              130
+            ],
+            [
+              85,
+              5,
+              131
+            ],
+            [
+              85,
+              5,
+              132
+            ],
+            [
+              85,
+              5,
+              133
+            ],
+            [
+              85,
+              5,
+              134
+            ],
+            [
+              86,
+              5,
+              134
+            ],
+            [
+              87,
+              5,
+              134
+            ],
+            [
+              88,
+              5,
+              134
+            ],
+            [
+              89,
+              5,
+              134
+            ],
+            [
+              90,
+              5,
+              134
+            ],
+            [
+              91,
+              5,
+              134
+            ],
+            [
+              92,
+              5,
+              134
+            ],
+            [
+              93,
+              5,
+              134
+            ],
+            [
+              94,
+              5,
+              134
+            ],
+            [
+              95,
+              5,
+              134
+            ],
+            [
+              96,
+              5,
+              134
+            ],
+            [
+              97,
+              5,
+              134
+            ],
+            [
+              98,
+              5,
+              134
+            ],
+            [
+              99,
+              5,
+              134
+            ],
+            [
+              100,
+              5,
+              134
+            ],
+            [
+              101,
+              5,
+              134
+            ],
+            [
+              102,
+              5,
+              134
+            ],
+            [
+              103,
+              5,
+              134
+            ],
+            [
+              104,
+              5,
+              134
+            ],
+            [
+              104,
+              5,
+              135
+            ],
+            [
+              104,
+              5,
+              136
+            ]
+          ],
+          "invalid_checkpoints": [],
+          "stair_height_transitions": 4
+        },
+        {
+          "id": "alighting_to_exit",
+          "passed": true,
+          "checkpoints": [
+            [
+              116,
+              5,
+              136
+            ],
+            [
+              124,
+              5,
+              136
+            ],
+            [
+              125,
+              5,
+              141
+            ],
+            [
+              124,
+              5,
+              143
+            ],
+            [
+              119,
+              5,
+              145
+            ],
+            [
+              115,
+              5,
+              149
+            ],
+            [
+              115,
+              5,
+              161
+            ],
+            [
+              115,
+              5,
+              171
+            ],
+            [
+              115,
+              5,
+              172
+            ],
+            [
+              115,
+              4,
+              173
+            ],
+            [
+              115,
+              3,
+              174
+            ],
+            [
+              115,
+              2,
+              175
+            ],
+            [
+              115,
+              1,
+              178
+            ]
+          ],
+          "segments": [
+            {
+              "from": [
+                116,
+                5,
+                136
+              ],
+              "to": [
+                124,
+                5,
+                136
+              ],
+              "reachable": true,
+              "searched_foot_cells": 29,
+              "step_count": 8,
+              "resolved_path": [
+                [
+                  116,
+                  5,
+                  136
+                ],
+                [
+                  117,
+                  5,
+                  136
+                ],
+                [
+                  118,
+                  5,
+                  136
+                ],
+                [
+                  119,
+                  5,
+                  136
+                ],
+                [
+                  120,
+                  5,
+                  136
+                ],
+                [
+                  121,
+                  5,
+                  136
+                ],
+                [
+                  122,
+                  5,
+                  136
+                ],
+                [
+                  123,
+                  5,
+                  136
+                ],
+                [
+                  124,
+                  5,
+                  136
+                ]
+              ]
+            },
+            {
+              "from": [
+                124,
+                5,
+                136
+              ],
+              "to": [
+                125,
+                5,
+                141
+              ],
+              "reachable": true,
+              "searched_foot_cells": 39,
+              "step_count": 6,
+              "resolved_path": [
+                [
+                  124,
+                  5,
+                  136
+                ],
+                [
+                  125,
+                  5,
+                  136
+                ],
+                [
+                  125,
+                  5,
+                  137
+                ],
+                [
+                  125,
+                  5,
+                  138
+                ],
+                [
+                  125,
+                  5,
+                  139
+                ],
+                [
+                  125,
+                  5,
+                  140
+                ],
+                [
+                  125,
+                  5,
+                  141
+                ]
+              ]
+            },
+            {
+              "from": [
+                125,
+                5,
+                141
+              ],
+              "to": [
+                124,
+                5,
+                143
+              ],
+              "reachable": true,
+              "searched_foot_cells": 22,
+              "step_count": 3,
+              "resolved_path": [
+                [
+                  125,
+                  5,
+                  141
+                ],
+                [
+                  124,
+                  5,
+                  141
+                ],
+                [
+                  124,
+                  5,
+                  142
+                ],
+                [
+                  124,
+                  5,
+                  143
+                ]
+              ]
+            },
+            {
+              "from": [
+                124,
+                5,
+                143
+              ],
+              "to": [
+                119,
+                5,
+                145
+              ],
+              "reachable": true,
+              "searched_foot_cells": 51,
+              "step_count": 7,
+              "resolved_path": [
+                [
+                  124,
+                  5,
+                  143
+                ],
+                [
+                  123,
+                  5,
+                  143
+                ],
+                [
+                  122,
+                  5,
+                  143
+                ],
+                [
+                  121,
+                  5,
+                  143
+                ],
+                [
+                  120,
+                  5,
+                  143
+                ],
+                [
+                  119,
+                  5,
+                  143
+                ],
+                [
+                  119,
+                  5,
+                  144
+                ],
+                [
+                  119,
+                  5,
+                  145
+                ]
+              ]
+            },
+            {
+              "from": [
+                119,
+                5,
+                145
+              ],
+              "to": [
+                115,
+                5,
+                149
+              ],
+              "reachable": true,
+              "searched_foot_cells": 51,
+              "step_count": 8,
+              "resolved_path": [
+                [
+                  119,
+                  5,
+                  145
+                ],
+                [
+                  118,
+                  5,
+                  145
+                ],
+                [
+                  117,
+                  5,
+                  145
+                ],
+                [
+                  117,
+                  5,
+                  146
+                ],
+                [
+                  116,
+                  5,
+                  146
+                ],
+                [
+                  116,
+                  5,
+                  147
+                ],
+                [
+                  115,
+                  5,
+                  147
+                ],
+                [
+                  115,
+                  5,
+                  148
+                ],
+                [
+                  115,
+                  5,
+                  149
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                5,
+                149
+              ],
+              "to": [
+                115,
+                5,
+                161
+              ],
+              "reachable": true,
+              "searched_foot_cells": 74,
+              "step_count": 12,
+              "resolved_path": [
+                [
+                  115,
+                  5,
+                  149
+                ],
+                [
+                  115,
+                  5,
+                  150
+                ],
+                [
+                  115,
+                  5,
+                  151
+                ],
+                [
+                  115,
+                  5,
+                  152
+                ],
+                [
+                  115,
+                  5,
+                  153
+                ],
+                [
+                  115,
+                  5,
+                  154
+                ],
+                [
+                  115,
+                  5,
+                  155
+                ],
+                [
+                  115,
+                  5,
+                  156
+                ],
+                [
+                  115,
+                  5,
+                  157
+                ],
+                [
+                  115,
+                  5,
+                  158
+                ],
+                [
+                  115,
+                  5,
+                  159
+                ],
+                [
+                  115,
+                  5,
+                  160
+                ],
+                [
+                  115,
+                  5,
+                  161
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                5,
+                161
+              ],
+              "to": [
+                115,
+                5,
+                171
+              ],
+              "reachable": true,
+              "searched_foot_cells": 63,
+              "step_count": 10,
+              "resolved_path": [
+                [
+                  115,
+                  5,
+                  161
+                ],
+                [
+                  115,
+                  5,
+                  162
+                ],
+                [
+                  115,
+                  5,
+                  163
+                ],
+                [
+                  115,
+                  5,
+                  164
+                ],
+                [
+                  115,
+                  5,
+                  165
+                ],
+                [
+                  115,
+                  5,
+                  166
+                ],
+                [
+                  115,
+                  5,
+                  167
+                ],
+                [
+                  115,
+                  5,
+                  168
+                ],
+                [
+                  115,
+                  5,
+                  169
+                ],
+                [
+                  115,
+                  5,
+                  170
+                ],
+                [
+                  115,
+                  5,
+                  171
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                5,
+                171
+              ],
+              "to": [
+                115,
+                5,
+                172
+              ],
+              "reachable": true,
+              "searched_foot_cells": 9,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  115,
+                  5,
+                  171
+                ],
+                [
+                  115,
+                  5,
+                  172
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                5,
+                172
+              ],
+              "to": [
+                115,
+                4,
+                173
+              ],
+              "reachable": true,
+              "searched_foot_cells": 9,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  115,
+                  5,
+                  172
+                ],
+                [
+                  115,
+                  4,
+                  173
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                4,
+                173
+              ],
+              "to": [
+                115,
+                3,
+                174
+              ],
+              "reachable": true,
+              "searched_foot_cells": 11,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  115,
+                  4,
+                  173
+                ],
+                [
+                  115,
+                  3,
+                  174
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                3,
+                174
+              ],
+              "to": [
+                115,
+                2,
+                175
+              ],
+              "reachable": true,
+              "searched_foot_cells": 11,
+              "step_count": 1,
+              "resolved_path": [
+                [
+                  115,
+                  3,
+                  174
+                ],
+                [
+                  115,
+                  2,
+                  175
+                ]
+              ]
+            },
+            {
+              "from": [
+                115,
+                2,
+                175
+              ],
+              "to": [
+                115,
+                1,
+                178
+              ],
+              "reachable": true,
+              "searched_foot_cells": 33,
+              "step_count": 3,
+              "resolved_path": [
+                [
+                  115,
+                  2,
+                  175
+                ],
+                [
+                  115,
+                  1,
+                  176
+                ],
+                [
+                  115,
+                  1,
+                  177
+                ],
+                [
+                  115,
+                  1,
+                  178
+                ]
+              ]
+            }
+          ],
+          "resolved_path": [
+            [
+              116,
+              5,
+              136
+            ],
+            [
+              117,
+              5,
+              136
+            ],
+            [
+              118,
+              5,
+              136
+            ],
+            [
+              119,
+              5,
+              136
+            ],
+            [
+              120,
+              5,
+              136
+            ],
+            [
+              121,
+              5,
+              136
+            ],
+            [
+              122,
+              5,
+              136
+            ],
+            [
+              123,
+              5,
+              136
+            ],
+            [
+              124,
+              5,
+              136
+            ],
+            [
+              125,
+              5,
+              136
+            ],
+            [
+              125,
+              5,
+              137
+            ],
+            [
+              125,
+              5,
+              138
+            ],
+            [
+              125,
+              5,
+              139
+            ],
+            [
+              125,
+              5,
+              140
+            ],
+            [
+              125,
+              5,
+              141
+            ],
+            [
+              124,
+              5,
+              141
+            ],
+            [
+              124,
+              5,
+              142
+            ],
+            [
+              124,
+              5,
+              143
+            ],
+            [
+              123,
+              5,
+              143
+            ],
+            [
+              122,
+              5,
+              143
+            ],
+            [
+              121,
+              5,
+              143
+            ],
+            [
+              120,
+              5,
+              143
+            ],
+            [
+              119,
+              5,
+              143
+            ],
+            [
+              119,
+              5,
+              144
+            ],
+            [
+              119,
+              5,
+              145
+            ],
+            [
+              118,
+              5,
+              145
+            ],
+            [
+              117,
+              5,
+              145
+            ],
+            [
+              117,
+              5,
+              146
+            ],
+            [
+              116,
+              5,
+              146
+            ],
+            [
+              116,
+              5,
+              147
+            ],
+            [
+              115,
+              5,
+              147
+            ],
+            [
+              115,
+              5,
+              148
+            ],
+            [
+              115,
+              5,
+              149
+            ],
+            [
+              115,
+              5,
+              150
+            ],
+            [
+              115,
+              5,
+              151
+            ],
+            [
+              115,
+              5,
+              152
+            ],
+            [
+              115,
+              5,
+              153
+            ],
+            [
+              115,
+              5,
+              154
+            ],
+            [
+              115,
+              5,
+              155
+            ],
+            [
+              115,
+              5,
+              156
+            ],
+            [
+              115,
+              5,
+              157
+            ],
+            [
+              115,
+              5,
+              158
+            ],
+            [
+              115,
+              5,
+              159
+            ],
+            [
+              115,
+              5,
+              160
+            ],
+            [
+              115,
+              5,
+              161
+            ],
+            [
+              115,
+              5,
+              162
+            ],
+            [
+              115,
+              5,
+              163
+            ],
+            [
+              115,
+              5,
+              164
+            ],
+            [
+              115,
+              5,
+              165
+            ],
+            [
+              115,
+              5,
+              166
+            ],
+            [
+              115,
+              5,
+              167
+            ],
+            [
+              115,
+              5,
+              168
+            ],
+            [
+              115,
+              5,
+              169
+            ],
+            [
+              115,
+              5,
+              170
+            ],
+            [
+              115,
+              5,
+              171
+            ],
+            [
+              115,
+              5,
+              172
+            ],
+            [
+              115,
+              4,
+              173
+            ],
+            [
+              115,
+              3,
+              174
+            ],
+            [
+              115,
+              2,
+              175
+            ],
+            [
+              115,
+              1,
+              176
+            ],
+            [
+              115,
+              1,
+              177
+            ],
+            [
+              115,
+              1,
+              178
+            ]
+          ],
+          "invalid_checkpoints": [],
+          "stair_height_transitions": 4
+        }
+      ],
+      "game_verified": false,
+      "actual_player_walk_verified": false,
+      "missing_required_routes": []
+    }
+  },
+  "previews": {
+    "source": "actual delivered Minecraft voxel maps; no concept art or game screenshots",
+    "historical_interior_verified": false,
+    "stage": "3-interior-prototype",
+    "paste_origin": [
+      0,
+      0,
+      0
+    ],
+    "files": {
+      "entrance": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/entrance_preview.png",
+      "queue": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/queue_preview.png",
+      "station": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/station_preview.png",
+      "top": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/top_view_stage3.png",
+      "section": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/section_view_stage3.png"
+    },
+    "views": {
+      "entrance": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/entrance_preview.png",
+        "size": [
+          2200,
+          2600
+        ],
+        "source_blocks": 1429,
+        "cutaway_y_max": 9,
+        "cutaway": {
+          "visible_faces": 651,
+          "pixels_per_block": 26.241
+        },
+        "visitor_camera": {
+          "eye_blocks": [
+            107.5,
+            6.65,
+            161.5
+          ],
+          "target_blocks": [
+            105.0,
+            8.0,
+            152.0
+          ],
+          "horizontal_fov_degrees": 78,
+          "ray_cast_resolution": [
+            1000,
+            560
+          ],
+          "rays_hit_voxels": 559881,
+          "eye_above_floor_blocks": 1.65
+        }
+      },
+      "queue": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/queue_preview.png",
+        "size": [
+          2200,
+          2600
+        ],
+        "source_blocks": 2678,
+        "cutaway_y_max": 9,
+        "cutaway": {
+          "visible_faces": 1261,
+          "pixels_per_block": 16.366
+        },
+        "visitor_camera": {
+          "eye_blocks": [
+            76.5,
+            6.65,
+            117.5
+          ],
+          "target_blocks": [
+            65.0,
+            8.5,
+            120.0
+          ],
+          "horizontal_fov_degrees": 78,
+          "ray_cast_resolution": [
+            1000,
+            560
+          ],
+          "rays_hit_voxels": 559250,
+          "eye_above_floor_blocks": 1.65
+        }
+      },
+      "station": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/station_preview.png",
+        "size": [
+          2200,
+          2600
+        ],
+        "source_blocks": 5631,
+        "cutaway_y_max": 9,
+        "cutaway": {
+          "visible_faces": 1595,
+          "pixels_per_block": 18.561
+        },
+        "visitor_camera": {
+          "eye_blocks": [
+            102.5,
+            6.65,
+            135.5
+          ],
+          "target_blocks": [
+            111.0,
+            9.5,
+            123.5
+          ],
+          "horizontal_fov_degrees": 78,
+          "ray_cast_resolution": [
+            1000,
+            560
+          ],
+          "rays_hit_voxels": 559712,
+          "eye_above_floor_blocks": 1.65
+        }
+      },
+      "top": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/top_view_stage3.png",
+        "size": [
+          2200,
+          1730
+        ],
+        "cut_y_max": 7,
+        "bounds_blocks": {
+          "min": [
+            64,
+            1,
+            114
+          ],
+          "max": [
+            132,
+            7,
+            175
+          ]
+        },
+        "camera": "above; north up"
+      },
+      "section": {
+        "path": "/workspace/SpaceMountainTokyoOld/output/stage3/preview/section_view_stage3.png",
+        "size": [
+          2200,
+          1670
+        ],
+        "section_x": 110,
+        "section_thickness_blocks": 3,
+        "camera": "west, looking +X"
+      }
+    },
+    "render_seconds": 22.257
+  },
+  "seconds": 26.927,
+  "game_paste_scope": "Real dedicated Minecraft1.21.1 NeoForge21.1.228 WorldEdit7.3.8 API paste; no human/client walk",
+  "runtime_evidence": {
+    "file": "reports/runtime-verification.json",
+    "sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+    "human_walk_verified": false,
+    "full_user_mod_environment_verified": false
+  }
+}

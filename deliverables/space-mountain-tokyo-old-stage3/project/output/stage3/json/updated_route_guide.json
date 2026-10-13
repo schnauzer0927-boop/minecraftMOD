@@ -1,0 +1,192 @@
+{
+  "schema_version": 2,
+  "stage": 3,
+  "coordinate_space": "project_relative_xyz",
+  "historical_route_verified": false,
+  "native_mod_physics_verified": false,
+  "closed_course_designed": false,
+  "rail_blocks_generated": false,
+  "centerline_points": [
+    [
+      110,
+      6,
+      141
+    ],
+    [
+      110,
+      6,
+      122
+    ],
+    [
+      110,
+      10,
+      108
+    ],
+    [
+      100,
+      18,
+      95
+    ],
+    [
+      105,
+      22,
+      81
+    ],
+    [
+      122,
+      18,
+      93
+    ]
+  ],
+  "interpolation": "piecewise linear reservations only; manually lay spline rails in game",
+  "station": {
+    "rail_height": 6,
+    "platform_floor_y": 4,
+    "lane": {
+      "id": "station_rail_lane",
+      "min": [
+        106,
+        5,
+        120
+      ],
+      "max": [
+        114,
+        15,
+        143
+      ],
+      "purpose": "中央幅9の車両・レール予定空間。左右ホームはこの外側。",
+      "confidence": "creative_completion"
+    },
+    "launch_direction": [
+      0,
+      0,
+      -1
+    ],
+    "brake_candidate": {
+      "from": [
+        110,
+        6,
+        141
+      ],
+      "to": [
+        110,
+        6,
+        122
+      ],
+      "confidence": "creative_completion"
+    }
+  },
+  "segments": [
+    {
+      "id": "stage3_0",
+      "from": [
+        110,
+        6,
+        141
+      ],
+      "to": [
+        110,
+        6,
+        122
+      ],
+      "use": "station_and_brake",
+      "recommended_altitude": [
+        6,
+        6
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-STAGE3"
+      ]
+    },
+    {
+      "id": "stage3_1",
+      "from": [
+        110,
+        6,
+        122
+      ],
+      "to": [
+        110,
+        10,
+        108
+      ],
+      "use": "launch_portal",
+      "recommended_altitude": [
+        6,
+        10
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-STAGE3"
+      ]
+    },
+    {
+      "id": "stage3_2",
+      "from": [
+        110,
+        10,
+        108
+      ],
+      "to": [
+        100,
+        18,
+        95
+      ],
+      "use": "dark_entry",
+      "recommended_altitude": [
+        10,
+        18
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-STAGE3"
+      ]
+    },
+    {
+      "id": "stage3_3",
+      "from": [
+        100,
+        18,
+        95
+      ],
+      "to": [
+        105,
+        22,
+        81
+      ],
+      "use": "rise_candidate",
+      "recommended_altitude": [
+        18,
+        22
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-STAGE3"
+      ]
+    },
+    {
+      "id": "stage3_4",
+      "from": [
+        105,
+        22,
+        81
+      ],
+      "to": [
+        122,
+        18,
+        93
+      ],
+      "use": "turn_candidate",
+      "recommended_altitude": [
+        22,
+        18
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-STAGE3"
+      ]
+    }
+  ],
+  "warning": "東京版の実コースではありません。Stage3では駅と暗所入口への仮案だけを更新。残りのコース・帰還レールは手動設計。"
+}

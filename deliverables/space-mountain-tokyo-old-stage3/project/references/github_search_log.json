@@ -1,0 +1,56 @@
+[
+  {
+    "query": "\"Tokyo Disneyland\" \"Space Mountain\"",
+    "url": "https://api.github.com/search/repositories?q=%22Tokyo+Disneyland%22+%22Space+Mountain%22&per_page=15",
+    "status": 200,
+    "total_count": 0,
+    "items": [],
+    "acquired": "2026-10-13"
+  },
+  {
+    "query": "tokyodisneyland",
+    "url": "https://api.github.com/search/repositories?q=tokyodisneyland&per_page=15",
+    "status": 200,
+    "total_count": 3,
+    "items": [
+      {
+        "repo": "pegasus028/TokyoDisneyland",
+        "description": "TokyoDisneyland",
+        "url": "https://github.com/pegasus028/TokyoDisneyland",
+        "default_branch": "main",
+        "license": null
+      },
+      {
+        "repo": "TomoPg/TokyoDisneyland",
+        "description": null,
+        "url": "https://github.com/TomoPg/TokyoDisneyland",
+        "default_branch": "main",
+        "license": null
+      },
+      {
+        "repo": "TomoPg/TokyoDisneylandPlugin",
+        "description": null,
+        "url": "https://github.com/TomoPg/TokyoDisneylandPlugin",
+        "default_branch": "master",
+        "license": null
+      }
+    ],
+    "acquired": "2026-10-13"
+  },
+  {
+    "query": "\"Space Mountain\" tokyo",
+    "url": "https://api.github.com/search/repositories?q=%22Space+Mountain%22+tokyo&per_page=15",
+    "status": 200,
+    "total_count": 0,
+    "items": [],
+    "acquired": "2026-10-13"
+  },
+  {
+    "query": "\"スペースマウンテン\"",
+    "url": "https://api.github.com/search/repositories?q=%22%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3%22&per_page=15",
+    "status": 200,
+    "total_count": 0,
+    "items": [],
+    "acquired": "2026-10-13"
+  }
+]

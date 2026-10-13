@@ -1,0 +1,34 @@
+{
+  "url": "https://raw.githubusercontent.com/dudu849/tokyo-disneyland/main/images/ride5.jpg",
+  "repository_page": "https://github.com/dudu849/tokyo-disneyland",
+  "context_page": "https://github.com/dudu849/tokyo-disneyland/blob/main/attractions/ride5.html",
+  "local_path": "/workspace/SpaceMountainTokyoOld/references/source_images/github_dudu_ride5.jpg",
+  "status": 200,
+  "content_type": "image/jpeg",
+  "bytes": 122528,
+  "sha256": "c38efcc1834d63d240cdfea9f61b3d3475ff088404b03ff601419ef20766bd94",
+  "license": "リポジトリにライセンス表示なし。写真著作者・原典・撮影日未確認。再配布しない。",
+  "acquired": "2026-10-13",
+  "park_identity": "高確度推定: 東京紹介サイトの太空山ページと旧東京版の白い切頂円錐/2層環状構造/X型柱/前面広場の特徴が一致。公式原典では未照合。",
+  "viewed_with": "view_image, 2026-10-13",
+  "dimensions_pixels": [
+    1200,
+    800
+  ],
+  "exif": "空:著作者・撮影日を取得できず",
+  "commit": "5293e58df9dfb65a2921bcccbf0a219be6ed80fc",
+  "repository_commit_date": "2025-05-18T08:43:15Z",
+  "blob_sha": "f28eb5e9f390a9f9566a79e04ea9494e94491839",
+  "immutable_url": "https://raw.githubusercontent.com/dudu849/tokyo-disneyland/5293e58df9dfb65a2921bcccbf0a219be6ed80fc/images/ride5.jpg",
+  "observations": [
+    "白/クリーム色の切頂円錐形の主要屋根",
+    "斜面に直線的な放射リブと暗い溝",
+    "上部の小さい平坦な円形/多角形部分と細い針状突起",
+    "裾の水平な環状軒と下部の2層程度の建物",
+    "下層に大きいX/V型の斜柱、暗い開口部",
+    "前面に舗装広場、植栽、照明柱。右側/背面は木で隠れる"
+  ],
+  "absolute_measurements": "実測・スケール基準なし。61m/35mは未確認。",
+  "distribution": "画像は再配布しない。出典・メタデータは配布可否不明の画像を含めず記録として配布。",
+  "commit_blob_verified": true
+}

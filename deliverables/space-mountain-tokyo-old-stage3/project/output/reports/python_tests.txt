@@ -1,0 +1,29 @@
+test_default_construction_never_occupies_reservations (test_geometry.ConstructionTests.test_default_construction_never_occupies_reservations) ... ok
+test_exported_quadrants_reproduce_full_exterior_without_overlap (test_geometry.ConstructionTests.test_exported_quadrants_reproduce_full_exterior_without_overlap) ... ok
+test_front_entry_is_open_for_people (test_geometry.ConstructionTests.test_front_entry_is_open_for_people) ... ok
+test_guides_have_the_declared_voxel_clearance (test_geometry.ConstructionTests.test_guides_have_the_declared_voxel_clearance) ... ok
+test_invalid_keepout_is_rejected (test_geometry.ConstructionTests.test_invalid_keepout_is_rejected) ... ok
+test_no_generated_rails_or_mod_block_entities (test_geometry.ConstructionTests.test_no_generated_rails_or_mod_block_entities) ... ok
+test_roof_has_no_unintended_sky_holes (test_geometry.ConstructionTests.test_roof_has_no_unintended_sky_holes) ... ok
+test_total_site_and_height_fit_the_design_extent (test_geometry.ConstructionTests.test_total_site_and_height_fit_the_design_extent) ... ok
+test_user_keepout_survives_later_overlays (test_geometry.ConstructionTests.test_user_keepout_survives_later_overlays) ... ok
+test_components_and_final_align_at_one_paste_position (test_schem.SchematicTests.test_components_and_final_align_at_one_paste_position) ... ok
+test_deterministic_gzip_and_palette (test_schem.SchematicTests.test_deterministic_gzip_and_palette) ... ok
+test_export_and_reader_both_reject_rails (test_schem.SchematicTests.test_export_and_reader_both_reject_rails) ... ok
+test_metadata_unicode_and_java_modified_utf8 (test_schem.SchematicTests.test_metadata_unicode_and_java_modified_utf8) ... ok
+test_nonzero_shared_input_anchor_and_tight_bounds (test_schem.SchematicTests.test_nonzero_shared_input_anchor_and_tight_bounds) ... ok
+test_reader_detects_palette_max_and_dimension_corruption (test_schem.SchematicTests.test_reader_detects_palette_max_and_dimension_corruption) ... ok
+test_reader_detects_truncated_gzip_and_trailing_nbt (test_schem.SchematicTests.test_reader_detects_truncated_gzip_and_trailing_nbt) ... ok
+test_reader_detects_truncated_varint_and_count_mismatch (test_schem.SchematicTests.test_reader_detects_truncated_varint_and_count_mismatch) ... ok
+test_reader_detects_unknown_palette_reference (test_schem.SchematicTests.test_reader_detects_unknown_palette_reference) ... ok
+test_reject_invalid_input_and_reserved_offset (test_schem.SchematicTests.test_reject_invalid_input_and_reserved_offset) ... ok
+test_reject_oversized_dimensions_before_allocation (test_schem.SchematicTests.test_reject_oversized_dimensions_before_allocation) ... ok
+test_validator_detects_common_origin_drift (test_schem.SchematicTests.test_validator_detects_common_origin_drift) ... ok
+test_validator_detects_loose_air_border (test_schem.SchematicTests.test_validator_detects_loose_air_border) ... ok
+test_varints_cross_127_without_corrupting_next_position (test_schem.SchematicTests.test_varints_cross_127_without_corrupting_next_position) ... ok
+test_yzx_storage_order_and_air_holes (test_schem.SchematicTests.test_yzx_storage_order_and_air_holes) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 6.123s
+
+OK

@@ -1,0 +1,129 @@
+{
+  "recorded_at": "2026-10-13",
+  "timezone": "UTC",
+  "scope": "Tokyo Disneyland old Space Mountain entrance, queue and station; Stage 3",
+  "old_tokyo_queue_photos_acquired": 0,
+  "old_tokyo_station_photos_acquired": 0,
+  "interior_claim": "estimated and creative completion based on user instructions; not verified historic reconstruction",
+  "sources": [
+    {
+      "id": "S3-OLC-20231211-01",
+      "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+      "accepted_for": [
+        "official announced closure on 2024-07-31 at park close",
+        "special-event name and announced 2024-04-09 through 2024-07-31 dates"
+      ],
+      "not_evidence_for": [
+        "entrance geometry",
+        "queue interior",
+        "station interior",
+        "absolute dimensions"
+      ],
+      "http_status": 200,
+      "bytes": 459093,
+      "sha256": "69b5e5fa19a2ab1b287a024dd93223eb26f330bc2acff0f8c7b4eaa39be89831",
+      "text_read_with": "pdftotext -layout",
+      "image_seen_with": "view_image",
+      "viewed_image": "references/stage3/local_analysis/official_olc_20231211_p3.png",
+      "viewed_image_content": "event logo, no queue or station photograph",
+      "raw_redistribution_permission_verified": false,
+      "raw_excluded_from_distribution": true
+    },
+    {
+      "id": "S3-TDR151-EXCLUDED",
+      "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+      "http_status": 200,
+      "html_title": "【公式】オムニバス｜東京ディズニーランド | 東京ディズニーリゾート",
+      "accepted_for": [],
+      "rejection_reason": "Omnibus, a different attraction; previous guessed URL now checked"
+    },
+    {
+      "id": "S3-USER-VIDEO-01",
+      "user_supplied_url": "https://youtu.be/-yoq7T-omJs?si=86PmLl7Prv0sA1Ez",
+      "video_id": "-yoq7T-omJs",
+      "status": "unverified_connection_blocked",
+      "video_seen": false,
+      "thumbnail_seen": false,
+      "audio_heard": false,
+      "transcript_read": false,
+      "title_verified": false,
+      "old_tokyo_subject_verified": false,
+      "timecode_observations": [],
+      "error": "Tunnel connection failed: 403 Forbidden",
+      "origin_http_response_received": false
+    },
+    {
+      "id": "S-GH-TDL-01",
+      "url": "https://raw.githubusercontent.com/dudu849/tokyo-disneyland/5293e58df9dfb65a2921bcccbf0a219be6ed80fc/images/ride5.jpg",
+      "local_path": "references/source_images/github_dudu_ride5.jpg",
+      "viewed_again_with": "view_image",
+      "park_identity": "high confidence inference from Tokyo site context and exterior features; original provenance unverified",
+      "new_stage3_observation": "exterior and forecourt only; no indoor queue or station visible",
+      "accepted_for": [
+        "maintaining existing exterior study"
+      ],
+      "not_evidence_for": [
+        "station or queue geometry"
+      ],
+      "raw_excluded_from_distribution": true
+    },
+    {
+      "id": "S3-GH-KSIZOR-EXCLUDED",
+      "repository": "https://github.com/ksizorCode/disneyland",
+      "candidate_image_path": "assets/img/atraccion/space_mountain.jpg",
+      "candidate_image_acquired": false,
+      "readme_read": true,
+      "rejection_reason": "README lists many Disney parks; no Tokyo provenance for the single image"
+    },
+    {
+      "id": "S3-GH-MAPQUIZ-EXCLUDED",
+      "repository": "https://github.com/sorapanel7533/disney-map-quiz-1",
+      "tree_read": true,
+      "rejection_reason": "tree lists no photograph files"
+    },
+    {
+      "id": "S3-USER-REQ",
+      "basis": "user instructions",
+      "design_choices": [
+        "clean white/grey/blue retro-futuristic impression",
+        "station prioritized",
+        "avoid military science-fiction",
+        "generate no rails",
+        "preserve existing Stage 1/2 exterior"
+      ],
+      "historic_architecture_evidence": false
+    }
+  ],
+  "local_geometry": {
+    "basis": [
+      "config.json",
+      "generator/exterior.py",
+      "generator/entrance.py"
+    ],
+    "historical_dimensions_verified": false,
+    "building_center_xz": [
+      110,
+      94
+    ],
+    "entrance_reference_xz": [
+      110,
+      161
+    ],
+    "foundation_y_inclusive": [
+      0,
+      1
+    ],
+    "forecourt_floor_y": 0,
+    "exterior_lower_body_y_inclusive": [
+      0,
+      21
+    ],
+    "entrance_top_y": 19
+  },
+  "distribution": {
+    "metadata_and_authored_notes_included": true,
+    "external_originals_pdf_html_and_rendered_images_directory": "references/stage3/local_analysis",
+    "excluded_by": "tools/package_project.py EXCLUDED parts includes local_analysis",
+    "redistribution_permission_verified": false
+  }
+}

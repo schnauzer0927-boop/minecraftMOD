@@ -1,0 +1,437 @@
+{
+  "worldeditVersion": "7.3.8",
+  "minecraftDataVersion": 3955,
+  "game_paste_verified": false,
+  "scope": "Official WorldEdit reader with a standalone vanilla 1.21.1 registry; no in-game paste or physics test.",
+  "officialRelease": {
+    "metadataUrl": "https://api.modrinth.com/v2/version/ecqqLKUO",
+    "projectId": "1u6JkXh5",
+    "versionId": "ecqqLKUO",
+    "sha512": "ca8c25d1c2d894b7c3293617875abf23af1cb1c0a6a4e142ee514e7d06536a67d91664009ce8f54902c8f4fd05e32f8235f43cf52bfbd0a6c5622d6bef4f1c6e"
+  },
+  "sources": [
+    {
+      "file": "tools/check_worldedit_738.py",
+      "sha256": "2e02529ae3acc3d47a43171530f25c7f20696852b62b81dc8704a5a36fa6ca5d"
+    },
+    {
+      "file": "tools/ReadSchem.java",
+      "sha256": "a7b72e6b6343e5327c6c320fdc477dd97f34945aaf27d0132f928cf17afde833"
+    },
+    {
+      "file": "generator/validate_schem.py",
+      "sha256": "0ee9b0b6aca232a176763b885f94738840b50256f208a62f67a38d4e076c1218"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "worldedit-bukkit-7.3.8.jar",
+      "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/ecqqLKUO/worldedit-bukkit-7.3.8.jar",
+      "sha256": "b11e40546987c1c9c5f8af216bba89a265a5ffac8dccd92273f61ebb86040556"
+    },
+    {
+      "file": "guava-32.1.3-jre.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava/32.1.3-jre/guava-32.1.3-jre.jar",
+      "sha256": "6d4e2b5a118aab62e6e5e29d185a0224eed82c85c40ac3d33cf04a270c3b3744"
+    },
+    {
+      "file": "failureaccess-1.0.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
+      "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+    },
+    {
+      "file": "gson-2.10.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar",
+      "sha256": "4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593"
+    },
+    {
+      "file": "fastutil-8.5.12.jar",
+      "url": "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/8.5.12/fastutil-8.5.12.jar",
+      "sha256": "b5543ee08d062d551cf0a5c9bc0fb70588b0382079029ba48941fa9c9be8a5d4"
+    },
+    {
+      "file": "log4j-api-2.22.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.22.1/log4j-api-2.22.1.jar",
+      "sha256": "5d7beae7ff15d8516d6517121d7f12a79a6ac180df64b5fcec55d5be21056e53"
+    },
+    {
+      "file": "log4j-core-2.22.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.22.1/log4j-core-2.22.1.jar",
+      "sha256": "46dccecac556623d8e2ce8648496824a82951d139062a4e61148aff1a25ed18d"
+    },
+    {
+      "file": "antlr4-runtime-4.13.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/antlr/antlr4-runtime/4.13.1/antlr4-runtime-4.13.1.jar",
+      "sha256": "54665d2838cc66458343468efc539e454fc95b46a8a04b13c6ac43fc9be63505"
+    },
+    {
+      "file": "snakeyaml-2.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/yaml/snakeyaml/2.0/snakeyaml-2.0.jar",
+      "sha256": "880c9d896e4b74a06c549c15ca496450165d6909fa15d7e662bee8f6a66d7afa"
+    },
+    {
+      "file": "rhino-runtime-1.7.13.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/mozilla/rhino-runtime/1.7.13/rhino-runtime-1.7.13.jar",
+      "sha256": "11acf4e03f7f95d164d21d10ee170d7c878c9fd87871f7eaba9c4a66a1d617e7"
+    },
+    {
+      "file": "blocks-1.21.1.json",
+      "url": "https://raw.githubusercontent.com/misode/mcmeta/1.21.1-summary/blocks/data.json",
+      "sha256": "6c4c0d87b27d665b5f52be4edb000a6d83c4a9b2e6c5c9c931ba695a45f8df24"
+    }
+  ],
+  "results": [
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_entrance_interior.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        14,
+        14,
+        30
+      ],
+      "minimum": [
+        99,
+        1,
+        146
+      ],
+      "maximum": [
+        112,
+        14,
+        175
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 5880,
+      "nonAir": 1429,
+      "decodedStateCount": 10,
+      "counts": {
+        "minecraft:air": 4451,
+        "minecraft:blue_concrete": 35,
+        "minecraft:light_blue_concrete": 34,
+        "minecraft:light_blue_stained_glass": 8,
+        "minecraft:light_gray_concrete": 184,
+        "minecraft:polished_andesite": 295,
+        "minecraft:sea_lantern": 55,
+        "minecraft:smooth_quartz": 269,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 28,
+        "minecraft:white_concrete": 521
+      },
+      "nonAirCoordinateSha256": "f9c72470bc85b81b36e0cc27e9adbcc7ccb0065558dc700cbf6d6def547b7b78",
+      "independentComparisonPassed": true,
+      "schematicSha256": "e8e70b04da754a63edc96d069ce85013335edafc285e3cd8b71eb88c384137c6"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_guide_optional.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        23,
+        17,
+        61
+      ],
+      "minimum": [
+        100,
+        6,
+        81
+      ],
+      "maximum": [
+        122,
+        22,
+        141
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 23851,
+      "nonAir": 34,
+      "decodedStateCount": 2,
+      "counts": {
+        "minecraft:air": 23817,
+        "minecraft:magenta_stained_glass": 34
+      },
+      "nonAirCoordinateSha256": "74a673a90fcaa7b93e9409e6d1ba6088ba433ee5aa8b7c209c1747fb08871be5",
+      "independentComparisonPassed": true,
+      "schematicSha256": "f65356b7b563ee2a8a30be3af946a3440b3786d9f5c677c3b1e33d11e2bd1bf4"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_interior_combined.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        69,
+        20,
+        62
+      ],
+      "minimum": [
+        64,
+        1,
+        114
+      ],
+      "maximum": [
+        132,
+        20,
+        175
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 85560,
+      "nonAir": 11110,
+      "decodedStateCount": 17,
+      "counts": {
+        "minecraft:air": 74450,
+        "minecraft:blue_concrete": 156,
+        "minecraft:cyan_concrete": 16,
+        "minecraft:gray_concrete": 198,
+        "minecraft:light_blue_concrete": 294,
+        "minecraft:light_blue_stained_glass": 368,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 6,
+        "minecraft:light_gray_concrete": 1088,
+        "minecraft:polished_andesite": 1499,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 1,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 4,
+        "minecraft:sea_lantern": 312,
+        "minecraft:smooth_quartz": 1396,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 48,
+        "minecraft:smooth_stone": 550,
+        "minecraft:tinted_glass": 21,
+        "minecraft:white_concrete": 5153
+      },
+      "nonAirCoordinateSha256": "43cf97852db0bcaf5b0569b3157a445b3da290f81e2679a07600f875e4acdb21",
+      "independentComparisonPassed": true,
+      "schematicSha256": "5c5c313830e86836a932fef6d01319f3d05d171f4afb8b6309771a80336819d7"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_queue.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        42,
+        13,
+        39
+      ],
+      "minimum": [
+        64,
+        2,
+        114
+      ],
+      "maximum": [
+        105,
+        14,
+        152
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 21294,
+      "nonAir": 2678,
+      "decodedStateCount": 10,
+      "counts": {
+        "minecraft:air": 18616,
+        "minecraft:blue_concrete": 59,
+        "minecraft:light_blue_concrete": 82,
+        "minecraft:light_blue_stained_glass": 49,
+        "minecraft:light_gray_concrete": 264,
+        "minecraft:polished_andesite": 889,
+        "minecraft:sea_lantern": 61,
+        "minecraft:smooth_quartz": 446,
+        "minecraft:tinted_glass": 21,
+        "minecraft:white_concrete": 807
+      },
+      "nonAirCoordinateSha256": "ba2d18b6f3b6cf8804f19d5929f0f97aa8bfbf36083e2743645e886bb61108e1",
+      "independentComparisonPassed": true,
+      "schematicSha256": "5fa2befd38fa6b56e2a98a2db07a55247b7fc4c7a78780e706428c5c68b8d384"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_return_path.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        15,
+        11,
+        42
+      ],
+      "minimum": [
+        113,
+        1,
+        134
+      ],
+      "maximum": [
+        127,
+        11,
+        175
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 6930,
+      "nonAir": 1372,
+      "decodedStateCount": 9,
+      "counts": {
+        "minecraft:air": 5558,
+        "minecraft:light_blue_concrete": 39,
+        "minecraft:light_blue_stained_glass": 11,
+        "minecraft:light_gray_concrete": 357,
+        "minecraft:polished_andesite": 315,
+        "minecraft:sea_lantern": 26,
+        "minecraft:smooth_quartz": 161,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 20,
+        "minecraft:white_concrete": 443
+      },
+      "nonAirCoordinateSha256": "b4f26646f9de6e160de796262b3bcae668ac434ee95fcd062852bc2a6d18c18d",
+      "independentComparisonPassed": true,
+      "schematicSha256": "ae381f3082aacc79a757d2a9e170a7242a75af174fbec9ce44259ec804024d39"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_station.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        45,
+        19,
+        22
+      ],
+      "minimum": [
+        88,
+        2,
+        122
+      ],
+      "maximum": [
+        132,
+        20,
+        143
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 18810,
+      "nonAir": 5631,
+      "decodedStateCount": 14,
+      "counts": {
+        "minecraft:air": 13179,
+        "minecraft:blue_concrete": 62,
+        "minecraft:cyan_concrete": 16,
+        "minecraft:gray_concrete": 198,
+        "minecraft:light_blue_concrete": 139,
+        "minecraft:light_blue_stained_glass": 300,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 6,
+        "minecraft:light_gray_concrete": 283,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 1,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 4,
+        "minecraft:sea_lantern": 170,
+        "minecraft:smooth_quartz": 520,
+        "minecraft:smooth_stone": 550,
+        "minecraft:white_concrete": 3382
+      },
+      "nonAirCoordinateSha256": "ba0f3faeba24bcc658acc211979abd7c41e0fa0c81aa00a0fb65343960e8ce7c",
+      "independentComparisonPassed": true,
+      "schematicSha256": "d3766212c54baf6c804d6d51f2a551c5147b4fc9c6e66436ed5f97661119e024"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/stage3_station_platforms.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        44,
+        3,
+        22
+      ],
+      "minimum": [
+        88,
+        2,
+        122
+      ],
+      "maximum": [
+        131,
+        4,
+        143
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 2904,
+      "nonAir": 2309,
+      "decodedStateCount": 6,
+      "counts": {
+        "minecraft:air": 595,
+        "minecraft:gray_concrete": 198,
+        "minecraft:light_gray_concrete": 16,
+        "minecraft:smooth_quartz": 49,
+        "minecraft:smooth_stone": 550,
+        "minecraft:white_concrete": 1496
+      },
+      "nonAirCoordinateSha256": "72b16ad10dabea0feb03f3894094df7fa7c5232b7348d1601b230bc4cf1794bf",
+      "independentComparisonPassed": true,
+      "schematicSha256": "337b64ab98023fb8aab2337816655d9700eead5d59757dd8c7844f789f098592"
+    },
+    {
+      "file": "/workspace/SpaceMountainTokyoOld/output/stage3/schem/tokyo_old_with_stage3.schem",
+      "format": "SPONGE_V2_SCHEMATIC",
+      "reader": "com.sk89q.worldedit.extent.clipboard.io.sponge.SpongeSchematicV2Reader",
+      "dimensions": [
+        152,
+        79,
+        187
+      ],
+      "minimum": [
+        34,
+        0,
+        24
+      ],
+      "maximum": [
+        185,
+        78,
+        210
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "volume": 2245496,
+      "nonAir": 119124,
+      "decodedStateCount": 20,
+      "counts": {
+        "minecraft:air": 2126372,
+        "minecraft:blue_concrete": 156,
+        "minecraft:blue_stained_glass": 866,
+        "minecraft:cyan_concrete": 108,
+        "minecraft:dark_oak_leaves[distance=7,persistent=true,waterlogged=false]": 420,
+        "minecraft:gray_concrete": 5595,
+        "minecraft:iron_block": 28,
+        "minecraft:light_blue_concrete": 315,
+        "minecraft:light_blue_stained_glass": 368,
+        "minecraft:light_blue_stained_glass_pane[east=false,north=true,south=true,waterlogged=false,west=false]": 6,
+        "minecraft:light_gray_concrete": 12564,
+        "minecraft:polished_andesite": 26311,
+        "minecraft:quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 1,
+        "minecraft:quartz_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]": 4,
+        "minecraft:sea_lantern": 412,
+        "minecraft:smooth_quartz": 36466,
+        "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]": 48,
+        "minecraft:smooth_stone": 7486,
+        "minecraft:tinted_glass": 21,
+        "minecraft:white_concrete": 27949
+      },
+      "nonAirCoordinateSha256": "a8d2acdaef5babe5486bbb4e2071e1f081cb98d5bab783d5c29af34a1832744f",
+      "independentComparisonPassed": true,
+      "schematicSha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d"
+    }
+  ]
+}

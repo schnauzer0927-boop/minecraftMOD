@@ -1,0 +1,47 @@
+{
+  "zip_extract_sha256_passed": true,
+  "source_regeneration_8_schematics_identical": true,
+  "regeneration_platform": "Linux",
+  "results": [
+    {
+      "file": "stage3_entrance_interior.schem",
+      "sha256": "e8e70b04da754a63edc96d069ce85013335edafc285e3cd8b71eb88c384137c6",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_guide_optional.schem",
+      "sha256": "f65356b7b563ee2a8a30be3af946a3440b3786d9f5c677c3b1e33d11e2bd1bf4",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_interior_combined.schem",
+      "sha256": "5c5c313830e86836a932fef6d01319f3d05d171f4afb8b6309771a80336819d7",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_queue.schem",
+      "sha256": "5fa2befd38fa6b56e2a98a2db07a55247b7fc4c7a78780e706428c5c68b8d384",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_return_path.schem",
+      "sha256": "ae381f3082aacc79a757d2a9e170a7242a75af174fbec9ce44259ec804024d39",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_station.schem",
+      "sha256": "d3766212c54baf6c804d6d51f2a551c5147b4fc9c6e66436ed5f97661119e024",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "stage3_station_platforms.schem",
+      "sha256": "337b64ab98023fb8aab2337816655d9700eead5d59757dd8c7844f789f098592",
+      "reproduced_from_extracted_zip": true
+    },
+    {
+      "file": "tokyo_old_with_stage3.schem",
+      "sha256": "e225eee6792f36e438299b0381e7148b26520d8acafe172be0be7bdf49439f4d",
+      "reproduced_from_extracted_zip": true
+    }
+  ]
+}

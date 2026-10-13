@@ -1,0 +1,37 @@
+{
+  "final_zip_crc": "PASS",
+  "final_zip_file_sha256": "PASS",
+  "regenerated_8_schematic_bytes_identical": true,
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 5879,
+      "sha256": "1e9ec0e782193fcbf51a9d75468f2ab0985973b88ffed5038247da67bd75b316"
+    },
+    {
+      "file": "SpaceMountainTokyoOld-Stage3.zip",
+      "bytes": 4006232,
+      "sha256": "088901c989371472c4612b934aef94771bfff322fd21d9e8adc3bc83ac408560"
+    },
+    {
+      "file": "archives.json",
+      "bytes": 248,
+      "sha256": "4a8d975971fd6a0185a7cd9a2f2091a8a8b774b90c93b751c7abbeacf7905226"
+    },
+    {
+      "file": "queue_preview.png",
+      "bytes": 616051,
+      "sha256": "eda2306e9c2a36fa1251b3c7e0c0e62fd790275da547a5c39a7c53c3b1345bc2"
+    },
+    {
+      "file": "stage3_interior_combined.schem",
+      "bytes": 3366,
+      "sha256": "5c5c313830e86836a932fef6d01319f3d05d171f4afb8b6309771a80336819d7"
+    },
+    {
+      "file": "station_preview.png",
+      "bytes": 1536260,
+      "sha256": "7ac4bbee6e0afba210bb125ce7a7601aa9511a9b64025ef359279ab4867e85ba"
+    }
+  ]
+}

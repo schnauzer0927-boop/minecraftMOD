@@ -1,0 +1,57 @@
+[
+  {
+    "name": "official_tdr_attraction.html",
+    "url": "https://www.tokyodisneyresort.jp/tdl/attraction/detail/151/",
+    "status": 200,
+    "bytes": 31448,
+    "sha256": "b925eddd171669586859c1ddc221fc6fce3f8dc6fa35fa2d4346a5f0c260ef6f",
+    "path": "/workspace/SpaceMountainTokyoOld/references/stage3/local_analysis/official_tdr_attraction.html"
+  },
+  {
+    "name": "official_olc_20231211.pdf",
+    "url": "https://www.olc.co.jp/ja/news/news_tdr/20231211_01/main/0/link/20231211_01.pdf",
+    "status": 200,
+    "bytes": 459093,
+    "sha256": "69b5e5fa19a2ab1b287a024dd93223eb26f330bc2acff0f8c7b4eaa39be89831",
+    "path": "/workspace/SpaceMountainTokyoOld/references/stage3/local_analysis/official_olc_20231211.pdf"
+  },
+  {
+    "name": "ksizor_tree.json",
+    "url": "https://api.github.com/repos/ksizorCode/disneyland/git/trees/main?recursive=1",
+    "status": 200,
+    "bytes": 16447,
+    "sha256": "bd0473f403b7d98c7099beb318e981fa0ae3a92c17fef68b9900d25b8d091e97",
+    "path": "/workspace/SpaceMountainTokyoOld/references/stage3/local_analysis/ksizor_tree.json",
+    "asset_paths": [
+      "README.md",
+      "_desarrollo/instalacion_basededatos.md",
+      "assets/img/atraccion/big_thunder.jpg",
+      "assets/img/atraccion/haunted_mansion.jpg",
+      "assets/img/atraccion/its_small_world.jpg",
+      "assets/img/atraccion/jungle_cruise.jpg",
+      "assets/img/atraccion/peoplemover.jpg",
+      "assets/img/atraccion/pirates.jpg",
+      "assets/img/atraccion/space_mountain.jpg",
+      "assets/img/coches/pordefecto.webp",
+      "assets/img/coches/seat-ibiza-gris-oscuro.webp",
+      "musica/img/1989.jpg",
+      "musica/img/diamonds_rust.jpg",
+      "musica/img/on_every_street.jpg",
+      "musica/img/rush_blood.jpg",
+      "musica/img/xandy.jpg",
+      "musica/notas.md",
+      "readme.md"
+    ]
+  },
+  {
+    "name": "mapquiz_tree.json",
+    "url": "https://api.github.com/repos/sorapanel7533/disney-map-quiz-1/git/trees/main?recursive=1",
+    "status": 200,
+    "bytes": 5166,
+    "sha256": "b6cf27adeaedfcdff9517d43fbacb6d3b834ad22e1064de4a220ae4ed84af5f4",
+    "path": "/workspace/SpaceMountainTokyoOld/references/stage3/local_analysis/mapquiz_tree.json",
+    "asset_paths": [
+      "README.md"
+    ]
+  }
+]

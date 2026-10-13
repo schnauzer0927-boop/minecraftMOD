@@ -1,0 +1,77 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux",
+  "test_count": 24,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "passed": true,
+  "gameplay_verified": false,
+  "windows_run_verified": false,
+  "sources": [
+    {
+      "file": "generator/__init__.py",
+      "sha256": "6ed30f749f1bcf46c5aa898d447637742bf0f3fb864b849f1b75e9a8d3f9b2d9"
+    },
+    {
+      "file": "generator/clearance.py",
+      "sha256": "afac37c972f34707a55d4fc28590e4cc1d6428c4e720059d80cc82bce1b6494d"
+    },
+    {
+      "file": "generator/entrance.py",
+      "sha256": "b18e31b4717465deb497c2e5ac8d7d712e7f5de556953a4ea156a707c71fb688"
+    },
+    {
+      "file": "generator/export_schem.py",
+      "sha256": "d8b6c3a0e41ba4650eba22f2ff9b75467fed9507c1e39f58eb2d44e646750e85"
+    },
+    {
+      "file": "generator/exterior.py",
+      "sha256": "e58b1c2808c1ce03b833fb292999c63172a4958e7d30939ece210496221e3565"
+    },
+    {
+      "file": "generator/geometry.py",
+      "sha256": "a7ce497e40a799b4a132759e43b5ec4abd8c61a526c8e7ff0c6069916d216f52"
+    },
+    {
+      "file": "generator/layout.py",
+      "sha256": "734688b6068f4cff055c24075dc8ae02801e741542409ad0118a3c3d502f9983"
+    },
+    {
+      "file": "generator/main.py",
+      "sha256": "3cda3e7d6869ebc64dada8ddd8595abb15236b72ad57e4086073b298279ffd88"
+    },
+    {
+      "file": "generator/preview.py",
+      "sha256": "d83d866d1a69c697f176c96960bbebd5ae8a9dc782495592fd59bdd068c3ea25"
+    },
+    {
+      "file": "generator/route_guide.py",
+      "sha256": "ddde93236b7ffa526a17735aeb19edeffcb416a376630dec4415bd025a89aff1"
+    },
+    {
+      "file": "generator/validate_schem.py",
+      "sha256": "0ee9b0b6aca232a176763b885f94738840b50256f208a62f67a38d4e076c1218"
+    },
+    {
+      "file": "tests/test_geometry.py",
+      "sha256": "0f41b9d85a19b1675b003ce2d1b433a2d9cb39c427b45825869449c260ed5aa9"
+    },
+    {
+      "file": "tests/test_schem.py",
+      "sha256": "7a938d041c9f9ebc8a8e29c4033f661ae4611b7925c5ec22d5fd96dad40b43f9"
+    },
+    {
+      "file": "config.json",
+      "sha256": "21d6f4a6f89230ec2d94b941317d03d5187f924e2aa93badf7c07217afd70bf1"
+    },
+    {
+      "file": "user_keepout.json",
+      "sha256": "950c908c2be60982fadc508e58ac979ac5379e63055fb5fdefdba2464736c051"
+    },
+    {
+      "file": "tools/check_project.py",
+      "sha256": "367b605040da6f7ed61c68ac48bc87de471702793f6263d440aa37a2aefc3118"
+    }
+  ]
+}

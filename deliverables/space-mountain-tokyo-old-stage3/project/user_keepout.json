@@ -1,0 +1,5 @@
+{
+  "coordinate_space": "project_relative_xyz",
+  "description": "実際に手動設置したレールなどを再生成時に保護する追加領域。min/maxは整数・両端含む。例はREADME参照。",
+  "areas": []
+}
