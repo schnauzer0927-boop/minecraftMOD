@@ -1,0 +1,75 @@
+{
+  "recorded_at": "2026-10-13",
+  "timezone": "UTC",
+  "user_supplied_url": "https://youtu.be/-yoq7T-omJs?si=86PmLl7Prv0sA1Ez",
+  "canonical_url": "https://www.youtube.com/watch?v=-yoq7T-omJs",
+  "video_id": "-yoq7T-omJs",
+  "purpose": "Tokyo Disneyland old Space Mountain Stage 1 / Stage 2 exterior reference",
+  "status": "unverified_connection_blocked",
+  "verified_content": {
+    "title": null,
+    "uploader": null,
+    "duration_seconds": null,
+    "thumbnail_seen": false,
+    "video_seen": false,
+    "audio_heard": false,
+    "transcript_read": false,
+    "old_tokyo_subject_verified": false,
+    "timecode_observations": [],
+    "saved_frames": []
+  },
+  "attempts": [
+    {
+      "url": "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=-yoq7T-omJs&format=json",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://i.ytimg.com/vi/-yoq7T-omJs/maxresdefault.jpg",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=-yoq7T-omJs",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://youtu.be/-yoq7T-omJs",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://i.ytimg.com/vi/-yoq7T-omJs/hqdefault.jpg",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=-yoq7T-omJs&format=json",
+      "method": "public urllib GET with require_escalated",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://img.youtube.com/vi/-yoq7T-omJs/hqdefault.jpg",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://i9.ytimg.com/vi/-yoq7T-omJs/hqdefault.jpg",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://www.youtube-nocookie.com/embed/-yoq7T-omJs",
+      "method": "public urllib GET",
+      "result": "Tunnel connection failed: 403 Forbidden"
+    }
+  ],
+  "auth_used": false,
+  "cookies_used": false,
+  "distribution": {
+    "metadata_and_urls_allowed_in_project": true,
+    "video_thumbnail_and_frames_excluded_from_zip": true,
+    "redistribution_permission_verified": false
+  }
+}

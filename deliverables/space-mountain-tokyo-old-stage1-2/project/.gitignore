@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+references/source_images/
+references/official/
+references/local_analysis/
+references/video_frames/
+dist/

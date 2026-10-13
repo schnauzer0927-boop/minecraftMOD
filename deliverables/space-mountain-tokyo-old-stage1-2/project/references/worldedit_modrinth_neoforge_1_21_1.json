@@ -1,0 +1,164 @@
+{
+  "retrieved_at": "2026-10-13T15:35:26.285367+00:00",
+  "request_url": "https://api.modrinth.com/v2/project/worldedit/version?game_versions=%5B%221.21.1%22%5D&loaders=%5B%22neoforge%22%5D",
+  "final_url": "https://api.modrinth.com/v2/project/worldedit/version?game_versions=%5B%221.21.1%22%5D&loaders=%5B%22neoforge%22%5D",
+  "status": 200,
+  "data": [
+    {
+      "game_versions": [
+        "1.21",
+        "1.21.1"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "id": "WTAFvuRx",
+      "project_id": "1u6JkXh5",
+      "author_id": "WGCkmIeT",
+      "featured": false,
+      "name": "WorldEdit 7.3.8 (NeoForge/Fabric for MC 1.21-1.21.1)",
+      "version_number": "7.3.8",
+      "changelog": "7.3.8\n- There are no changes in this build, it exists purely to keep the versions consistent due to a Bukkit-only bugfix release\n",
+      "changelog_url": null,
+      "date_published": "2024-10-21T11:01:40.791602Z",
+      "downloads": 2380608,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "19WrniGV",
+          "hashes": {
+            "sha1": "924fe181a29bd66be6783f6d589968ab0ee02250",
+            "sha512": "e039492df0b486e7ce76d0eaf8cb11eadad2e78220600b8498ab8eef4642a29e310a6bcb4378257553b3639c6d0bc1ebf0f73df3a7a677c6af6baf86716b0bc7"
+          },
+          "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/WTAFvuRx/worldedit-mod-7.3.8.jar",
+          "filename": "worldedit-mod-7.3.8.jar",
+          "primary": true,
+          "size": 6222854,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "1.21",
+        "1.21.1"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "id": "TLkb1TuS",
+      "project_id": "1u6JkXh5",
+      "author_id": "WGCkmIeT",
+      "featured": false,
+      "name": "WorldEdit 7.3.7 (NeoForge/Fabric for MC 1.21-1.21.1)",
+      "version_number": "7.3.7",
+      "changelog": "7.3.7\n- Fixed handling of some time-related commands in the snapshot system\n- Fixed some situations where rotated pastes can behave oddly with the update side effect disabled\n- Fixed an error that can occur when generating completions starting with a `\"`\n- Fixed Sponge v3 schematics lacking the `BlockEntities` not loading\n- Fixed the `//curve` and `//line` commands not accepting decimal values for thickness\n- Fixed WorldEdit not using typical error handling systems when an error is thrown during post-edit\n- Fixed NBT parsing for certain legacy schematics with non-standard string formatting\n- Improved performance of the side effect system, and fixed some API inconsistencies\n- Re-enabled the buffering system, due to some systems depending on it in certain situations\n",
+      "changelog_url": null,
+      "date_published": "2024-10-13T10:31:34.462512Z",
+      "downloads": 24080,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "swBxW87j",
+          "hashes": {
+            "sha512": "7338dbfb0c09db51214e187516c453ffddee7164beaac34abfda0a5ceb66bb2a66612851af57e1a14f35720a8c3955554cfdd231c6863228bb15351ae2916952",
+            "sha1": "7db7b24ac777aedf3319ef14a79c93399e620308"
+          },
+          "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/TLkb1TuS/worldedit-mod-7.3.7.jar",
+          "filename": "worldedit-mod-7.3.7.jar",
+          "primary": true,
+          "size": 6222852,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "1.21",
+        "1.21.1"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "id": "vBzkrSYP",
+      "project_id": "1u6JkXh5",
+      "author_id": "WGCkmIeT",
+      "featured": false,
+      "name": "WorldEdit 7.3.6 (NeoForge/Fabric for MC 1.21-1.21.1)",
+      "version_number": "7.3.6",
+      "changelog": "7.3.6\n- Revert \"Shutdown the executor service on disable, to prevent waiting on async tasks before shutting down\" due to it causing issues in some situations\n",
+      "changelog_url": null,
+      "date_published": "2024-08-10T04:04:58.311374Z",
+      "downloads": 233538,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "o8OAf8MX",
+          "hashes": {
+            "sha1": "89d3d1a5b6d4d400adf5fc64ccc3f10add3ed7c3",
+            "sha512": "f59430fe9ea37cf4b10abf7b3b4d79f013fd38fed0d8e863e46b885096df304946c5f1749ed04b8bafcfb51edb8bbd0a627b90a16f27e4f9613f8fee9641c3f7"
+          },
+          "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/vBzkrSYP/worldedit-mod-7.3.6.jar",
+          "filename": "worldedit-mod-7.3.6.jar",
+          "primary": true,
+          "size": 6105795,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "1.21",
+        "1.21.1"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "id": "srWerknn",
+      "project_id": "1u6JkXh5",
+      "author_id": "WGCkmIeT",
+      "featured": false,
+      "name": "WorldEdit 7.3.5 (NeoForge/Fabric for MC 1.21-1.21.1)",
+      "version_number": "7.3.5",
+      "changelog": "7.3.5\n- Fix queryRel not behaving correctly in //deform and the deform brush\n- Shutdown the executor service on disable, to prevent waiting on async tasks before shutting down\n- Remove legacy code for pre-1.16 //drawsel handling\n",
+      "changelog_url": null,
+      "date_published": "2024-07-25T11:02:26.895014Z",
+      "downloads": 240910,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "NQZt34qR",
+          "hashes": {
+            "sha1": "294d5e52285315c896fbfa45c1829ff43650522f",
+            "sha512": "3bea0b1bd38128cc4e7e686802ce8ac2d5750de438238c7487135978fc6fd8525e4457d86117c2b37e24fcc7ca37de1a4937fd61dac77a1e76d1b0cdf098a7ed"
+          },
+          "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/srWerknn/worldedit-mod-7.3.5.jar",
+          "filename": "worldedit-mod-7.3.5.jar",
+          "primary": true,
+          "size": 6106082,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    }
+  ]
+}

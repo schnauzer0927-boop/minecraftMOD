@@ -1,0 +1,44 @@
+{
+  "final_archive_crc": "PASS",
+  "final_archive_all_files_sha256": "PASS",
+  "extracted_source_regeneration_14_identical": true,
+  "third_party_jars_included": false,
+  "reference_photos_included": false,
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 10011,
+      "sha256": "dc186e4d8cdd9a26f45461dfdb0d8caed25deff4c0c8e08012d2e6477f0a91b8"
+    },
+    {
+      "file": "SpaceMountainTokyoOld-Stage1-2.zip",
+      "bytes": 949121,
+      "sha256": "475af3921bf62a89bc1d126d0ebf6bc1ef081d94de4205cdc3383555b801f276"
+    },
+    {
+      "file": "SpaceMountainTokyoOld-Stage1-Research.zip",
+      "bytes": 34242,
+      "sha256": "79073f16dccc9f2fc79a8633df9d050ed5958da5e14ad1c7dc3c6927e0598d45"
+    },
+    {
+      "file": "archives.json",
+      "bytes": 411,
+      "sha256": "6fc5a1ce4b02ea42f041177c9b26e6ce6dc2adb14f7db9e280c216e29ffa7394"
+    },
+    {
+      "file": "layout-reservations.png",
+      "bytes": 101802,
+      "sha256": "4a9b09071bd2df2a6ac385d1d045384cc95891b333efa886ec1e34c0aca0be85"
+    },
+    {
+      "file": "preview-isometric.png",
+      "bytes": 205858,
+      "sha256": "2fa00e7d42908b2994663e43497ff828462a62d801f180f020b94d61a6df5c1f"
+    },
+    {
+      "file": "tokyo_old_stage2_site.schem",
+      "bytes": 26015,
+      "sha256": "a5e921aca4850bfe4c73eb6076fa505409affefae547766f4cd8cf4ed3833f7b"
+    }
+  ]
+}

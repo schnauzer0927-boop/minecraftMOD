@@ -1,0 +1,91 @@
+{
+  "scope": "ZIP extracted source regenerates delivered schematics under Linux; not Windows or game test",
+  "zip_crc_checked": true,
+  "manifest_sha256_checked": true,
+  "results": [
+    {
+      "file": "base_stage2.schem",
+      "bytes": 8897,
+      "sha256": "960836d61e476836b49aa940d3a212dc1256d088419fabc010d2fe31dd3bb0eb",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "crown_stage2.schem",
+      "bytes": 743,
+      "sha256": "5fbb90ec4fa48888bcb5909c3df9001acbeb40c69124398427b867efe58249b8",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "entrance_stage2.schem",
+      "bytes": 655,
+      "sha256": "2a1078f3580b14f0d0de03988b50e03042d7e500d48761714d49bc7b7b6b0af9",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "exterior_north_east.schem",
+      "bytes": 6082,
+      "sha256": "9c7bf3a7e0f8738be351ecc29b34873a123b8eb27a2de79f1c80db491d9d55ad",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "exterior_north_west.schem",
+      "bytes": 6196,
+      "sha256": "02082b29d5eb40626b0bd2c6d022488bef4c2cce6336959a2cf9db1b2c589fd1",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "exterior_south_east.schem",
+      "bytes": 6375,
+      "sha256": "83df9feafbfa8a20f484793ff85419b63d96c60c94adb80b2dc78a8dd4a70b60",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "exterior_south_west.schem",
+      "bytes": 5975,
+      "sha256": "c4e0d1026bea1955d41166675e62cf8a9e8073636e4eaa8e32824eaeb8e16fb1",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "forecourt_stage2.schem",
+      "bytes": 878,
+      "sha256": "45aa14e49f36aa49701599325d04d9957d235b17eeb5f1751af488559db70c1a",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "foundation_stage2.schem",
+      "bytes": 869,
+      "sha256": "28c1e910ce9b844d80623a06c56a3b84726f1e900fca94a4bc20e7530efd45d5",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "guide_optional.schem",
+      "bytes": 638,
+      "sha256": "09d216f45fb7ba5dbc6fd7ea3b360eb86b587a62f39c479d2e14ea60b6ae39bc",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "prototype_half_scale.schem",
+      "bytes": 7580,
+      "sha256": "8df2cf789a25f729c75956fe34ae6b2cf7c9dbcacaa4df643e393b420085ddde",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "roof_stage2.schem",
+      "bytes": 14008,
+      "sha256": "b280fc4f47214b194fc46746af5acedfab1fbdedaaacd7d8a639e39dc4937c46",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "tokyo_old_exterior.schem",
+      "bytes": 23852,
+      "sha256": "e0ad0fa1d40ac9b3e38b344d8d86b18f2ec2a0503baf6c46fce6efc06ae8df2f",
+      "regenerated_identically_from_extracted_zip": true
+    },
+    {
+      "file": "tokyo_old_stage2_site.schem",
+      "bytes": 26015,
+      "sha256": "a5e921aca4850bfe4c73eb6076fa505409affefae547766f4cd8cf4ed3833f7b",
+      "regenerated_identically_from_extracted_zip": true
+    }
+  ]
+}

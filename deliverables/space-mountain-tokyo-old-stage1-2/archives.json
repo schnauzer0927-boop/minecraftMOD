@@ -1,0 +1,16 @@
+[
+  {
+    "file": "SpaceMountainTokyoOld-Stage1-2.zip",
+    "bytes": 949121,
+    "sha256": "475af3921bf62a89bc1d126d0ebf6bc1ef081d94de4205cdc3383555b801f276",
+    "files": 74,
+    "zip_crc": "PASS"
+  },
+  {
+    "file": "SpaceMountainTokyoOld-Stage1-Research.zip",
+    "bytes": 34242,
+    "sha256": "79073f16dccc9f2fc79a8633df9d050ed5958da5e14ad1c7dc3c6927e0598d45",
+    "files": 19,
+    "zip_crc": "PASS"
+  }
+]

@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "stage": "2-preliminary",
+  "coordinate_space": "project_relative_xyz",
+  "warning": "東京旧版の実レール配置を再現したものではありません。後の設計のための仮案です。",
+  "rail_blocks_generated": false,
+  "native_mod_physics_verified": false,
+  "centerline_points": [
+    [
+      110,
+      10,
+      144
+    ],
+    [
+      110,
+      16,
+      114
+    ],
+    [
+      92,
+      24,
+      96
+    ],
+    [
+      102,
+      27,
+      76
+    ],
+    [
+      130,
+      24,
+      90
+    ],
+    [
+      130,
+      15,
+      118
+    ],
+    [
+      110,
+      10,
+      144
+    ]
+  ],
+  "interpolation": "piecewise_linear_clearance_envelope_only",
+  "clearance": {
+    "width_blocks": 8,
+    "below_blocks": 3,
+    "above_blocks": 5,
+    "inclusive_voxel_span": [
+      9,
+      9
+    ]
+  },
+  "segments": [
+    {
+      "id": "candidate_1",
+      "from": [
+        110,
+        10,
+        144
+      ],
+      "to": [
+        110,
+        16,
+        114
+      ],
+      "purpose": "platform_candidate",
+      "description": "駅候補から低速の導入",
+      "recommended_altitude_blocks": [
+        10,
+        16
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    },
+    {
+      "id": "candidate_2",
+      "from": [
+        110,
+        16,
+        114
+      ],
+      "to": [
+        92,
+        24,
+        96
+      ],
+      "purpose": "rise_candidate",
+      "description": "上昇・リフト候補",
+      "recommended_altitude_blocks": [
+        16,
+        24
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    },
+    {
+      "id": "candidate_3",
+      "from": [
+        92,
+        24,
+        96
+      ],
+      "to": [
+        102,
+        27,
+        76
+      ],
+      "purpose": "dark_turn_candidate",
+      "description": "暗所カーブ候補",
+      "recommended_altitude_blocks": [
+        24,
+        27
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    },
+    {
+      "id": "candidate_4",
+      "from": [
+        102,
+        27,
+        76
+      ],
+      "to": [
+        130,
+        24,
+        90
+      ],
+      "purpose": "cruise_candidate",
+      "description": "空間を見ながら回り込む候補",
+      "recommended_altitude_blocks": [
+        27,
+        24
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    },
+    {
+      "id": "candidate_5",
+      "from": [
+        130,
+        24,
+        90
+      ],
+      "to": [
+        130,
+        15,
+        118
+      ],
+      "purpose": "descent_candidate",
+      "description": "下降・高速区間候補（走行速度未設定）",
+      "recommended_altitude_blocks": [
+        24,
+        15
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    },
+    {
+      "id": "candidate_6",
+      "from": [
+        130,
+        15,
+        118
+      ],
+      "to": [
+        110,
+        10,
+        144
+      ],
+      "purpose": "brake_candidate",
+      "description": "帰還・ブレーキ候補",
+      "recommended_altitude_blocks": [
+        15,
+        10
+      ],
+      "confidence": "creative_completion",
+      "source_ids": [
+        "USER-REQ"
+      ],
+      "historical_route_verified": false
+    }
+  ],
+  "platform_candidates": [
+    {
+      "id": "south_station_approach",
+      "center": [
+        110,
+        10,
+        144
+      ],
+      "confidence": "creative_completion"
+    }
+  ]
+}

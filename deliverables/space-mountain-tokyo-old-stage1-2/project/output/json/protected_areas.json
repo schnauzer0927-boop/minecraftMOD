@@ -1,0 +1,2785 @@
+{
+  "schema_version": 1,
+  "coordinate_space": "project_relative_xyz",
+  "applies_to": "Python voxel writes only; not live WorldEdit protection",
+  "paste_rule": "//paste -a and same anchor; user rails must stay within recorded reservations",
+  "rail_blocks_generated": false,
+  "bounds_inclusive": true,
+  "areas": [
+    {
+      "id": "future_ride_core",
+      "min": [
+        85,
+        5,
+        69
+      ],
+      "max": [
+        135,
+        31,
+        119
+      ],
+      "purpose": "後工程でユーザーがレールを敷く中央空間。実施設の構造ではなく設計予約。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "south_station_approach",
+      "min": [
+        102,
+        5,
+        121
+      ],
+      "max": [
+        118,
+        15,
+        160
+      ],
+      "purpose": "入口と中央空間の間の駅候補・敷設導線。実測ではない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_0",
+      "min": [
+        106,
+        7,
+        140
+      ],
+      "max": [
+        114,
+        15,
+        148
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_1",
+      "min": [
+        106,
+        7,
+        139
+      ],
+      "max": [
+        114,
+        15,
+        147
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_2",
+      "min": [
+        106,
+        7,
+        138
+      ],
+      "max": [
+        114,
+        15,
+        146
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_3",
+      "min": [
+        106,
+        8,
+        137
+      ],
+      "max": [
+        114,
+        16,
+        145
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_4",
+      "min": [
+        106,
+        8,
+        136
+      ],
+      "max": [
+        114,
+        16,
+        144
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_5",
+      "min": [
+        106,
+        8,
+        135
+      ],
+      "max": [
+        114,
+        16,
+        143
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_6",
+      "min": [
+        106,
+        8,
+        134
+      ],
+      "max": [
+        114,
+        16,
+        142
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_7",
+      "min": [
+        106,
+        8,
+        133
+      ],
+      "max": [
+        114,
+        16,
+        141
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_8",
+      "min": [
+        106,
+        9,
+        132
+      ],
+      "max": [
+        114,
+        17,
+        140
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_9",
+      "min": [
+        106,
+        9,
+        131
+      ],
+      "max": [
+        114,
+        17,
+        139
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_10",
+      "min": [
+        106,
+        9,
+        130
+      ],
+      "max": [
+        114,
+        17,
+        138
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_11",
+      "min": [
+        106,
+        9,
+        129
+      ],
+      "max": [
+        114,
+        17,
+        137
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_12",
+      "min": [
+        106,
+        9,
+        128
+      ],
+      "max": [
+        114,
+        17,
+        136
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_13",
+      "min": [
+        106,
+        10,
+        127
+      ],
+      "max": [
+        114,
+        18,
+        135
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_14",
+      "min": [
+        106,
+        10,
+        126
+      ],
+      "max": [
+        114,
+        18,
+        134
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_15",
+      "min": [
+        106,
+        10,
+        125
+      ],
+      "max": [
+        114,
+        18,
+        133
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_16",
+      "min": [
+        106,
+        10,
+        125
+      ],
+      "max": [
+        114,
+        18,
+        133
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_17",
+      "min": [
+        106,
+        10,
+        124
+      ],
+      "max": [
+        114,
+        18,
+        132
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_18",
+      "min": [
+        106,
+        10,
+        123
+      ],
+      "max": [
+        114,
+        18,
+        131
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_19",
+      "min": [
+        106,
+        11,
+        122
+      ],
+      "max": [
+        114,
+        19,
+        130
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_20",
+      "min": [
+        106,
+        11,
+        121
+      ],
+      "max": [
+        114,
+        19,
+        129
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_21",
+      "min": [
+        106,
+        11,
+        120
+      ],
+      "max": [
+        114,
+        19,
+        128
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_22",
+      "min": [
+        106,
+        11,
+        119
+      ],
+      "max": [
+        114,
+        19,
+        127
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_23",
+      "min": [
+        106,
+        11,
+        118
+      ],
+      "max": [
+        114,
+        19,
+        126
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_24",
+      "min": [
+        106,
+        12,
+        117
+      ],
+      "max": [
+        114,
+        20,
+        125
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_25",
+      "min": [
+        106,
+        12,
+        116
+      ],
+      "max": [
+        114,
+        20,
+        124
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_26",
+      "min": [
+        106,
+        12,
+        115
+      ],
+      "max": [
+        114,
+        20,
+        123
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_27",
+      "min": [
+        106,
+        12,
+        114
+      ],
+      "max": [
+        114,
+        20,
+        122
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_28",
+      "min": [
+        106,
+        12,
+        113
+      ],
+      "max": [
+        114,
+        20,
+        121
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_29",
+      "min": [
+        106,
+        13,
+        112
+      ],
+      "max": [
+        114,
+        21,
+        120
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_30",
+      "min": [
+        106,
+        13,
+        111
+      ],
+      "max": [
+        114,
+        21,
+        119
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_0_31",
+      "min": [
+        106,
+        13,
+        110
+      ],
+      "max": [
+        114,
+        21,
+        118
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_0",
+      "min": [
+        106,
+        13,
+        110
+      ],
+      "max": [
+        114,
+        21,
+        118
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_1",
+      "min": [
+        105,
+        13,
+        109
+      ],
+      "max": [
+        113,
+        21,
+        117
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_2",
+      "min": [
+        105,
+        14,
+        109
+      ],
+      "max": [
+        113,
+        22,
+        117
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_3",
+      "min": [
+        104,
+        14,
+        108
+      ],
+      "max": [
+        112,
+        22,
+        116
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_4",
+      "min": [
+        103,
+        14,
+        107
+      ],
+      "max": [
+        111,
+        22,
+        115
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_5",
+      "min": [
+        103,
+        14,
+        107
+      ],
+      "max": [
+        111,
+        22,
+        115
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_6",
+      "min": [
+        102,
+        15,
+        106
+      ],
+      "max": [
+        110,
+        23,
+        114
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_7",
+      "min": [
+        101,
+        15,
+        105
+      ],
+      "max": [
+        109,
+        23,
+        113
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_8",
+      "min": [
+        101,
+        15,
+        105
+      ],
+      "max": [
+        109,
+        23,
+        113
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_9",
+      "min": [
+        100,
+        16,
+        104
+      ],
+      "max": [
+        108,
+        24,
+        112
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_10",
+      "min": [
+        99,
+        16,
+        103
+      ],
+      "max": [
+        107,
+        24,
+        111
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_11",
+      "min": [
+        99,
+        16,
+        103
+      ],
+      "max": [
+        107,
+        24,
+        111
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_12",
+      "min": [
+        98,
+        17,
+        102
+      ],
+      "max": [
+        106,
+        25,
+        110
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_13",
+      "min": [
+        97,
+        17,
+        101
+      ],
+      "max": [
+        105,
+        25,
+        109
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_14",
+      "min": [
+        97,
+        17,
+        101
+      ],
+      "max": [
+        105,
+        25,
+        109
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_15",
+      "min": [
+        96,
+        17,
+        100
+      ],
+      "max": [
+        104,
+        25,
+        108
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_16",
+      "min": [
+        95,
+        18,
+        99
+      ],
+      "max": [
+        103,
+        26,
+        107
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_17",
+      "min": [
+        95,
+        18,
+        99
+      ],
+      "max": [
+        103,
+        26,
+        107
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_18",
+      "min": [
+        94,
+        18,
+        98
+      ],
+      "max": [
+        102,
+        26,
+        106
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_19",
+      "min": [
+        93,
+        19,
+        97
+      ],
+      "max": [
+        101,
+        27,
+        105
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_20",
+      "min": [
+        93,
+        19,
+        97
+      ],
+      "max": [
+        101,
+        27,
+        105
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_21",
+      "min": [
+        92,
+        19,
+        96
+      ],
+      "max": [
+        100,
+        27,
+        104
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_22",
+      "min": [
+        91,
+        20,
+        95
+      ],
+      "max": [
+        99,
+        28,
+        103
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_23",
+      "min": [
+        91,
+        20,
+        95
+      ],
+      "max": [
+        99,
+        28,
+        103
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_24",
+      "min": [
+        90,
+        20,
+        94
+      ],
+      "max": [
+        98,
+        28,
+        102
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_25",
+      "min": [
+        89,
+        20,
+        93
+      ],
+      "max": [
+        97,
+        28,
+        101
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_26",
+      "min": [
+        89,
+        21,
+        93
+      ],
+      "max": [
+        97,
+        29,
+        101
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_1_27",
+      "min": [
+        88,
+        21,
+        92
+      ],
+      "max": [
+        96,
+        29,
+        100
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_0",
+      "min": [
+        88,
+        21,
+        92
+      ],
+      "max": [
+        96,
+        29,
+        100
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_1",
+      "min": [
+        88,
+        21,
+        91
+      ],
+      "max": [
+        96,
+        29,
+        99
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_2",
+      "min": [
+        89,
+        21,
+        90
+      ],
+      "max": [
+        97,
+        29,
+        98
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_3",
+      "min": [
+        89,
+        21,
+        89
+      ],
+      "max": [
+        97,
+        29,
+        97
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_4",
+      "min": [
+        90,
+        22,
+        89
+      ],
+      "max": [
+        98,
+        30,
+        97
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_5",
+      "min": [
+        90,
+        22,
+        88
+      ],
+      "max": [
+        98,
+        30,
+        96
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_6",
+      "min": [
+        91,
+        22,
+        87
+      ],
+      "max": [
+        99,
+        30,
+        95
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_7",
+      "min": [
+        91,
+        22,
+        86
+      ],
+      "max": [
+        99,
+        30,
+        94
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_8",
+      "min": [
+        91,
+        22,
+        85
+      ],
+      "max": [
+        99,
+        30,
+        93
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_9",
+      "min": [
+        92,
+        22,
+        84
+      ],
+      "max": [
+        100,
+        30,
+        92
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_10",
+      "min": [
+        92,
+        22,
+        83
+      ],
+      "max": [
+        100,
+        30,
+        91
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_11",
+      "min": [
+        93,
+        22,
+        82
+      ],
+      "max": [
+        101,
+        30,
+        90
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_12",
+      "min": [
+        93,
+        23,
+        82
+      ],
+      "max": [
+        101,
+        31,
+        90
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_13",
+      "min": [
+        94,
+        23,
+        81
+      ],
+      "max": [
+        102,
+        31,
+        89
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_14",
+      "min": [
+        94,
+        23,
+        80
+      ],
+      "max": [
+        102,
+        31,
+        88
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_15",
+      "min": [
+        95,
+        23,
+        79
+      ],
+      "max": [
+        103,
+        31,
+        87
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_16",
+      "min": [
+        95,
+        23,
+        78
+      ],
+      "max": [
+        103,
+        31,
+        86
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_17",
+      "min": [
+        95,
+        23,
+        77
+      ],
+      "max": [
+        103,
+        31,
+        85
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_18",
+      "min": [
+        96,
+        23,
+        76
+      ],
+      "max": [
+        104,
+        31,
+        84
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_19",
+      "min": [
+        96,
+        23,
+        75
+      ],
+      "max": [
+        104,
+        31,
+        83
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_20",
+      "min": [
+        97,
+        24,
+        75
+      ],
+      "max": [
+        105,
+        32,
+        83
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_21",
+      "min": [
+        97,
+        24,
+        74
+      ],
+      "max": [
+        105,
+        32,
+        82
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_22",
+      "min": [
+        98,
+        24,
+        73
+      ],
+      "max": [
+        106,
+        32,
+        81
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_2_23",
+      "min": [
+        98,
+        24,
+        72
+      ],
+      "max": [
+        106,
+        32,
+        80
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_0",
+      "min": [
+        98,
+        24,
+        72
+      ],
+      "max": [
+        106,
+        32,
+        80
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_1",
+      "min": [
+        99,
+        24,
+        72
+      ],
+      "max": [
+        107,
+        32,
+        80
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_2",
+      "min": [
+        100,
+        24,
+        73
+      ],
+      "max": [
+        108,
+        32,
+        81
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_3",
+      "min": [
+        101,
+        24,
+        73
+      ],
+      "max": [
+        109,
+        32,
+        81
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_4",
+      "min": [
+        102,
+        24,
+        74
+      ],
+      "max": [
+        110,
+        32,
+        82
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_5",
+      "min": [
+        102,
+        24,
+        74
+      ],
+      "max": [
+        110,
+        32,
+        82
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_6",
+      "min": [
+        103,
+        23,
+        75
+      ],
+      "max": [
+        111,
+        31,
+        83
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_7",
+      "min": [
+        104,
+        23,
+        75
+      ],
+      "max": [
+        112,
+        31,
+        83
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_8",
+      "min": [
+        105,
+        23,
+        76
+      ],
+      "max": [
+        113,
+        31,
+        84
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_9",
+      "min": [
+        106,
+        23,
+        76
+      ],
+      "max": [
+        114,
+        31,
+        84
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_10",
+      "min": [
+        107,
+        23,
+        76
+      ],
+      "max": [
+        115,
+        31,
+        84
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_11",
+      "min": [
+        108,
+        23,
+        77
+      ],
+      "max": [
+        116,
+        31,
+        85
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_12",
+      "min": [
+        108,
+        23,
+        77
+      ],
+      "max": [
+        116,
+        31,
+        85
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_13",
+      "min": [
+        109,
+        23,
+        78
+      ],
+      "max": [
+        117,
+        31,
+        86
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_14",
+      "min": [
+        110,
+        23,
+        78
+      ],
+      "max": [
+        118,
+        31,
+        86
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_15",
+      "min": [
+        111,
+        23,
+        79
+      ],
+      "max": [
+        119,
+        31,
+        87
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_16",
+      "min": [
+        112,
+        23,
+        79
+      ],
+      "max": [
+        120,
+        31,
+        87
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_17",
+      "min": [
+        113,
+        22,
+        79
+      ],
+      "max": [
+        121,
+        30,
+        87
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_18",
+      "min": [
+        114,
+        22,
+        80
+      ],
+      "max": [
+        122,
+        30,
+        88
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_19",
+      "min": [
+        115,
+        22,
+        80
+      ],
+      "max": [
+        123,
+        30,
+        88
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_20",
+      "min": [
+        116,
+        22,
+        81
+      ],
+      "max": [
+        124,
+        30,
+        89
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_21",
+      "min": [
+        116,
+        22,
+        81
+      ],
+      "max": [
+        124,
+        30,
+        89
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_22",
+      "min": [
+        117,
+        22,
+        82
+      ],
+      "max": [
+        125,
+        30,
+        90
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_23",
+      "min": [
+        118,
+        22,
+        82
+      ],
+      "max": [
+        126,
+        30,
+        90
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_24",
+      "min": [
+        119,
+        22,
+        82
+      ],
+      "max": [
+        127,
+        30,
+        90
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_25",
+      "min": [
+        120,
+        22,
+        83
+      ],
+      "max": [
+        128,
+        30,
+        91
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_26",
+      "min": [
+        121,
+        22,
+        83
+      ],
+      "max": [
+        129,
+        30,
+        91
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_27",
+      "min": [
+        122,
+        21,
+        84
+      ],
+      "max": [
+        130,
+        29,
+        92
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_28",
+      "min": [
+        122,
+        21,
+        84
+      ],
+      "max": [
+        130,
+        29,
+        92
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_29",
+      "min": [
+        123,
+        21,
+        85
+      ],
+      "max": [
+        131,
+        29,
+        93
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_30",
+      "min": [
+        124,
+        21,
+        85
+      ],
+      "max": [
+        132,
+        29,
+        93
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_31",
+      "min": [
+        125,
+        21,
+        86
+      ],
+      "max": [
+        133,
+        29,
+        94
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_3_32",
+      "min": [
+        126,
+        21,
+        86
+      ],
+      "max": [
+        134,
+        29,
+        94
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_0",
+      "min": [
+        126,
+        21,
+        86
+      ],
+      "max": [
+        134,
+        29,
+        94
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_1",
+      "min": [
+        126,
+        21,
+        87
+      ],
+      "max": [
+        134,
+        29,
+        95
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_2",
+      "min": [
+        126,
+        20,
+        88
+      ],
+      "max": [
+        134,
+        28,
+        96
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_3",
+      "min": [
+        126,
+        20,
+        89
+      ],
+      "max": [
+        134,
+        28,
+        97
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_4",
+      "min": [
+        126,
+        20,
+        90
+      ],
+      "max": [
+        134,
+        28,
+        98
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_5",
+      "min": [
+        126,
+        19,
+        91
+      ],
+      "max": [
+        134,
+        27,
+        99
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_6",
+      "min": [
+        126,
+        19,
+        92
+      ],
+      "max": [
+        134,
+        27,
+        100
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_7",
+      "min": [
+        126,
+        19,
+        93
+      ],
+      "max": [
+        134,
+        27,
+        101
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_8",
+      "min": [
+        126,
+        19,
+        93
+      ],
+      "max": [
+        134,
+        27,
+        101
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_9",
+      "min": [
+        126,
+        18,
+        94
+      ],
+      "max": [
+        134,
+        26,
+        102
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_10",
+      "min": [
+        126,
+        18,
+        95
+      ],
+      "max": [
+        134,
+        26,
+        103
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_11",
+      "min": [
+        126,
+        18,
+        96
+      ],
+      "max": [
+        134,
+        26,
+        104
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_12",
+      "min": [
+        126,
+        17,
+        97
+      ],
+      "max": [
+        134,
+        25,
+        105
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_13",
+      "min": [
+        126,
+        17,
+        98
+      ],
+      "max": [
+        134,
+        25,
+        106
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_14",
+      "min": [
+        126,
+        17,
+        99
+      ],
+      "max": [
+        134,
+        25,
+        107
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_15",
+      "min": [
+        126,
+        17,
+        100
+      ],
+      "max": [
+        134,
+        25,
+        108
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_16",
+      "min": [
+        126,
+        16,
+        101
+      ],
+      "max": [
+        134,
+        24,
+        109
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_17",
+      "min": [
+        126,
+        16,
+        102
+      ],
+      "max": [
+        134,
+        24,
+        110
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_18",
+      "min": [
+        126,
+        16,
+        103
+      ],
+      "max": [
+        134,
+        24,
+        111
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_19",
+      "min": [
+        126,
+        15,
+        104
+      ],
+      "max": [
+        134,
+        23,
+        112
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_20",
+      "min": [
+        126,
+        15,
+        105
+      ],
+      "max": [
+        134,
+        23,
+        113
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_21",
+      "min": [
+        126,
+        15,
+        106
+      ],
+      "max": [
+        134,
+        23,
+        114
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_22",
+      "min": [
+        126,
+        14,
+        107
+      ],
+      "max": [
+        134,
+        22,
+        115
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_23",
+      "min": [
+        126,
+        14,
+        107
+      ],
+      "max": [
+        134,
+        22,
+        115
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_24",
+      "min": [
+        126,
+        14,
+        108
+      ],
+      "max": [
+        134,
+        22,
+        116
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_25",
+      "min": [
+        126,
+        13,
+        109
+      ],
+      "max": [
+        134,
+        21,
+        117
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_26",
+      "min": [
+        126,
+        13,
+        110
+      ],
+      "max": [
+        134,
+        21,
+        118
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_27",
+      "min": [
+        126,
+        13,
+        111
+      ],
+      "max": [
+        134,
+        21,
+        119
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_28",
+      "min": [
+        126,
+        13,
+        112
+      ],
+      "max": [
+        134,
+        21,
+        120
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_29",
+      "min": [
+        126,
+        12,
+        113
+      ],
+      "max": [
+        134,
+        20,
+        121
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_4_30",
+      "min": [
+        126,
+        12,
+        114
+      ],
+      "max": [
+        134,
+        20,
+        122
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_0",
+      "min": [
+        126,
+        12,
+        114
+      ],
+      "max": [
+        134,
+        20,
+        122
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_1",
+      "min": [
+        125,
+        12,
+        115
+      ],
+      "max": [
+        133,
+        20,
+        123
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_2",
+      "min": [
+        125,
+        12,
+        116
+      ],
+      "max": [
+        133,
+        20,
+        124
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_3",
+      "min": [
+        124,
+        12,
+        116
+      ],
+      "max": [
+        132,
+        20,
+        124
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_4",
+      "min": [
+        124,
+        11,
+        117
+      ],
+      "max": [
+        132,
+        19,
+        125
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_5",
+      "min": [
+        123,
+        11,
+        118
+      ],
+      "max": [
+        131,
+        19,
+        126
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_6",
+      "min": [
+        122,
+        11,
+        119
+      ],
+      "max": [
+        130,
+        19,
+        127
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_7",
+      "min": [
+        122,
+        11,
+        119
+      ],
+      "max": [
+        130,
+        19,
+        127
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_8",
+      "min": [
+        121,
+        11,
+        120
+      ],
+      "max": [
+        129,
+        19,
+        128
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_9",
+      "min": [
+        121,
+        11,
+        121
+      ],
+      "max": [
+        129,
+        19,
+        129
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_10",
+      "min": [
+        120,
+        11,
+        122
+      ],
+      "max": [
+        128,
+        19,
+        130
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_11",
+      "min": [
+        120,
+        10,
+        122
+      ],
+      "max": [
+        128,
+        18,
+        130
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_12",
+      "min": [
+        119,
+        10,
+        123
+      ],
+      "max": [
+        127,
+        18,
+        131
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_13",
+      "min": [
+        118,
+        10,
+        124
+      ],
+      "max": [
+        126,
+        18,
+        132
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_14",
+      "min": [
+        118,
+        10,
+        125
+      ],
+      "max": [
+        126,
+        18,
+        133
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_15",
+      "min": [
+        117,
+        10,
+        125
+      ],
+      "max": [
+        125,
+        18,
+        133
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_16",
+      "min": [
+        117,
+        10,
+        126
+      ],
+      "max": [
+        125,
+        18,
+        134
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_17",
+      "min": [
+        116,
+        9,
+        127
+      ],
+      "max": [
+        124,
+        17,
+        135
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_18",
+      "min": [
+        115,
+        9,
+        128
+      ],
+      "max": [
+        123,
+        17,
+        136
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_19",
+      "min": [
+        115,
+        9,
+        129
+      ],
+      "max": [
+        123,
+        17,
+        137
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_20",
+      "min": [
+        114,
+        9,
+        129
+      ],
+      "max": [
+        122,
+        17,
+        137
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_21",
+      "min": [
+        114,
+        9,
+        130
+      ],
+      "max": [
+        122,
+        17,
+        138
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_22",
+      "min": [
+        113,
+        9,
+        131
+      ],
+      "max": [
+        121,
+        17,
+        139
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_23",
+      "min": [
+        112,
+        9,
+        132
+      ],
+      "max": [
+        120,
+        17,
+        140
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_24",
+      "min": [
+        112,
+        8,
+        132
+      ],
+      "max": [
+        120,
+        16,
+        140
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_25",
+      "min": [
+        111,
+        8,
+        133
+      ],
+      "max": [
+        119,
+        16,
+        141
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_26",
+      "min": [
+        111,
+        8,
+        134
+      ],
+      "max": [
+        119,
+        16,
+        142
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_27",
+      "min": [
+        110,
+        8,
+        135
+      ],
+      "max": [
+        118,
+        16,
+        143
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_28",
+      "min": [
+        110,
+        8,
+        135
+      ],
+      "max": [
+        118,
+        16,
+        143
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_29",
+      "min": [
+        109,
+        8,
+        136
+      ],
+      "max": [
+        117,
+        16,
+        144
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_30",
+      "min": [
+        108,
+        8,
+        137
+      ],
+      "max": [
+        116,
+        16,
+        145
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_31",
+      "min": [
+        108,
+        7,
+        138
+      ],
+      "max": [
+        116,
+        15,
+        146
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_32",
+      "min": [
+        107,
+        7,
+        138
+      ],
+      "max": [
+        115,
+        15,
+        146
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_33",
+      "min": [
+        107,
+        7,
+        139
+      ],
+      "max": [
+        115,
+        15,
+        147
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    },
+    {
+      "id": "guide_5_34",
+      "min": [
+        106,
+        7,
+        140
+      ],
+      "max": [
+        114,
+        15,
+        148
+      ],
+      "purpose": "推定の仮中心線周辺。レールでも既設コース再現でもない。",
+      "confidence": "creative_completion"
+    }
+  ]
+}
